@@ -1,0 +1,101 @@
+name: Publish
+
+on:
+    release:
+        types: [published]
+    workflow_dispatch:
+
+permissions:
+    contents: read
+    # GitHub Packages, for org consumers whose .npmrc routes @system-b90 there.
+    packages: write
+    # npm provenance, and npm trusted publishing when it is configured.
+    id-token: write
+
+jobs:
+    publish:
+        name: Publish to npm and GitHub Packages
+        runs-on: ubuntu-latest
+        timeout-minutes: 20
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v7
+
+            - name: Set up Node
+              uses: actions/setup-node@v6
+              with:
+                  node-version: "24"
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Release tag matches package.json
+              if: github.event_name == 'release'
+              run: |
+                  version=$(node -p "require('./package.json').version")
+                  if [ "${GITHUB_REF_NAME#v}" != "$version" ]; then
+                      echo "::error::Release tag $GITHUB_REF_NAME does not match package.json version $version"
+                      exit 1
+                  fi
+
+            # The same gates as CI, on exactly the bytes about to ship.
+            - name: Build + test
+              run: npm test
+
+            - name: Typecheck consumers
+              run: npm run test:types
+
+            - name: Next.js / Turbopack consumer
+              run: npm run test:turbopack
+
+            - name: Advisories in bundled code
+              run: npm run audit:bundle
+
+            # GitHub Packages first: it needs only GITHUB_TOKEN, so org consumers
+            # (whose .npmrc routes @system-b90 there) get the release even before
+            # the npm organisation and NPM_TOKEN exist, when the step below fails.
+            # --ignore-scripts on both: prepublishOnly would rebuild and retest
+            # what the steps above just verified.
+            - name: Point npm at GitHub Packages
+              uses: actions/setup-node@v6
+              with:
+                  node-version: "24"
+                  registry-url: https://npm.pkg.github.com
+                  scope: "@system-b90"
+
+            - name: Publish to GitHub Packages (skip if already published)
+              run: |
+                  name=$(node -p "require('./package.json').name")
+                  version=$(node -p "require('./package.json').version")
+                  if npm view "$name@$version" version >/dev/null 2>&1; then
+                      echo "$name@$version already on GitHub Packages, skipping"
+                  else
+                      npm publish --ignore-scripts
+                  fi
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Point npm at npmjs.org
+              uses: actions/setup-node@v6
+              with:
+                  node-version: "24"
+                  registry-url: https://registry.npmjs.org
+
+            # setup-node keeps the @system-b90 -> GitHub Packages line it wrote
+            # above, and a scope mapping beats `registry`. Without this override
+            # both commands would hit GitHub Packages, find the version there,
+            # and skip npmjs.org every time.
+            - name: Publish to npmjs.org (skip if already published)
+              run: |
+                  name=$(node -p "require('./package.json').name")
+                  version=$(node -p "require('./package.json').version")
+                  npmjs="--@system-b90:registry=https://registry.npmjs.org"
+                  if npm view "$name@$version" version $npmjs >/dev/null 2>&1; then
+                      echo "$name@$version already on npmjs.org, skipping"
+                  else
+                      npm publish --provenance --access public --ignore-scripts $npmjs
+                  fi
+              env:
+                  # Optional once npm trusted publishing is set up for this
+                  # repo: npm then authenticates through the OIDC token alone.
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

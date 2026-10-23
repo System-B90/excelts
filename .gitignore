@@ -1,0 +1,10 @@
+node_modules/
+dist/
+*.tgz
+*.tsbuildinfo
+.env
+
+# Only if the Turbopack fixture is built in place rather than via the script.
+tests/turbopack/.next/
+tests/turbopack/node_modules/
+tests/turbopack/package*.json
