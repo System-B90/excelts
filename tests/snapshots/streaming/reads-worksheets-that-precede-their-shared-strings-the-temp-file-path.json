@@ -1,0 +1,196 @@
+{
+  "order": {
+    "sheetBeforeStrings": true
+  },
+  "sheets": [
+    {
+      "id": 1,
+      "name": "גיליון",
+      "rows": [
+        {
+          "number": 1,
+          "values": [
+            null,
+            "נושא",
+            "שעות",
+            "When",
+            "Done",
+            {
+              "formula": "G1+1",
+              "result": 2
+            },
+            {
+              "richText": [
+                {
+                  "font": {
+                    "bold": true
+                  },
+                  "text": "bold"
+                },
+                {
+                  "font": null,
+                  "text": " plain"
+                }
+              ]
+            },
+            1,
+            {
+              "formula": "G1*2",
+              "result": 2
+            },
+            {
+              "formula": "SUM(B2:B4)",
+              "result": 7.75
+            }
+          ],
+          "font": {
+            "bold": true
+          }
+        },
+        {
+          "number": 2,
+          "values": [
+            null,
+            "מבוא",
+            2.75,
+            "2026-10-23T08:30:00.000Z",
+            true,
+            {
+              "formula": "",
+              "result": 1
+            },
+            "link",
+            null,
+            {
+              "formula": "",
+              "result": 0
+            }
+          ],
+          "font": {
+            "bold": true,
+            "italic": true,
+            "underline": "double",
+            "color": {
+              "argb": "FF0D2336"
+            },
+            "size": 12,
+            "name": "Arial"
+          }
+        },
+        {
+          "number": 3,
+          "values": [
+            null,
+            "inserted",
+            0.5,
+            null,
+            null,
+            null,
+            {
+              "formula": "B2*2",
+              "result": 5.5
+            },
+            null,
+            {
+              "formula": "",
+              "result": 0
+            }
+          ],
+          "font": null
+        },
+        {
+          "number": 4,
+          "values": [
+            null,
+            "second",
+            1,
+            "2026-10-23T08:30:00.000Z",
+            false,
+            null,
+            {
+              "error": "#N/A"
+            }
+          ],
+          "font": null
+        },
+        {
+          "number": 5,
+          "values": [
+            null,
+            "third",
+            3.5,
+            "2026-10-23T08:30:00.000Z",
+            true,
+            null,
+            {
+              "formula": "TODAY()"
+            }
+          ],
+          "font": null
+        },
+        {
+          "number": 10,
+          "values": [
+            null,
+            "כותרת מאוחדת"
+          ],
+          "font": null
+        },
+        {
+          "number": 11,
+          "values": [],
+          "font": null
+        },
+        {
+          "number": 12,
+          "values": [],
+          "font": null
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Data",
+      "rows": [
+        {
+          "number": 1,
+          "values": [
+            null,
+            "Name",
+            "Score"
+          ],
+          "font": null
+        },
+        {
+          "number": 2,
+          "values": [
+            null,
+            "a",
+            1
+          ],
+          "font": null
+        },
+        {
+          "number": 3,
+          "values": [
+            null,
+            "b",
+            2
+          ],
+          "font": null
+        },
+        {
+          "number": 4,
+          "values": [
+            null,
+            "Total",
+            {
+              "formula": "SUBTOTAL(109,Scores[Score])"
+            }
+          ],
+          "font": null
+        }
+      ]
+    }
+  ]
+}

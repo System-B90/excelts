@@ -1,0 +1,9 @@
+{
+  "sheet": true,
+  "selectLockedCells": false,
+  "formatCells": true,
+  "algorithmName": "SHA-512",
+  "spinCount": 1000,
+  "hasSalt": true,
+  "hasHash": true
+}

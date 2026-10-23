@@ -1,0 +1,17 @@
+version: 2
+updates:
+    # A bump of any bundled library (each pinned exactly) re-runs the snapshot
+    # suites, the Turbopack check and the bundled-code audit -- the PR is green
+    # only if the package's behaviour is unchanged.
+    - package-ecosystem: npm
+      directory: /
+      schedule:
+          interval: weekly
+      groups:
+          tooling:
+              patterns: ["esbuild", "typescript", "@types/*"]
+
+    - package-ecosystem: github-actions
+      directory: /
+      schedule:
+          interval: monthly

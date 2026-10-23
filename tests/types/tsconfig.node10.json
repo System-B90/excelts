@@ -1,0 +1,10 @@
+{
+    "extends": "./tsconfig.base.json",
+    "compilerOptions": {
+        "module": "commonjs",
+        "moduleResolution": "node10",
+        "ignoreDeprecations": "5.0",
+        "paths": { "@system-b90/excelts": ["../.."] }
+    },
+    "files": ["node10.ts"]
+}
