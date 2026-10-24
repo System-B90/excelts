@@ -1,0 +1,34 @@
+{
+  "written": "only,this",
+  "name": "imported",
+  "values": [
+    null,
+    [
+      "TOPIC",
+      "hours",
+      "when",
+      "done",
+      "note"
+    ],
+    [
+      "מבוא",
+      "27.5",
+      "Fri Oct 23 2026 08:30:00 GMT+0000 (Coordinated Universal Time)",
+      "true",
+      "has \"quotes\", commas"
+    ],
+    [
+      "MULTI\nLINE",
+      "0",
+      "Fri Oct 23 2026 08:30:00 GMT+0000 (Coordinated Universal Time)",
+      "false"
+    ],
+    [
+      "FORMULA",
+      "[object Object]",
+      "",
+      "",
+      "[object Object]"
+    ]
+  ]
+}

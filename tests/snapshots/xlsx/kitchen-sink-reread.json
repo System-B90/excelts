@@ -1,0 +1,1412 @@
+{
+  "properties": {
+    "creator": "System-B90",
+    "lastModifiedBy": "tests",
+    "created": "2026-10-23T08:30:00.000Z",
+    "modified": "2026-10-23T08:30:00.000Z",
+    "title": "Kitchen sink",
+    "company": "System-B90"
+  },
+  "calcProperties": {},
+  "views": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 10000,
+      "height": 20000,
+      "visibility": "visible",
+      "activeTab": 0,
+      "firstSheet": 0
+    }
+  ],
+  "definedNames": [
+    {
+      "name": "FirstTopic",
+      "ranges": [
+        "'גיליון'!$A$2"
+      ]
+    },
+    {
+      "name": "Hours",
+      "ranges": [
+        "'גיליון'!$B$2:$B$4"
+      ]
+    }
+  ],
+  "media": [
+    {
+      "type": "image",
+      "name": "image1",
+      "extension": "png",
+      "buffer": "base64:iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+      "index": 0
+    },
+    {
+      "type": "image",
+      "name": "image2",
+      "extension": "png",
+      "buffer": "base64:iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+      "index": 1
+    }
+  ],
+  "worksheets": [
+    {
+      "id": 1,
+      "name": "גיליון",
+      "dataValidations": {
+        "B2": {
+          "type": "decimal",
+          "formulae": [
+            0,
+            10
+          ],
+          "allowBlank": true,
+          "showErrorMessage": true,
+          "operator": "between",
+          "errorTitle": "Out of range",
+          "error": "0-10 only"
+        },
+        "D2": {
+          "type": "list",
+          "formulae": [
+            "\"yes,no\""
+          ],
+          "allowBlank": true
+        }
+      },
+      "properties": {
+        "defaultRowHeight": 18,
+        "dyDescent": 55,
+        "outlineLevelRow": 0,
+        "outlineLevelCol": 0,
+        "tabColor": {
+          "argb": "FF3397AB"
+        }
+      },
+      "state": "visible",
+      "pageSetup": {
+        "fitToPage": true,
+        "margins": {
+          "left": 0.7,
+          "right": 0.7,
+          "top": 0.75,
+          "bottom": 0.75,
+          "header": 0.3,
+          "footer": 0.3
+        },
+        "paperSize": 9,
+        "orientation": "landscape",
+        "horizontalDpi": 4294967295,
+        "verticalDpi": 4294967295,
+        "pageOrder": "downThenOver",
+        "blackAndWhite": false,
+        "draft": false,
+        "cellComments": "None",
+        "errors": "displayed",
+        "scale": 100,
+        "fitToWidth": 1,
+        "fitToHeight": 1,
+        "firstPageNumber": 1,
+        "useFirstPageNumber": false,
+        "usePrinterDefaults": false,
+        "copies": 1,
+        "printTitlesRow": "1:1"
+      },
+      "headerFooter": {
+        "oddHeader": "&CExport",
+        "oddFooter": "&P / &N"
+      },
+      "rowBreaks": [],
+      "views": [
+        {
+          "workbookViewId": 0,
+          "rightToLeft": true,
+          "state": "frozen",
+          "xSplit": 1,
+          "ySplit": 1,
+          "topLeftCell": "B2",
+          "showRuler": true,
+          "showRowColHeaders": true,
+          "showGridLines": true,
+          "zoomScale": 100,
+          "zoomScaleNormal": 100
+        }
+      ],
+      "autoFilter": "A1:D1",
+      "media": [
+        {
+          "type": "image",
+          "imageId": 0,
+          "range": {
+            "tl": {
+              "nativeCol": 9,
+              "nativeColOff": 0,
+              "nativeRow": 1,
+              "nativeRowOff": 0
+            },
+            "br": {
+              "nativeCol": 11,
+              "nativeColOff": 0,
+              "nativeRow": 4,
+              "nativeRowOff": 0
+            },
+            "editAs": "oneCell"
+          }
+        },
+        {
+          "type": "image",
+          "imageId": 1,
+          "range": {
+            "tl": {
+              "nativeCol": 12,
+              "nativeColOff": 0,
+              "nativeRow": 2,
+              "nativeRowOff": 0
+            },
+            "ext": {
+              "width": 20,
+              "height": 20
+            },
+            "editAs": "oneCell"
+          }
+        },
+        {
+          "type": "image",
+          "imageId": 0,
+          "hyperlinks": {
+            "tooltip": "img",
+            "hyperlink": "https://example.com"
+          },
+          "range": {
+            "tl": {
+              "nativeCol": 14,
+              "nativeColOff": 0,
+              "nativeRow": 2,
+              "nativeRowOff": 0
+            },
+            "ext": {
+              "width": 20,
+              "height": 20
+            },
+            "editAs": "oneCell"
+          }
+        },
+        {
+          "type": "background",
+          "imageId": 0
+        }
+      ],
+      "tables": [],
+      "conditionalFormattings": [
+        {
+          "ref": "B2:B5",
+          "rules": [
+            {
+              "type": "cellIs",
+              "operator": "greaterThan",
+              "priority": 1,
+              "formulae": [
+                "2"
+              ],
+              "style": {
+                "alignment": null,
+                "border": null,
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "solid",
+                  "bgColor": {
+                    "argb": "FFFFC7CE"
+                  }
+                },
+                "font": null,
+                "numFmt": null,
+                "protection": null
+              }
+            },
+            {
+              "type": "dataBar",
+              "priority": 2,
+              "cfvo": [
+                {
+                  "type": "min"
+                },
+                {
+                  "type": "max"
+                }
+              ],
+              "color": {
+                "argb": "FF638EC6"
+              },
+              "x14Id": "<random guid>",
+              "minLength": 0,
+              "maxLength": 100,
+              "border": false,
+              "gradient": true,
+              "negativeBarColorSameAsPositive": true,
+              "negativeBarBorderColorSameAsPositive": true,
+              "axisPosition": "auto",
+              "direction": "leftToRight"
+            },
+            {
+              "type": "iconSet",
+              "priority": 3,
+              "iconSet": "3TrafficLights",
+              "cfvo": [
+                {
+                  "type": "percent",
+                  "value": 0
+                },
+                {
+                  "type": "percent",
+                  "value": 33
+                },
+                {
+                  "type": "percent",
+                  "value": 67
+                }
+              ]
+            },
+            {
+              "type": "expression",
+              "priority": 4,
+              "formulae": [
+                "MOD(ROW(),2)=0"
+              ],
+              "style": {
+                "alignment": null,
+                "border": null,
+                "fill": null,
+                "font": {
+                  "italic": true
+                },
+                "numFmt": null,
+                "protection": null
+              }
+            }
+          ]
+        }
+      ],
+      "cols": [
+        {
+          "min": 1,
+          "max": 1,
+          "width": 32,
+          "style": {},
+          "isCustomWidth": true,
+          "hidden": false,
+          "outlineLevel": 0,
+          "collapsed": false
+        },
+        {
+          "min": 2,
+          "max": 2,
+          "width": 10,
+          "style": {
+            "numFmt": "0.00",
+            "font": {
+              "color": {
+                "theme": 1
+              },
+              "family": 2,
+              "scheme": "minor",
+              "size": 11,
+              "name": "Calibri"
+            },
+            "border": {},
+            "fill": {
+              "type": "pattern",
+              "pattern": "none"
+            }
+          },
+          "isCustomWidth": true,
+          "hidden": false,
+          "outlineLevel": 0,
+          "collapsed": false
+        },
+        {
+          "min": 3,
+          "max": 3,
+          "width": 14,
+          "style": {
+            "numFmt": "yyyy-mm-dd",
+            "font": {
+              "color": {
+                "theme": 1
+              },
+              "family": 2,
+              "scheme": "minor",
+              "size": 11,
+              "name": "Calibri"
+            },
+            "border": {},
+            "fill": {
+              "type": "pattern",
+              "pattern": "none"
+            }
+          },
+          "isCustomWidth": true,
+          "hidden": false,
+          "outlineLevel": 0,
+          "collapsed": false
+        },
+        {
+          "min": 4,
+          "max": 4,
+          "width": 9,
+          "style": {},
+          "isCustomWidth": false,
+          "hidden": true,
+          "outlineLevel": 1,
+          "collapsed": true
+        }
+      ],
+      "rows": [
+        {
+          "cells": [
+            {
+              "address": "A1",
+              "value": "נושא",
+              "type": 3,
+              "style": {
+                "font": {
+                  "bold": true
+                },
+                "border": {},
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "none"
+                }
+              }
+            },
+            {
+              "address": "B1",
+              "value": "שעות",
+              "type": 3,
+              "style": {
+                "numFmt": "0.00",
+                "font": {
+                  "bold": true
+                },
+                "border": {},
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "none"
+                }
+              }
+            },
+            {
+              "address": "C1",
+              "value": "When",
+              "type": 3,
+              "style": {
+                "numFmt": "yyyy-mm-dd",
+                "font": {
+                  "bold": true
+                },
+                "border": {},
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "none"
+                }
+              }
+            },
+            {
+              "address": "D1",
+              "value": "Done",
+              "type": 3,
+              "style": {
+                "font": {
+                  "bold": true
+                },
+                "border": {},
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "none"
+                }
+              }
+            },
+            {
+              "address": "E1",
+              "shareType": "shared",
+              "ref": "E1:E2",
+              "formula": "G1+1",
+              "type": 6,
+              "result": 2,
+              "style": {
+                "font": {
+                  "bold": true
+                },
+                "border": {},
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "none"
+                }
+              }
+            },
+            {
+              "address": "F1",
+              "value": {
+                "richText": [
+                  {
+                    "font": {
+                      "bold": true
+                    },
+                    "text": "bold"
+                  },
+                  {
+                    "text": " plain"
+                  }
+                ]
+              },
+              "type": 8,
+              "style": {
+                "font": {
+                  "bold": true
+                },
+                "border": {},
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "none"
+                }
+              }
+            },
+            {
+              "address": "G1",
+              "value": 1,
+              "type": 2,
+              "style": {
+                "font": {
+                  "bold": true
+                },
+                "border": {},
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "none"
+                }
+              }
+            },
+            {
+              "address": "H1",
+              "shareType": "shared",
+              "ref": "H1:H3",
+              "formula": "G1*2",
+              "type": 6,
+              "result": 2,
+              "style": {
+                "font": {
+                  "bold": true
+                },
+                "border": {},
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "none"
+                }
+              }
+            },
+            {
+              "address": "I1",
+              "shareType": "array",
+              "ref": "I1:I1",
+              "formula": "SUM(B2:B4)",
+              "type": 6,
+              "result": 7.75,
+              "style": {
+                "font": {
+                  "bold": true
+                },
+                "border": {},
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "none"
+                }
+              }
+            }
+          ],
+          "number": 1,
+          "min": 1,
+          "max": 9,
+          "height": 22,
+          "style": {
+            "font": {
+              "bold": true
+            },
+            "border": {},
+            "fill": {
+              "type": "pattern",
+              "pattern": "none"
+            }
+          },
+          "hidden": false,
+          "outlineLevel": 0,
+          "collapsed": false
+        },
+        {
+          "cells": [
+            {
+              "address": "A2",
+              "value": "מבוא",
+              "type": 3,
+              "style": {
+                "font": {
+                  "bold": true,
+                  "italic": true,
+                  "underline": "double",
+                  "color": {
+                    "argb": "FF0D2336"
+                  },
+                  "size": 12,
+                  "name": "Arial"
+                },
+                "border": {
+                  "top": {
+                    "style": "thin",
+                    "color": {
+                      "argb": "FFD9D9D9"
+                    }
+                  },
+                  "bottom": {
+                    "style": "double"
+                  },
+                  "diagonal": {
+                    "style": "dashed",
+                    "up": true,
+                    "down": false
+                  }
+                },
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "solid",
+                  "fgColor": {
+                    "argb": "FFCDEAF0"
+                  }
+                },
+                "alignment": {
+                  "horizontal": "center",
+                  "vertical": "middle",
+                  "wrapText": true,
+                  "indent": 1,
+                  "readingOrder": "rtl"
+                },
+                "protection": {
+                  "locked": false,
+                  "hidden": true
+                }
+              }
+            },
+            {
+              "address": "B2",
+              "value": 2.75,
+              "type": 2,
+              "style": {
+                "numFmt": "0.00",
+                "font": {
+                  "color": {
+                    "theme": 1
+                  },
+                  "family": 2,
+                  "scheme": "minor",
+                  "size": 11,
+                  "name": "Calibri"
+                },
+                "border": {},
+                "fill": {
+                  "stops": [
+                    {
+                      "position": 0,
+                      "color": {
+                        "argb": "FF0000FF"
+                      }
+                    },
+                    {
+                      "position": 1,
+                      "color": {
+                        "argb": "FFFF0000"
+                      }
+                    }
+                  ],
+                  "gradient": "angle",
+                  "degree": 45,
+                  "type": "gradient"
+                }
+              }
+            },
+            {
+              "address": "C2",
+              "value": "2026-10-23T08:30:00.000Z",
+              "type": 4,
+              "style": {
+                "numFmt": "yyyy-mm-dd",
+                "font": {
+                  "color": {
+                    "theme": 1
+                  },
+                  "family": 2,
+                  "scheme": "minor",
+                  "size": 11,
+                  "name": "Calibri"
+                },
+                "border": {},
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "none"
+                }
+              }
+            },
+            {
+              "address": "D2",
+              "value": true,
+              "type": 9,
+              "style": {}
+            },
+            {
+              "address": "E2",
+              "type": 6,
+              "result": 1,
+              "sharedFormula": "E1",
+              "style": {}
+            },
+            {
+              "address": "F2",
+              "type": 5,
+              "text": "link",
+              "hyperlink": "https://example.com",
+              "style": {}
+            },
+            {
+              "address": "H2",
+              "type": 6,
+              "result": 0,
+              "sharedFormula": "H1",
+              "style": {}
+            }
+          ],
+          "number": 2,
+          "min": 1,
+          "max": 8,
+          "style": {},
+          "hidden": false,
+          "outlineLevel": 0,
+          "collapsed": false
+        },
+        {
+          "cells": [
+            {
+              "address": "A3",
+              "value": "inserted",
+              "type": 3,
+              "comment": {
+                "note": {
+                  "margins": {
+                    "insetmode": "auto",
+                    "inset": [
+                      0.13,
+                      0.13,
+                      0.25,
+                      0.25
+                    ]
+                  },
+                  "protection": {
+                    "locked": "True",
+                    "lockText": "True"
+                  },
+                  "editAs": "absolute",
+                  "texts": [
+                    {
+                      "text": "plain note"
+                    }
+                  ]
+                },
+                "type": "note"
+              },
+              "style": {}
+            },
+            {
+              "address": "B3",
+              "value": 0.5,
+              "type": 2,
+              "style": {
+                "numFmt": "0.00",
+                "font": {
+                  "color": {
+                    "theme": 1
+                  },
+                  "family": 2,
+                  "scheme": "minor",
+                  "size": 11,
+                  "name": "Calibri"
+                },
+                "border": {},
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "none"
+                }
+              },
+              "comment": {
+                "note": {
+                  "margins": {
+                    "insetmode": "custom",
+                    "inset": [
+                      0.25,
+                      0.25,
+                      0.35,
+                      0.35
+                    ]
+                  },
+                  "protection": {
+                    "locked": "False",
+                    "lockText": "False"
+                  },
+                  "editAs": "twoCells",
+                  "texts": [
+                    {
+                      "font": {
+                        "bold": true,
+                        "size": 9
+                      },
+                      "text": "rich "
+                    },
+                    {
+                      "text": "note"
+                    }
+                  ],
+                  "anchor": "2, 6, 1, 14, 4, 2, 5, 16"
+                },
+                "type": "note"
+              }
+            },
+            {
+              "address": "F3",
+              "formula": "B2*2",
+              "type": 6,
+              "result": 5.5,
+              "style": {}
+            },
+            {
+              "address": "H3",
+              "type": 6,
+              "result": 0,
+              "sharedFormula": "H1",
+              "style": {}
+            }
+          ],
+          "number": 3,
+          "min": 1,
+          "max": 8,
+          "style": {},
+          "hidden": false,
+          "outlineLevel": 0,
+          "collapsed": false
+        },
+        {
+          "cells": [
+            {
+              "address": "A4",
+              "value": "second",
+              "type": 3,
+              "style": {}
+            },
+            {
+              "address": "B4",
+              "value": 1,
+              "type": 2,
+              "style": {
+                "numFmt": "0.00",
+                "font": {
+                  "color": {
+                    "theme": 1
+                  },
+                  "family": 2,
+                  "scheme": "minor",
+                  "size": 11,
+                  "name": "Calibri"
+                },
+                "border": {},
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "none"
+                }
+              }
+            },
+            {
+              "address": "C4",
+              "value": "2026-10-23T08:30:00.000Z",
+              "type": 4,
+              "style": {
+                "numFmt": "yyyy-mm-dd",
+                "font": {
+                  "color": {
+                    "theme": 1
+                  },
+                  "family": 2,
+                  "scheme": "minor",
+                  "size": 11,
+                  "name": "Calibri"
+                },
+                "border": {},
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "none"
+                }
+              }
+            },
+            {
+              "address": "D4",
+              "value": false,
+              "type": 9,
+              "style": {}
+            },
+            {
+              "address": "F4",
+              "value": {
+                "error": "#N/A"
+              },
+              "type": 10,
+              "style": {}
+            }
+          ],
+          "number": 4,
+          "min": 1,
+          "max": 6,
+          "style": {},
+          "hidden": false,
+          "outlineLevel": 1,
+          "collapsed": true
+        },
+        {
+          "cells": [
+            {
+              "address": "A5",
+              "value": "third",
+              "type": 3,
+              "style": {}
+            },
+            {
+              "address": "B5",
+              "value": 3.5,
+              "type": 2,
+              "style": {
+                "numFmt": "0.00",
+                "font": {
+                  "color": {
+                    "theme": 1
+                  },
+                  "family": 2,
+                  "scheme": "minor",
+                  "size": 11,
+                  "name": "Calibri"
+                },
+                "border": {},
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "none"
+                }
+              }
+            },
+            {
+              "address": "C5",
+              "value": "2026-10-23T08:30:00.000Z",
+              "type": 4,
+              "style": {
+                "numFmt": "yyyy-mm-dd",
+                "font": {
+                  "color": {
+                    "theme": 1
+                  },
+                  "family": 2,
+                  "scheme": "minor",
+                  "size": 11,
+                  "name": "Calibri"
+                },
+                "border": {},
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "none"
+                }
+              }
+            },
+            {
+              "address": "D5",
+              "value": true,
+              "type": 9,
+              "style": {}
+            },
+            {
+              "address": "F5",
+              "formula": "TODAY()",
+              "type": 6,
+              "style": {}
+            }
+          ],
+          "number": 5,
+          "min": 1,
+          "max": 6,
+          "style": {},
+          "hidden": false,
+          "outlineLevel": 0,
+          "collapsed": false
+        },
+        {
+          "cells": [
+            {
+              "address": "A10",
+              "value": "כותרת מאוחדת",
+              "type": 3,
+              "style": {}
+            },
+            {
+              "address": "B10",
+              "type": 1,
+              "master": "A10",
+              "style": {
+                "numFmt": "0.00",
+                "font": {
+                  "color": {
+                    "theme": 1
+                  },
+                  "family": 2,
+                  "scheme": "minor",
+                  "size": 11,
+                  "name": "Calibri"
+                },
+                "border": {},
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "none"
+                }
+              }
+            },
+            {
+              "address": "C10",
+              "type": 1,
+              "master": "A10",
+              "style": {
+                "numFmt": "yyyy-mm-dd",
+                "font": {
+                  "color": {
+                    "theme": 1
+                  },
+                  "family": 2,
+                  "scheme": "minor",
+                  "size": 11,
+                  "name": "Calibri"
+                },
+                "border": {},
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "none"
+                }
+              }
+            }
+          ],
+          "number": 10,
+          "min": 1,
+          "max": 3,
+          "style": {},
+          "hidden": false,
+          "outlineLevel": 0,
+          "collapsed": false
+        },
+        {
+          "cells": [
+            {
+              "address": "A11",
+              "type": 1,
+              "master": "A10",
+              "style": {}
+            },
+            {
+              "address": "B11",
+              "type": 1,
+              "master": "A10",
+              "style": {
+                "numFmt": "0.00",
+                "font": {
+                  "color": {
+                    "theme": 1
+                  },
+                  "family": 2,
+                  "scheme": "minor",
+                  "size": 11,
+                  "name": "Calibri"
+                },
+                "border": {},
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "none"
+                }
+              }
+            },
+            {
+              "address": "C11",
+              "type": 1,
+              "master": "A10",
+              "style": {
+                "numFmt": "yyyy-mm-dd",
+                "font": {
+                  "color": {
+                    "theme": 1
+                  },
+                  "family": 2,
+                  "scheme": "minor",
+                  "size": 11,
+                  "name": "Calibri"
+                },
+                "border": {},
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "none"
+                }
+              }
+            }
+          ],
+          "number": 11,
+          "min": 1,
+          "max": 3,
+          "style": {},
+          "hidden": false,
+          "outlineLevel": 0,
+          "collapsed": false
+        },
+        {
+          "cells": [
+            {
+              "address": "A12",
+              "type": 0,
+              "style": {}
+            },
+            {
+              "address": "B12",
+              "type": 1,
+              "master": "A12",
+              "style": {
+                "numFmt": "0.00",
+                "font": {
+                  "color": {
+                    "theme": 1
+                  },
+                  "family": 2,
+                  "scheme": "minor",
+                  "size": 11,
+                  "name": "Calibri"
+                },
+                "border": {},
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "none"
+                }
+              }
+            },
+            {
+              "address": "C12",
+              "type": 1,
+              "master": "A12",
+              "style": {
+                "numFmt": "yyyy-mm-dd",
+                "font": {
+                  "color": {
+                    "theme": 1
+                  },
+                  "family": 2,
+                  "scheme": "minor",
+                  "size": 11,
+                  "name": "Calibri"
+                },
+                "border": {},
+                "fill": {
+                  "type": "pattern",
+                  "pattern": "none"
+                }
+              }
+            }
+          ],
+          "number": 12,
+          "min": 1,
+          "max": 3,
+          "style": {},
+          "hidden": false,
+          "outlineLevel": 0,
+          "collapsed": false
+        }
+      ],
+      "dimensions": {
+        "model": {
+          "top": 1,
+          "left": 1,
+          "bottom": 12,
+          "right": 9
+        }
+      },
+      "merges": [
+        "A10:C11",
+        "A12:C12"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Data",
+      "dataValidations": {},
+      "properties": {
+        "defaultRowHeight": 15,
+        "dyDescent": 55,
+        "outlineLevelRow": 0,
+        "outlineLevelCol": 0
+      },
+      "state": "hidden",
+      "pageSetup": {
+        "fitToPage": false,
+        "margins": {
+          "left": 0.7,
+          "right": 0.7,
+          "top": 0.75,
+          "bottom": 0.75,
+          "header": 0.3,
+          "footer": 0.3
+        },
+        "orientation": "portrait",
+        "horizontalDpi": 4294967295,
+        "verticalDpi": 4294967295,
+        "pageOrder": "downThenOver",
+        "blackAndWhite": false,
+        "draft": false,
+        "cellComments": "None",
+        "errors": "displayed",
+        "scale": 100,
+        "fitToWidth": 1,
+        "fitToHeight": 1,
+        "firstPageNumber": 1,
+        "useFirstPageNumber": false,
+        "usePrinterDefaults": false,
+        "copies": 1
+      },
+      "headerFooter": null,
+      "rowBreaks": [],
+      "views": null,
+      "media": [],
+      "tables": [
+        {
+          "name": "Scores",
+          "displayName": "Scores",
+          "tableRef": "A1:B4",
+          "totalsRow": true,
+          "headerRow": true,
+          "columns": [
+            {
+              "name": "Name",
+              "totalsRowLabel": "Total",
+              "filterButton": true
+            },
+            {
+              "name": "Score",
+              "totalsRowFunction": "sum",
+              "filterButton": false
+            }
+          ],
+          "autoFilterRef": "A1:B3",
+          "style": {
+            "theme": "TableStyleMedium2",
+            "showFirstColumn": false,
+            "showLastColumn": false,
+            "showRowStripes": true,
+            "showColumnStripes": false
+          }
+        }
+      ],
+      "conditionalFormattings": [],
+      "rows": [
+        {
+          "cells": [
+            {
+              "address": "A1",
+              "value": "Name",
+              "type": 3,
+              "style": {}
+            },
+            {
+              "address": "B1",
+              "value": "Score",
+              "type": 3,
+              "style": {}
+            }
+          ],
+          "number": 1,
+          "min": 1,
+          "max": 2,
+          "style": {},
+          "hidden": false,
+          "outlineLevel": 0,
+          "collapsed": false
+        },
+        {
+          "cells": [
+            {
+              "address": "A2",
+              "value": "a",
+              "type": 3,
+              "style": {}
+            },
+            {
+              "address": "B2",
+              "value": 1,
+              "type": 2,
+              "style": {}
+            }
+          ],
+          "number": 2,
+          "min": 1,
+          "max": 2,
+          "style": {},
+          "hidden": false,
+          "outlineLevel": 0,
+          "collapsed": false
+        },
+        {
+          "cells": [
+            {
+              "address": "A3",
+              "value": "b",
+              "type": 3,
+              "style": {}
+            },
+            {
+              "address": "B3",
+              "value": 2,
+              "type": 2,
+              "style": {}
+            }
+          ],
+          "number": 3,
+          "min": 1,
+          "max": 2,
+          "style": {},
+          "hidden": false,
+          "outlineLevel": 0,
+          "collapsed": false
+        },
+        {
+          "cells": [
+            {
+              "address": "A4",
+              "value": "Total",
+              "type": 3,
+              "style": {}
+            },
+            {
+              "address": "B4",
+              "formula": "SUBTOTAL(109,Scores[Score])",
+              "type": 6,
+              "style": {}
+            }
+          ],
+          "number": 4,
+          "min": 1,
+          "max": 2,
+          "style": {},
+          "hidden": false,
+          "outlineLevel": 0,
+          "collapsed": false
+        }
+      ],
+      "dimensions": {
+        "model": {
+          "top": 1,
+          "left": 1,
+          "bottom": 4,
+          "right": 2
+        }
+      },
+      "merges": []
+    }
+  ],
+  "tables": [
+    [],
+    [
+      {
+        "name": "Scores",
+        "displayName": "Scores",
+        "tableRef": "A1:B4",
+        "totalsRow": true,
+        "headerRow": true,
+        "columns": [
+          {
+            "name": "Name",
+            "totalsRowLabel": "Total",
+            "filterButton": true
+          },
+          {
+            "name": "Score",
+            "totalsRowFunction": "sum",
+            "filterButton": false
+          }
+        ],
+        "autoFilterRef": "A1:B3",
+        "style": {
+          "theme": "TableStyleMedium2",
+          "showFirstColumn": false,
+          "showLastColumn": false,
+          "showRowStripes": true,
+          "showColumnStripes": false
+        }
+      }
+    ]
+  ],
+  "images": [
+    [
+      {
+        "type": "image",
+        "imageId": 0,
+        "tl": {
+          "col": 9,
+          "row": 1
+        },
+        "br": {
+          "col": 11,
+          "row": 4
+        },
+        "editAs": "oneCell"
+      },
+      {
+        "type": "image",
+        "imageId": 1,
+        "tl": {
+          "col": 12,
+          "row": 2
+        },
+        "ext": {
+          "width": 20,
+          "height": 20
+        },
+        "editAs": "oneCell"
+      },
+      {
+        "type": "image",
+        "imageId": 0,
+        "tl": {
+          "col": 14,
+          "row": 2
+        },
+        "ext": {
+          "width": 20,
+          "height": 20
+        },
+        "editAs": "oneCell",
+        "hyperlinks": {
+          "tooltip": "img",
+          "hyperlink": "https://example.com"
+        }
+      }
+    ],
+    []
+  ],
+  "sheetNames": [
+    [
+      1,
+      "גיליון",
+      "visible"
+    ],
+    [
+      2,
+      "Data",
+      "hidden"
+    ]
+  ]
+}

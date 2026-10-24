@@ -1,0 +1,33 @@
+{
+  "text": "\"topic\";\"hours\";\"when\";\"done\";\"note\"\n\"מבוא\";\"2.75\";\"2026-10-23 08:30\";\"true\";\"has \"\"quotes\"\", commas\"\n\"multi\nline\";\"0\";\"2026-10-23 08:30\";\"false\"\n\"formula\";\"5.5\";;;\"https://example.com\"",
+  "values": [
+    null,
+    [
+      "topic",
+      "hours",
+      "when",
+      "done",
+      "note"
+    ],
+    [
+      "מבוא",
+      2.75,
+      "2026-10-23T08:30:00.000Z",
+      true,
+      "has \"quotes\", commas"
+    ],
+    [
+      "multi\nline",
+      0,
+      "2026-10-23T08:30:00.000Z",
+      false
+    ],
+    [
+      "formula",
+      5.5,
+      null,
+      null,
+      "https://example.com"
+    ]
+  ]
+}
