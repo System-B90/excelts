@@ -64,7 +64,7 @@
         "archiver": "5.3.2",
         "dayjs": "1.11.23",
         "esbuild": "0.28.2",
-        "fast-csv": "4.3.6",
+        "fast-csv": "5.0.8",
         "jszip": "3.10.2",
         "readable-stream": "3.6.2",
         "saxes": "5.0.1",
