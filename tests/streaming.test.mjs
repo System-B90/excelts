@@ -3,7 +3,7 @@
  *
  * The library's own writer puts worksheets before xl/sharedStrings.xml, so
  * reading its output always takes the reader's temp-file path
- * (src/shims/tmp.cjs) -- these tests assert that it does.
+ * (src/shims/tmp.ts) -- these tests assert that it does.
  */
 
 import assert from "node:assert/strict";

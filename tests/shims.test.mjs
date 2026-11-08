@@ -1,6 +1,6 @@
 /*
- * The two shims, tested directly from src/ (they are also exercised through
- * the bundle by streaming.test.mjs).
+ * The two shims, compiled from src/ and tested directly (they are also
+ * exercised through the bundle by streaming.test.mjs).
  */
 
 import assert from "node:assert/strict";
@@ -10,11 +10,13 @@ import { createRequire } from "node:module";
 import { tmpdir } from "node:os";
 import { dirname } from "node:path";
 import { describe, it } from "node:test";
-import { fileURLToPath } from "node:url";
+
+import { compileTs } from "./helpers.mjs";
 
 const require = createRequire(import.meta.url);
-const tmp = require("../src/shims/tmp.cjs");
-const unreachable = require("../src/shims/unreachable.cjs");
+const tmpPath = compileTs("shims/tmp.ts");
+const tmp = require(tmpPath);
+const { unreachable } = require(compileTs("shims/unreachable.ts"));
 
 const file = () =>
     new Promise((resolve, reject) => {
@@ -55,7 +57,7 @@ describe("tmp shim", () => {
     });
 
     it("sweeps files nobody cleaned up when the process exits", () => {
-        const shim = fileURLToPath(new URL("../src/shims/tmp.cjs", import.meta.url));
+        const shim = tmpPath;
         const leaked = execFileSync(
             process.execPath,
             [

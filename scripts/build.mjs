@@ -33,7 +33,7 @@ const require = createRequire(join(ROOT, "package.json"));
 /**
  * Modules dependencies require at load time, but only on code paths this
  * library never takes. Stubbed out of the bundle -- see
- * src/shims/unreachable.cjs for each one and why.
+ * src/shims/unreachable.ts for each one and why.
  */
 const UNREACHABLE = [ "buffers", "chainsaw", "fstream", "glob", "readdir-glob" ];
 
@@ -55,7 +55,7 @@ const shims = {
         const unreachable = new RegExp(`^(${UNREACHABLE.join("|")})$`);
         b.onResolve({ filter: unreachable }, (args) => ({ path: args.path, namespace: "unreachable" }));
         b.onLoad({ filter: /.*/, namespace: "unreachable" }, (args) => ({
-            contents: `module.exports = require(${JSON.stringify(join(ROOT, "src", "shims", "unreachable.cjs"))})(${JSON.stringify(args.path)});`,
+            contents: `module.exports = require(${JSON.stringify(join(ROOT, "src", "shims", "unreachable.ts"))}).unreachable(${JSON.stringify(args.path)});`,
             resolveDir: ROOT,
             loader: "js",
         }));
@@ -85,7 +85,15 @@ rmSync(DIST, { recursive: true, force: true });
 mkdirSync(DIST);
 
 const result = await build({
-    entryPoints: [ join(ROOT, "src", "index.cjs") ],
+    // The public API is src/index.ts's named exports, republished as one
+    // plain `module.exports` object: the shape a CommonJS consumer expects,
+    // without the `__esModule` marker and `default` slot esbuild would add.
+    stdin: {
+        contents: 'module.exports = { ...require("./src/index.ts") };',
+        resolveDir: ROOT,
+        sourcefile: "entry.cjs",
+        loader: "js",
+    },
     // Module keys inside the bundle are paths relative to this; pinning it
     // keeps the output byte-identical whichever directory runs the build.
     absWorkingDir: ROOT,
