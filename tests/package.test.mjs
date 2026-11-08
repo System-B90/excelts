@@ -111,7 +111,7 @@ describe("self-containment", () => {
     it("leaves out the unreachable modules", () => {
         const bundled = new Set(provenance.bundledPackages.map((p) => p.name));
         // rimraf and traverse only ever arrive through tmp and chainsaw; temp
-        // files come from src/shims/tmp.cjs instead.
+        // files come from src/shims/tmp.ts instead.
         for (const name of [ ...provenance.unreachable, "tmp", "rimraf", "traverse" ]) {
             assert.equal(bundled.has(name), false, `${name} should not be in the bundle`);
         }
@@ -119,8 +119,10 @@ describe("self-containment", () => {
     });
 
     it("bundles each runtime library at exactly its pinned version", () => {
-        const tooling = new Set([ "@types/node", "esbuild", "typescript" ]);
-        const runtime = Object.entries(manifest.devDependencies).filter(([ name ]) => !tooling.has(name));
+        const tooling = new Set([ "esbuild", "typescript" ]);
+        const runtime = Object.entries(manifest.devDependencies).filter(
+            ([ name ]) => !tooling.has(name) && !name.startsWith("@types/"),
+        );
         const bundled = new Set(provenance.bundledPackages.map(({ name, version }) => `${name}@${version}`));
 
         assert.ok(runtime.length > 0);

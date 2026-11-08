@@ -10,8 +10,8 @@ departs from them.
 
 A spreadsheet library (XLSX read/write/stream, CSV) with zero runtime dependencies,
 published as `@system-b90/excelts` to **npmjs.org** (public) and GitHub Packages. The
-library lives in `src/lib/`; `scripts/build.mjs` bundles it with the libraries it uses
-(`archiver`, `jszip`, `unzipper`, `saxes`, `fast-csv`, `dayjs`, `uuid`, `readable-stream`
+library is TypeScript under `src/` (strict; `npm test` typechecks first); `scripts/build.mjs`
+bundles `src/index.ts` with the libraries it uses (`archiver`, `jszip`, `unzipper`, `saxes`, `fast-csv`, `dayjs`, `uuid`, `readable-stream`
 — exact-pinned devDependencies) into `dist/index.cjs`. README.md describes the package;
 `docs/API.md` documents the API.
 
@@ -33,12 +33,12 @@ explicit assertion so the snapshot is known to cover something.
 
 ## Things that look optional and are not
 
-- `keepNames: true` in `scripts/build.mjs`: `src/lib/doc/worksheet.js` compares
+- `keepNames: true` in `scripts/build.mjs`: `src/doc/worksheet.ts` compares
   `constructor.name`.
-- `src/shims/tmp.cjs`: the streaming reader needs temp files; the `tmp` package breaks
+- `src/shims/tmp.ts`: the streaming reader needs temp files; the `tmp` package breaks
   Turbopack.
 - `LICENSE` keeps two copyright lines. The second is the original author's notice for the
-  code in `src/lib/`; MIT requires it in every copy. Never remove it.
+  code in `src/`; MIT requires it in every copy. Never remove it.
 - The licence allowlist and `THIRD_PARTY_NOTICES.md`: they are what makes redistributing the
   bundled libraries legal. Never widen `ALLOWED_LICENSES` without reading the licence.
 - `npm run audit:bundle`: consumers' `npm audit` cannot see bundled code. A new advisory

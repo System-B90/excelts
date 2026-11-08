@@ -20,12 +20,39 @@ import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { buildSync } from "esbuild";
+
 const require = createRequire(import.meta.url);
 
 export const bundle = require("../dist/index.cjs");
 
 const SNAPSHOTS = fileURLToPath(new URL("./snapshots/", import.meta.url));
 const UPDATE = process.env.UPDATE_SNAPSHOTS === "1";
+
+const compiled = new Map();
+
+/**
+ * Compiles one TypeScript module under src/ to a standalone CommonJS file in a
+ * temp directory and returns its path, so tests (and the subprocesses they
+ * spawn) can load it on any Node version, without a TypeScript loader.
+ */
+export function compileTs(relativePath) {
+    if (!compiled.has(relativePath)) {
+        const dir = mkdtempSync(join(tmpdir(), "excelts-ts-"));
+        const outfile = join(dir, "module.cjs");
+        buildSync({
+            entryPoints: [ fileURLToPath(new URL(`../src/${relativePath}`, import.meta.url)) ],
+            outfile,
+            bundle: true,
+            format: "cjs",
+            platform: "node",
+            logLevel: "silent",
+        });
+        process.on("exit", () => rmSync(dir, { recursive: true, force: true }));
+        compiled.set(relativePath, outfile);
+    }
+    return compiled.get(relativePath);
+}
 
 /** Fixed so that created/modified stamps cannot differ between runs. */
 export const FIXED_DATE = new Date(Date.UTC(2026, 9, 23, 8, 30));

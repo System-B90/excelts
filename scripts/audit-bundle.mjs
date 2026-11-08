@@ -28,7 +28,7 @@ import { fileURLToPath } from "node:url";
 const REVIEWED = {
     "GHSA-w5hq-g745-h8pq":
         "uuid: the missing bounds check is in v3/v5/v6 with a caller-supplied buffer. " +
-        "src/ only ever calls v4() with no arguments (src/lib/xlsx/xform/sheet/cf-ext/cf-rule-ext-xform.js).",
+        "src/ only ever calls v4() with no arguments (src/xlsx/xform/sheet/cf-ext/cf-rule-ext-xform.ts).",
 };
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");

@@ -18,7 +18,7 @@ export const PATCHES = [
         module: "unzipper/lib/parse.js",
         why:
             "unzipper emits 'end' and 'close' as soon as its input finishes, while it may still " +
-            "have entries to hand out. The streaming reader (src/lib/utils/iterate-stream.js) " +
+            "have entries to hand out. The streaming reader (src/utils/iterate-stream.ts) " +
             "stops at that 'end', so whenever it waits on one entry (writing a worksheet to a temp " +
             "file) long enough for the rest of the file to be read in, every later entry is dropped " +
             "without an error: worksheets, shared strings, styles, sheet names.",

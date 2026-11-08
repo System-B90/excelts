@@ -1,0 +1,52 @@
+import * as _ from "../../../utils/under-dash";
+
+import Range from "../../../doc/range";
+import colCache from "../../../utils/col-cache";
+import * as Enums from "../../../doc/enums";
+
+class Merges {
+  merges: Record<string, Range>;
+
+  constructor() {
+    // optional mergeCells is array of ranges (like the xml)
+    this.merges = {};
+  }
+
+  add(merge: any) {
+    // merge is {address, master}
+    if (this.merges[merge.master]) {
+      this.merges[merge.master].expandToAddress(merge.address);
+    } else {
+      const range = `${merge.master}:${merge.address}`;
+      this.merges[merge.master] = new Range(range);
+    }
+  }
+
+  get mergeCells() {
+    return _.map(this.merges, merge => merge.range);
+  }
+
+  reconcile(mergeCells: any, rows: any) {
+    // reconcile merge list with merge cells
+    _.each(mergeCells, (merge: string) => {
+      const dimensions = colCache.decode(merge);
+      for (let i = dimensions.top; i <= dimensions.bottom; i++) {
+        const row = rows[i - 1];
+        for (let j = dimensions.left; j <= dimensions.right; j++) {
+          const cell = row.cells[j - 1];
+          if (!cell) {
+            // nulls are not included in document - so if master cell has no value - add a null one here
+            row.cells[j] = {
+              type: Enums.ValueType.Null,
+              address: colCache.encodeAddress(i, j),
+            };
+          } else if (cell.type === Enums.ValueType.Merge) {
+            cell.master = dimensions.tl;
+          }
+        }
+      }
+    });
+  }
+}
+
+export default Merges;

@@ -1466,7 +1466,7 @@ export interface XlsxReadOptions {
 
 export interface XlsxWriteOptions extends stream.xlsx.WorkbookWriterOptions {
 	/**
-	 * The option passed to JsZip#generateAsync(options)
+	 * How the zip is packed: `compression` and `compressionOptions.level`.
 	 */
 	zip: Partial<JSZipGeneratorOptions>;
 }
