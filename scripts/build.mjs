@@ -104,7 +104,7 @@ const result = await build({
     target: "node20",
     minify: !process.argv.includes("--readable"),
     sourcemap: process.argv.includes("--readable") ? "inline" : false,
-    // Not optional: src/lib/doc/worksheet.js tests `constructor.name ===
+    // Not optional: src/doc/worksheet.ts tests `constructor.name ===
     // "MergeValue"` when insertRows re-merges cells, and minified class names
     // break it.
     keepNames: true,

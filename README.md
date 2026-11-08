@@ -96,8 +96,8 @@ Node.js 20 or newer. Server-side only.
 
 ## How it is built
 
-The library lives in [`src/`](src/). [`scripts/build.mjs`](scripts/build.mjs)
-compiles it, together with the libraries it uses — `archiver`, `jszip`,
+The library is TypeScript, in [`src/`](src/), and typechecks under `strict`.
+[`scripts/build.mjs`](scripts/build.mjs) compiles it, together with the libraries it uses — `archiver`, `jszip`,
 `unzipper`, `saxes`, `fast-csv`, `dayjs`, `uuid` and `readable-stream`, each
 pinned to an exact version — into `dist/index.cjs`.
 
@@ -189,6 +189,8 @@ npm run test:types             # typechecks consumers in every module mode
 npm run test:turbopack         # builds + runs a Next.js app on the packed package
 npm run audit:bundle           # advisories against bundled packages
 npm run test:update-snapshots  # re-records tests/snapshots/ from the build
+npm run typecheck              # tsc --strict over src/ (npm test runs it first)
+npm run bench                  # times the paths real exports and imports spend their time in
 ```
 
 A snapshot is the package's observable behaviour. Re-record one only for a
