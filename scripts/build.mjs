@@ -102,7 +102,8 @@ const result = await build({
     platform: "node",
     // Matches `engines.node`; the syntax floor, not the runtime the tests use.
     target: "node20",
-    minify: true,
+    minify: !process.argv.includes("--readable"),
+    sourcemap: process.argv.includes("--readable") ? "inline" : false,
     // Not optional: src/lib/doc/worksheet.js tests `constructor.name ===
     // "MergeValue"` when insertRows re-merges cells, and minified class names
     // break it.

@@ -23,6 +23,21 @@ const SpecialValues: Record<string, any> = {
 };
 /* eslint-ensable quote-props */
 
+/** A date format, with an optional necessary-condition pattern: text that fails it cannot parse strictly as `format`. */
+interface DateFormat {
+  format: string;
+  shape?: RegExp;
+}
+
+// Strict parsing requires the text to equal the format's own output, so each default format's
+// output shape is a necessary condition for it.
+const DEFAULT_DATE_FORMATS: DateFormat[] = [
+  { format: 'YYYY-MM-DD[T]HH:mm:ssZ', shape: /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}./ },
+  { format: 'YYYY-MM-DD[T]HH:mm:ss', shape: /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/ },
+  { format: 'MM-DD-YYYY', shape: /^\d{2}-\d{2}-\d{4}$/ },
+  { format: 'YYYY-MM-DD', shape: /^\d{4}-\d{2}-\d{2}$/ },
+];
+
 class CSV {
   workbook: any;
   worksheet: any;
@@ -49,12 +64,9 @@ class CSV {
     return new Promise((resolve, reject) => {
       const worksheet = this.workbook.addWorksheet(options.sheetName);
 
-      const dateFormats = options.dateFormats || [
-        'YYYY-MM-DD[T]HH:mm:ssZ',
-        'YYYY-MM-DD[T]HH:mm:ss',
-        'MM-DD-YYYY',
-        'YYYY-MM-DD',
-      ];
+      const dateFormats: DateFormat[] = options.dateFormats
+        ? options.dateFormats.map((format: string) => ({ format }))
+        : DEFAULT_DATE_FORMATS;
       const map =
         options.map ||
         function(datum: any) {
@@ -65,18 +77,15 @@ class CSV {
           if (!Number.isNaN(datumNumber) && datumNumber !== Infinity) {
             return datumNumber;
           }
-          const dt = dateFormats.reduce((matchingDate: any, currentDateFormat: any) => {
-            if (matchingDate) {
-              return matchingDate;
+          for (const { format, shape } of dateFormats) {
+            // Strict parsing is slow (~50us), and most text is not a date: skip formats whose shape cannot match.
+            if (shape && typeof datum === 'string' && !shape.test(datum)) {
+              continue;
             }
-            const dayjsObj = dayjs(datum, currentDateFormat, true);
-            if (dayjsObj.isValid()) {
-              return dayjsObj;
+            const parsed = dayjs(datum, format, true);
+            if (parsed.isValid()) {
+              return new Date(parsed.valueOf());
             }
-            return null;
-          }, null);
-          if (dt) {
-            return new Date(dt.valueOf());
           }
           const special = SpecialValues[datum];
           if (special !== undefined) {

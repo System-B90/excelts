@@ -1,131 +1,114 @@
-import * as _ from "./under-dash";
-
 import * as utils from "./utils";
 
-// constants
-const OPEN_ANGLE = '<';
-const CLOSE_ANGLE = '>';
-const OPEN_ANGLE_SLASH = '</';
-const CLOSE_SLASH_ANGLE = '/>';
+/** Attribute values by name; `undefined` values are skipped. */
+export type XmlAttributes = Readonly<Record<string, unknown>> | null | undefined;
 
-function pushAttribute(xml: any, name: any, value: any) {
-  xml.push(` ${name}="${utils.xmlEncode(value.toString())}"`);
-}
-function pushAttributes(xml: any, attributes: any) {
+const attributeToString = (name: string, value: unknown): string =>
+  ` ${name}="${utils.xmlEncode(String(value))}"`;
+
+function attributesToString(attributes: XmlAttributes): string {
+  let result = "";
   if (attributes) {
-    const tmp: any = [];
-    _.each(attributes, (value, name) => {
+    for (const name of Object.keys(attributes)) {
+      const value = attributes[name];
       if (value !== undefined) {
-        pushAttribute(tmp, name, value);
+        result += attributeToString(name, value);
       }
-    });
-    xml.push(tmp.join(""));
+    }
   }
+  return result;
 }
 
+/** Builds an XML document one node at a time, writing straight into a string. */
 class XmlStream {
   static StdDocAttributes = {
-    version: '1.0',
-    encoding: 'UTF-8',
-    standalone: 'yes',
+    version: "1.0",
+    encoding: "UTF-8",
+    standalone: "yes",
   };
 
-  _xml: any;
-  _stack: any;
-  _rollbacks: any;
-  leaf: any;
-  open: any;
+  private _xml = "";
 
-  constructor() {
-    this._xml = [];
-    this._stack = [];
-    this._rollbacks = [];
+  private readonly _stack: string[] = [];
+
+  private readonly _rollbacks: { xml: number; stack: number; leaf: boolean; open: boolean }[] = [];
+
+  /** Is the current node's start tag still open for attributes? */
+  open = false;
+
+  /** Has the current node had no content yet (so it can close as `<a/>`)? */
+  leaf = false;
+
+  get tos(): string | undefined {
+    return this._stack[this._stack.length - 1];
   }
 
-  get tos() {
-    return this._stack.length ? this._stack[this._stack.length - 1] : undefined;
-  }
-
-  get cursor() {
-    // handy way to track whether anything has been added
+  /** How much has been written: a handy way to track whether anything was added. */
+  get cursor(): number {
     return this._xml.length;
   }
 
-  openXml(docAttributes: any) {
-    const xml = this._xml;
+  openXml(docAttributes?: XmlAttributes): void {
     // <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-    xml.push('<?xml');
-    pushAttributes(xml, docAttributes);
-    xml.push('?>\n');
+    this._xml += `<?xml${attributesToString(docAttributes)}?>\n`;
   }
 
-  openNode(name: any, attributes?: any) {
-    const parent = this.tos;
-    const xml = this._xml;
-    if (parent && this.open) {
-      xml.push(CLOSE_ANGLE);
+  openNode(name: string, attributes?: XmlAttributes): void {
+    if (this._stack.length && this.open) {
+      this._xml += ">";
     }
 
     this._stack.push(name);
 
     // start streaming node
-    xml.push(OPEN_ANGLE);
-    xml.push(name);
-    pushAttributes(xml, attributes);
+    this._xml += `<${name}${attributesToString(attributes)}`;
     this.leaf = true;
     this.open = true;
   }
 
-  addAttribute(name: any, value: any) {
+  addAttribute(name: string, value: unknown): void {
     if (!this.open) {
-      throw new Error('Cannot write attributes to node if it is not open');
+      throw new Error("Cannot write attributes to node if it is not open");
     }
     if (value !== undefined) {
-      pushAttribute(this._xml, name, value);
+      this._xml += attributeToString(name, value);
     }
   }
 
-  addAttributes(attrs: any) {
+  addAttributes(attrs: XmlAttributes): void {
     if (!this.open) {
-      throw new Error('Cannot write attributes to node if it is not open');
+      throw new Error("Cannot write attributes to node if it is not open");
     }
-    pushAttributes(this._xml, attrs);
+    this._xml += attributesToString(attrs);
   }
 
-  writeText(text: any) {
-    const xml = this._xml;
+  writeText(text: unknown): void {
     if (this.open) {
-      xml.push(CLOSE_ANGLE);
+      this._xml += ">";
       this.open = false;
     }
     this.leaf = false;
-    xml.push(utils.xmlEncode(text.toString()));
+    this._xml += utils.xmlEncode(String(text));
   }
 
-  writeXml(xml: any) {
+  /** Appends pre-built XML as the current node's content. */
+  writeXml(xml: string): void {
     if (this.open) {
-      this._xml.push(CLOSE_ANGLE);
+      this._xml += ">";
       this.open = false;
     }
     this.leaf = false;
-    this._xml.push(xml);
+    this._xml += xml;
   }
 
-  closeNode() {
+  closeNode(): void {
     const node = this._stack.pop();
-    const xml = this._xml;
-    if (this.leaf) {
-      xml.push(CLOSE_SLASH_ANGLE);
-    } else {
-      xml.push(OPEN_ANGLE_SLASH);
-      xml.push(node);
-      xml.push(CLOSE_ANGLE);
-    }
+    this._xml += this.leaf ? "/>" : `</${node}>`;
     this.open = false;
     this.leaf = false;
   }
 
-  leafNode(name: any, attributes?: any, text?: any) {
+  leafNode(name: string, attributes?: XmlAttributes, text?: unknown): void {
     this.openNode(name, attributes);
     if (text !== undefined) {
       // zeros need to be written
@@ -134,13 +117,13 @@ class XmlStream {
     this.closeNode();
   }
 
-  closeAll() {
+  closeAll(): void {
     while (this._stack.length) {
       this.closeNode();
     }
   }
 
-  addRollback() {
+  addRollback(): number {
     this._rollbacks.push({
       xml: this._xml.length,
       stack: this._stack.length,
@@ -150,25 +133,28 @@ class XmlStream {
     return this.cursor;
   }
 
-  commit() {
+  commit(): void {
     this._rollbacks.pop();
   }
 
-  rollback() {
+  rollback(): void {
     const r = this._rollbacks.pop();
+    if (!r) {
+      throw new Error("Nothing to roll back");
+    }
     if (this._xml.length > r.xml) {
-      this._xml.splice(r.xml, this._xml.length - r.xml);
+      this._xml = this._xml.slice(0, r.xml);
     }
     if (this._stack.length > r.stack) {
-      this._stack.splice(r.stack, this._stack.length - r.stack);
+      this._stack.length = r.stack;
     }
     this.leaf = r.leaf;
     this.open = r.open;
   }
 
-  get xml() {
+  get xml(): string {
     this.closeAll();
-    return this._xml.join('');
+    return this._xml;
   }
 }
 
