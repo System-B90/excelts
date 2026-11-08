@@ -113,7 +113,7 @@ class BaseXform {
 
   // ============================================================
   // Useful Utilities
-  static toAttribute(value, dflt, always = false) {
+  static toAttribute(value: any, dflt: any, always = false) {
     if (value === undefined) {
       if (always) {
         return dflt;

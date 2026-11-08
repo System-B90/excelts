@@ -1,8 +1,8 @@
-export default async function* iterateStream(stream) {
-  const contents = [];
-  stream.on('data', data => contents.push(data));
+export default async function* iterateStream(stream: any) {
+  const contents: any = [];
+  stream.on('data', (data: any) => contents.push(data));
 
-  let resolveStreamEndedPromise;
+  let resolveStreamEndedPromise: any;
   const streamEndedPromise = new Promise(resolve => (resolveStreamEndedPromise = resolve));
 
   let ended = false;
@@ -12,7 +12,7 @@ export default async function* iterateStream(stream) {
   });
 
   let error = false;
-  stream.on('error', err => {
+  stream.on('error', (err: any) => {
     error = err;
     resolveStreamEndedPromise();
   });
@@ -24,7 +24,7 @@ export default async function* iterateStream(stream) {
       await Promise.race([once(stream, 'data'), streamEndedPromise]);
     } else {
       stream.pause();
-      const data = contents.shift();
+      const data: any = contents.shift();
       yield data;
     }
     if (error) throw error;
@@ -32,7 +32,7 @@ export default async function* iterateStream(stream) {
   resolveStreamEndedPromise();
 };
 
-function once(eventEmitter, type) {
+function once(eventEmitter: any, type: any) {
   // TODO: Use require('events').once when node v10 is dropped
   return new Promise<void>(resolve => {
     let fired = false;

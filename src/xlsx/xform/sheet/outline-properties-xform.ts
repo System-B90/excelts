@@ -1,7 +1,7 @@
 import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
 import XmlStream from "../../../utils/xml-stream";
 
-const isDefined = attr => typeof attr !== 'undefined';
+const isDefined = (attr: any) => typeof attr !== 'undefined';
 
 class OutlinePropertiesXform extends BaseXform {
   model: any;

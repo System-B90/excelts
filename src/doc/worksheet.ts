@@ -40,7 +40,7 @@ class Worksheet {
   _name: any;
   _headerRowCount: any;
 
-  constructor(options) {
+  constructor(options: any) {
     options = options || {};
     this._workbook = options.workbook;
 
@@ -188,7 +188,7 @@ class Worksheet {
       name = name.substring(0, 31);
     }
 
-    if (this._workbook._worksheets.find(ws => ws && ws.name.toLowerCase() === name.toLowerCase())) {
+    if (this._workbook._worksheets.find((ws: any) => ws && ws.name.toLowerCase() === name.toLowerCase())) {
       throw new Error(`Worksheet name already exists: ${name}`);
     }
 
@@ -207,7 +207,7 @@ class Worksheet {
   // Get the bounding range of the cells in this worksheet
   get dimensions() {
     const dimensions = new Range();
-    this._rows.forEach(row => {
+    this._rows.forEach((row: any) => {
       if (row) {
         const rowDims = row.dimensions;
         if (rowDims) {
@@ -230,7 +230,7 @@ class Worksheet {
   // Note: any headers defined will overwrite existing values.
   set columns(value) {
     // calculate max header row count
-    this._headerRowCount = value.reduce((pv, cv) => {
+    this._headerRowCount = value.reduce((pv: any, cv: any) => {
       const headerCount = (cv.header && 1) || (cv.headers && cv.headers.length) || 0;
       return Math.max(pv, headerCount);
     }, 0);
@@ -238,31 +238,31 @@ class Worksheet {
     // construct Column objects
     let count = 1;
     const columns = (this._columns = []);
-    value.forEach(defn => {
+    value.forEach((defn: any) => {
       const column = new Column(this, count++, false);
       columns.push(column);
       column.defn = defn;
     });
   }
 
-  getColumnKey(key) {
+  getColumnKey(key: any) {
     return this._keys[key];
   }
 
-  setColumnKey(key, value) {
+  setColumnKey(key: any, value: any) {
     this._keys[key] = value;
   }
 
-  deleteColumnKey(key) {
+  deleteColumnKey(key: any) {
     delete this._keys[key];
   }
 
-  eachColumnKey(f) {
+  eachColumnKey(f: any) {
     _.each(this._keys, f);
   }
 
   // get a single column by col number. If it doesn't exist, create it and any gaps before it
-  getColumn(c) {
+  getColumn(c: any) {
     if (typeof c === 'string') {
       // if it matches a key'd column, return that
       const col = this._keys[c];
@@ -283,7 +283,7 @@ class Worksheet {
     return this._columns[c - 1];
   }
 
-  spliceColumns(start, count, ...inserts) {
+  spliceColumns(start: any, count: any, ...inserts: any[]) {
     const rows = this._rows;
     const nRows = rows.length;
     if (inserts.length > 0) {
@@ -300,7 +300,7 @@ class Worksheet {
       }
     } else {
       // nothing to insert, so just splice all rows
-      this._rows.forEach(r => {
+      this._rows.forEach((r: any) => {
         if (r) {
           r.splice(start, count);
         }
@@ -334,7 +334,7 @@ class Worksheet {
 
   get columnCount() {
     let maxCount = 0;
-    this.eachRow(row => {
+    this.eachRow((row: any) => {
       maxCount = Math.max(maxCount, row.cellCount);
     });
     return maxCount;
@@ -342,10 +342,10 @@ class Worksheet {
 
   get actualColumnCount() {
     // performance nightmare - for each row, counts all the columns used
-    const counts = [];
+    const counts: any = [];
     let count = 0;
-    this.eachRow(row => {
-      row.eachCell(({col}) => {
+    this.eachRow((row: any) => {
+      row.eachCell(({col}: any) => {
         if (!counts[col]) {
           counts[col] = true;
           count++;
@@ -384,12 +384,12 @@ class Worksheet {
   }
 
   // find a row (if exists) by row number
-  findRow(r) {
+  findRow(r: any) {
     return this._rows[r - 1];
   }
 
   // find multiple rows (if exists) by row number
-  findRows(start, length) {
+  findRows(start: any, length: any) {
     return this._rows.slice(start - 1, start - 1 + length);
   }
 
@@ -407,7 +407,7 @@ class Worksheet {
   }
 
   // get a row by row number.
-  getRow(r) {
+  getRow(r: any) {
     let row = this._rows[r - 1];
     if (!row) {
       row = this._rows[r - 1] = new Row(this, r);
@@ -416,7 +416,7 @@ class Worksheet {
   }
 
   // get multiple rows by row number.
-  getRows(start, length) {
+  getRows(start: any, length: any) {
     if (length < 1) return undefined;
     const rows = [];
     for (let i = start; i < start + length; i++) {
@@ -425,7 +425,7 @@ class Worksheet {
     return rows;
   }
 
-  addRow(value, style = 'n') {
+  addRow(value: any, style = 'n') {
     const rowNo = this._nextRow;
     const row = this.getRow(rowNo);
     row.values = value;
@@ -433,21 +433,21 @@ class Worksheet {
     return row;
   }
 
-  addRows(value, style = 'n') {
-    const rows = [];
-    value.forEach(row => {
+  addRows(value: any, style = 'n') {
+    const rows: any = [];
+    value.forEach((row: any) => {
       rows.push(this.addRow(row, style));
     });
     return rows;
   }
 
-  insertRow(pos, value, style = 'n') {
+  insertRow(pos: any, value: any, style = 'n') {
     this.spliceRows(pos, 0, value);
     this._setStyleOption(pos, style);
     return this.getRow(pos);
   }
 
-  insertRows(pos, values, style = 'n') {
+  insertRows(pos: any, values: any, style = 'n') {
     this.spliceRows(pos, 0, ...values);
     if (style !== 'n') {
       // copy over the styles
@@ -463,7 +463,7 @@ class Worksheet {
   }
 
   // set row at position to same style as of either pervious row (option 'i') or next row (option 'o')
-  _setStyleOption(pos, style = 'n') {
+  _setStyleOption(pos: any, style = 'n') {
     if (style[0] === 'o' && this.findRow(pos + 1) !== undefined) {
       this._copyStyle(pos + 1, pos, style[1] === '+');
     } else if (style[0] === 'i' && this.findRow(pos - 1) !== undefined) {
@@ -471,18 +471,18 @@ class Worksheet {
     }
   }
 
-  _copyStyle(src, dest, styleEmpty = false) {
+  _copyStyle(src: any, dest: any, styleEmpty = false) {
     const rSrc = this.getRow(src);
     const rDst = this.getRow(dest);
     rDst.style = copyStyle(rSrc.style);
     // eslint-disable-next-line no-loop-func
-    rSrc.eachCell({includeEmpty: styleEmpty}, (cell, colNumber) => {
+    rSrc.eachCell({includeEmpty: styleEmpty}, (cell: any, colNumber: any) => {
       rDst.getCell(colNumber).style = copyStyle(cell.style);
     });
     rDst.height = rSrc.height;
   }
 
-  duplicateRow(rowNum, count, insert = false) {
+  duplicateRow(rowNum: any, count: any, insert = false) {
     // create count duplicates of rowNum
     // either inserting new or overwriting existing rows
 
@@ -496,13 +496,13 @@ class Worksheet {
       rDst.style = rSrc.style;
       rDst.height = rSrc.height;
       // eslint-disable-next-line no-loop-func
-      rSrc.eachCell({includeEmpty: true}, (cell, colNumber) => {
+      rSrc.eachCell({includeEmpty: true}, (cell: any, colNumber: any) => {
         rDst.getCell(colNumber).style = cell.style;
       });
     }
   }
 
-  spliceRows(start, count, ...inserts) {
+  spliceRows(start: any, count: any, ...inserts: any[]) {
     // same problem as row.splice, except worse.
     const nKeep = start + count;
     const nInserts = inserts.length;
@@ -523,7 +523,7 @@ class Worksheet {
           rDst.style = rSrc.style;
           rDst.height = rSrc.height;
           // eslint-disable-next-line no-loop-func
-          rSrc.eachCell({includeEmpty: true}, (cell, colNumber) => {
+          rSrc.eachCell({includeEmpty: true}, (cell: any, colNumber: any) => {
             rDst.getCell(colNumber).style = cell.style;
           });
           this._rows[i - 1] = undefined;
@@ -541,7 +541,7 @@ class Worksheet {
           rDst.style = rSrc.style;
           rDst.height = rSrc.height;
           // eslint-disable-next-line no-loop-func
-          rSrc.eachCell({includeEmpty: true}, (cell, colNumber) => {
+          rSrc.eachCell({includeEmpty: true}, (cell: any, colNumber: any) => {
             rDst.getCell(colNumber).style = cell.style;
 
             // remerge cells accounting for insert offset
@@ -570,7 +570,7 @@ class Worksheet {
   }
 
   // iterate over every row in the worksheet, including maybe empty rows
-  eachRow(options, iteratee?) {
+  eachRow(options: any, iteratee?: any) {
     if (!iteratee) {
       iteratee = options;
       options = undefined;
@@ -581,7 +581,7 @@ class Worksheet {
         iteratee(this.getRow(i), i);
       }
     } else {
-      this._rows.forEach(row => {
+      this._rows.forEach((row: any) => {
         if (row && row.hasValues) {
           iteratee(row, row.number);
         }
@@ -591,8 +591,8 @@ class Worksheet {
 
   // return all rows as sparse array
   getSheetValues() {
-    const rows = [];
-    this._rows.forEach(row => {
+    const rows: any = [];
+    this._rows.forEach((row: any) => {
       if (row) {
         rows[row.number] = row.values;
       }
@@ -604,14 +604,14 @@ class Worksheet {
   // Cells
 
   // returns the cell at [r,c] or address given by r. If not found, return undefined
-  findCell(r, c) {
+  findCell(r: any, c: any) {
     const address = colCache.getAddress(r, c);
     const row = this._rows[address.row - 1];
     return row ? row.findCell(address.col) : undefined;
   }
 
   // return the cell at [r,c] or address given by r. If not found, create a new one.
-  getCell(r, c) {
+  getCell(r: any, c: any) {
     const address = colCache.getAddress(r, c);
     const row = this.getRow(address.row);
     return row.getCellEx(address);
@@ -621,17 +621,17 @@ class Worksheet {
   // Merge
 
   // convert the range defined by ['tl:br'], [tl,br] or [t,l,b,r] into a single 'merged' cell
-  mergeCells(...cells) {
+  mergeCells(...cells: any[]) {
     const dimensions = new Range(cells);
     this._mergeCellsInternal(dimensions);
   }
 
-  mergeCellsWithoutStyle(...cells) {
+  mergeCellsWithoutStyle(...cells: any[]) {
     const dimensions = new Range(cells);
     this._mergeCellsInternal(dimensions, true);
   }
 
-  _mergeCellsInternal(dimensions, ignoreStyle?) {
+  _mergeCellsInternal(dimensions: any, ignoreStyle?: any) {
     // check cells aren't already merged
     _.each(this._merges, merge => {
       if (merge.intersects(dimensions)) {
@@ -654,7 +654,7 @@ class Worksheet {
     this._merges[master.address] = dimensions;
   }
 
-  _unMergeMaster(master) {
+  _unMergeMaster(master: any) {
     // master is always top left of a rectangle
     const merge = this._merges[master.address];
     if (merge) {
@@ -675,7 +675,7 @@ class Worksheet {
   // scan the range defined by ['tl:br'], [tl,br] or [t,l,b,r] and if any cell is part of a merge,
   // un-merge the group. Note this function can affect multiple merges and merge-blocks are
   // atomic - either they're all merged or all un-merged.
-  unMergeCells(...cells) {
+  unMergeCells(...cells: any[]) {
     const dimensions = new Range(cells);
 
     // find any cells in that range and unmerge them
@@ -697,7 +697,7 @@ class Worksheet {
 
   // ===========================================================================
   // Shared/Array Formula
-  fillFormula(range, formula, results, shareType = 'shared') {
+  fillFormula(range: any, formula: any, results: any, shareType = 'shared') {
     // Define formula for top-left cell and share to rest
     const decoded = colCache.decode(range);
     const {top, left, bottom, right} = decoded;
@@ -711,10 +711,10 @@ class Worksheet {
       getResult = results;
     } else if (Array.isArray(results)) {
       if (Array.isArray(results[0])) {
-        getResult = (row, col) => results[row - top][col - left];
+        getResult = (row: any, col: any) => results[row - top][col - left];
       } else {
         // eslint-disable-next-line no-mixed-operators
-        getResult = (row, col) => results[(row - top) * width + (col - left)];
+        getResult = (row: any, col: any) => results[(row - top) * width + (col - left)];
       }
     } else {
       getResult = () => undefined;
@@ -744,7 +744,7 @@ class Worksheet {
 
   // =========================================================================
   // Images
-  addImage(imageId, range) {
+  addImage(imageId: any, range: any) {
     const model = {
       type: 'image',
       imageId,
@@ -754,10 +754,10 @@ class Worksheet {
   }
 
   getImages() {
-    return this._media.filter(m => m.type === 'image');
+    return this._media.filter((m: any) => m.type === 'image');
   }
 
-  addBackgroundImage(imageId) {
+  addBackgroundImage(imageId: any) {
     const model = {
       type: 'background',
       imageId,
@@ -766,13 +766,13 @@ class Worksheet {
   }
 
   getBackgroundImageId() {
-    const image = this._media.find(m => m.type === 'background');
+    const image = this._media.find((m: any) => m.type === 'background');
     return image && image.imageId;
   }
 
   // =========================================================================
   // Worksheet Protection
-  protect(password, options) {
+  protect(password: any, options: any) {
     // TODO: make this function truly async
     // perhaps marshal to worker thread or something
     return new Promise<void>(resolve => {
@@ -810,17 +810,17 @@ class Worksheet {
 
   // =========================================================================
   // Tables
-  addTable(model) {
+  addTable(model: any) {
     const table = new Table(this, model);
     this.tables[model.name] = table;
     return table;
   }
 
-  getTable(name) {
+  getTable(name: any) {
     return this.tables[name];
   }
 
-  removeTable(name) {
+  removeTable(name: any) {
     delete this.tables[name];
   }
 
@@ -830,11 +830,11 @@ class Worksheet {
 
   // ===========================================================================
   // Conditional Formatting
-  addConditionalFormatting(cf) {
+  addConditionalFormatting(cf: any) {
     this.conditionalFormattings.push(cf);
   }
 
-  removeConditionalFormatting(filter) {
+  removeConditionalFormatting(filter: any) {
     if (typeof filter === 'number') {
       this.conditionalFormattings.splice(filter, 1);
     } else if (filter instanceof Function) {
@@ -873,7 +873,7 @@ class Worksheet {
       rowBreaks: this.rowBreaks,
       views: this.views,
       autoFilter: this.autoFilter,
-      media: this._media.map(medium => medium.model),
+      media: this._media.map((medium: any) => medium.model),
       sheetProtection: this.sheetProtection,
       tables: Object.values(this.tables).map(table => table.model),
       conditionalFormattings: this.conditionalFormattings,
@@ -887,7 +887,7 @@ class Worksheet {
     // Rows
     const rows = (model.rows = []);
     const dimensions = (model.dimensions = new Range());
-    this._rows.forEach(row => {
+    this._rows.forEach((row: any) => {
       const rowModel = row && row.model;
       if (rowModel) {
         dimensions.expand(rowModel.number, rowModel.min, rowModel.number, rowModel.max);
@@ -905,16 +905,16 @@ class Worksheet {
     return model;
   }
 
-  _parseRows(model) {
+  _parseRows(model: any) {
     this._rows = [];
-    model.rows.forEach(rowModel => {
+    model.rows.forEach((rowModel: any) => {
       const row = new Row(this, rowModel.number);
       this._rows[row.number - 1] = row;
       row.model = rowModel;
     });
   }
 
-  _parseMergeCells(model) {
+  _parseMergeCells(model: any) {
     _.each(model.mergeCells, merge => {
       // Do not merge styles when importing an Excel file
       // since each cell may have different styles intentionally.
@@ -934,9 +934,9 @@ class Worksheet {
     this.headerFooter = value.headerFooter;
     this.views = value.views;
     this.autoFilter = value.autoFilter;
-    this._media = value.media.map(medium => new Image(this, medium));
+    this._media = value.media.map((medium: any) => new Image(this, medium));
     this.sheetProtection = value.sheetProtection;
-    this.tables = value.tables.reduce((tables, table) => {
+    this.tables = value.tables.reduce((tables: any, table: any) => {
       const t = new Table();
       t.model = table;
       tables[table.name] = t;

@@ -21,13 +21,13 @@ class ConditionalFormattingExtXform extends CompositeXform {
     return 'x14:conditionalFormatting';
   }
 
-  prepare(model, options) {
-    model.rules.forEach(rule => {
+  prepare(model: any, options: any) {
+    model.rules.forEach((rule: any) => {
       this.cfRule.prepare(rule, options);
     });
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: any, model: any) {
     if (!model.rules.some(CfRuleExtXform.isExt)) {
       return;
     }
@@ -36,7 +36,7 @@ class ConditionalFormattingExtXform extends CompositeXform {
       'xmlns:xm': 'http://schemas.microsoft.com/office/excel/2006/main',
     });
 
-    model.rules.filter(CfRuleExtXform.isExt).forEach(rule => this.cfRule.render(xmlStream, rule));
+    model.rules.filter(CfRuleExtXform.isExt).forEach((rule: any) => this.cfRule.render(xmlStream, rule));
 
     // for some odd reason, Excel needs the <xm:sqref> node to be after the rules
     this.sqRef.render(xmlStream, model.ref);
@@ -50,7 +50,7 @@ class ConditionalFormattingExtXform extends CompositeXform {
     };
   }
 
-  onParserClose(name, parser) {
+  onParserClose(name: any, parser: any) {
     switch (name) {
       case 'xm:sqref':
         this.model.ref = parser.model;

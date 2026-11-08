@@ -20,7 +20,7 @@ class WorksheetReader extends EventEmitter {
   _dimensions: any;
   hyperlinks: any;
 
-  constructor({workbook, id, iterator, options}) {
+  constructor({workbook, id, iterator, options}: any) {
     super();
 
     this.workbook = workbook;
@@ -60,7 +60,7 @@ class WorksheetReader extends EventEmitter {
 
   // get a single column by col number. If it doesn't exist, it and any gaps before it
   // are created.
-  getColumn(c) {
+  getColumn(c: any) {
     if (typeof c === 'string') {
       // if it matches a key'd column, return that
       const col = this._keys[c];
@@ -83,19 +83,19 @@ class WorksheetReader extends EventEmitter {
     return this._columns[c - 1];
   }
 
-  getColumnKey(key) {
+  getColumnKey(key: any) {
     return this._keys[key];
   }
 
-  setColumnKey(key, value) {
+  setColumnKey(key: any, value: any) {
     this._keys[key] = value;
   }
 
-  deleteColumnKey(key) {
+  deleteColumnKey(key: any) {
     delete this._keys[key];
   }
 
-  eachColumnKey(f) {
+  eachColumnKey(f: any) {
     _.each(this._keys, f);
   }
 

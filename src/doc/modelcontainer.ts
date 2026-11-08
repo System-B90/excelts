@@ -6,7 +6,7 @@ class ModelContainer {
   model: any;
   _xlsx: any;
 
-  constructor(model) {
+  constructor(model: any) {
     this.model = model;
   }
 

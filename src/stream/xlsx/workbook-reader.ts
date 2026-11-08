@@ -34,7 +34,7 @@ class WorkbookReader extends EventEmitter {
   model: any;
   sharedStrings: any;
 
-  constructor(input, options = {}) {
+  constructor(input: any, options = {}) {
     super();
 
     this.input = input;
@@ -52,7 +52,7 @@ class WorkbookReader extends EventEmitter {
     this.styles.init();
   }
 
-  _getStream(input) {
+  _getStream(input: any) {
     if (input instanceof nodeStream.Readable || input instanceof Readable) {
       return input;
     }
@@ -62,7 +62,7 @@ class WorkbookReader extends EventEmitter {
     throw new Error(`Could not recognise input: ${input}`);
   }
 
-  async read(input, options) {
+  async read(input: any, options: any) {
     try {
       for await (const {eventType, value} of this.parse(input, options)) {
         switch (eventType) {
@@ -93,18 +93,18 @@ class WorkbookReader extends EventEmitter {
     }
   }
 
-  async *parse(input?, options?) {
+  async *parse(input?: any, options?: any) {
     if (options) this.options = options;
     const stream = (this.stream = this._getStream(input || this.input));
     const zip = unzip.Parse({forceStream: true});
     stream.pipe(zip);
 
     // worksheets, deferred for parsing after shared strings reading
-    const waitingWorkSheets = [];
+    const waitingWorkSheets: any = [];
 
     for await (const entry of iterateStream(zip)) {
       let match;
-      let sheetNo;
+      let sheetNo: any;
       switch (entry.path) {
         case '_rels/.rels':
           break;
@@ -166,18 +166,18 @@ class WorkbookReader extends EventEmitter {
     }
   }
 
-  _emitEntry(payload) {
+  _emitEntry(payload: any) {
     if (this.options.entries === 'emit') {
       this.emit('entry', payload);
     }
   }
 
-  async _parseRels(entry) {
+  async _parseRels(entry: any) {
     const xform = new RelationshipsXform();
     this.workbookRels = await xform.parseStream(iterateStream(entry));
   }
 
-  async _parseWorkbook(entry) {
+  async _parseWorkbook(entry: any) {
     this._emitEntry({type: 'workbook'});
 
     const workbook = new WorkbookXform();
@@ -187,7 +187,7 @@ class WorkbookReader extends EventEmitter {
     this.model = workbook.model;
   }
 
-  async *_parseSharedStrings(entry) {
+  async *_parseSharedStrings(entry: any) {
     this._emitEntry({type: 'shared-strings'});
     switch (this.options.sharedStrings) {
       case 'cache':
@@ -299,7 +299,7 @@ class WorkbookReader extends EventEmitter {
     }
   }
 
-  async _parseStyles(entry) {
+  async _parseStyles(entry: any) {
     this._emitEntry({type: 'styles'});
     if (this.options.styles === 'cache') {
       this.styles = new StyleManager();
@@ -307,7 +307,7 @@ class WorkbookReader extends EventEmitter {
     }
   }
 
-  *_parseWorksheet(iterator, sheetNo) {
+  *_parseWorksheet(iterator: any, sheetNo: any) {
     this._emitEntry({type: 'worksheet', id: sheetNo});
     const worksheetReader = new WorksheetReader({
       workbook: this,
@@ -316,8 +316,8 @@ class WorkbookReader extends EventEmitter {
       options: this.options,
     });
 
-    const matchingRel = (this.workbookRels || []).find(rel => rel.Target === `worksheets/sheet${sheetNo}.xml`);
-    const matchingSheet = matchingRel && (this.model.sheets || []).find(sheet => sheet.rId === matchingRel.Id);
+    const matchingRel = (this.workbookRels || []).find((rel: any) => rel.Target === `worksheets/sheet${sheetNo}.xml`);
+    const matchingSheet = matchingRel && (this.model.sheets || []).find((sheet: any) => sheet.rId === matchingRel.Id);
     if (matchingSheet) {
       worksheetReader.id = matchingSheet.id;
       worksheetReader.name = matchingSheet.name;
@@ -328,7 +328,7 @@ class WorkbookReader extends EventEmitter {
     }
   }
 
-  *_parseHyperlinks(iterator, sheetNo) {
+  *_parseHyperlinks(iterator: any, sheetNo: any) {
     this._emitEntry({type: 'hyperlinks', id: sheetNo});
     const hyperlinksReader = new HyperlinkReader({
       workbook: this,

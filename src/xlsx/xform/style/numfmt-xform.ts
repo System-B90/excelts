@@ -18,11 +18,11 @@ const defaultFmtHash = hashDefaultFormats();
 
 // NumFmt encapsulates translation between number format and xlsx
 class NumFmtXform extends BaseXform {
-  static getDefaultFmtCode = function getDefaultFmtCode(numFmtId) {
+  static getDefaultFmtCode = function getDefaultFmtCode(numFmtId: any) {
     return defaultNumFormats[numFmtId] && defaultNumFormats[numFmtId].f;
   };
 
-  static getDefaultFmtId = function getDefaultFmtId(formatCode) {
+  static getDefaultFmtId = function getDefaultFmtId(formatCode: any) {
     return defaultFmtHash[formatCode];
   };
 
@@ -30,7 +30,7 @@ class NumFmtXform extends BaseXform {
   formatCode: any;
   model: any;
 
-  constructor(id?, formatCode?) {
+  constructor(id?: any, formatCode?: any) {
     super();
 
     this.id = id;

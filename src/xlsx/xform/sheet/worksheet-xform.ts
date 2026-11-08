@@ -31,7 +31,7 @@ import HeaderFooterXform from "./header-footer-xform";
 import ConditionalFormattingsXform from "./cf/conditional-formattings-xform";
 import ExtListXform from "./ext-lst-xform";
 
-const mergeRule = (rule, extRule) => {
+const mergeRule = (rule: any, extRule: any) => {
   Object.keys(extRule).forEach(key => {
     const value = rule[key];
     const extValue = extRule[key];
@@ -41,7 +41,7 @@ const mergeRule = (rule, extRule) => {
   });
 };
 
-const mergeConditionalFormattings = (model, extModel) => {
+const mergeConditionalFormattings = (model: any, extModel: any) => {
   // conditional formattings are rendered in worksheet.conditionalFormatting and also in
   // worksheet.extLst.ext.x14:conditionalFormattings
   // some (e.g. dataBar) are even spread across both!
@@ -55,9 +55,9 @@ const mergeConditionalFormattings = (model, extModel) => {
   // index model rules by x14Id
   const cfMap = {};
   const ruleMap = {};
-  model.forEach(cf => {
+  model.forEach((cf: any) => {
     cfMap[cf.ref] = cf;
-    cf.rules.forEach(rule => {
+    cf.rules.forEach((rule: any) => {
       const {x14Id} = rule;
       if (x14Id) {
         ruleMap[x14Id] = rule;
@@ -65,8 +65,8 @@ const mergeConditionalFormattings = (model, extModel) => {
     });
   });
 
-  extModel.forEach(extCf => {
-    extCf.rules.forEach(extRule => {
+  extModel.forEach((extCf: any) => {
+    extCf.rules.forEach((extRule: any) => {
       const rule = ruleMap[extRule.x14Id];
       if (rule) {
         // merge with matching rule
@@ -103,7 +103,7 @@ class WorkSheetXform extends BaseXform {
   parser: any;
   model: any;
 
-  constructor(options?) {
+  constructor(options?: any) {
     super();
 
     const {maxRows, maxCols, ignoreNodes} = options || {};
@@ -165,11 +165,11 @@ class WorkSheetXform extends BaseXform {
     // prepare relationships
     const rels = (model.rels = []);
 
-    function nextRid(r) {
+    function nextRid(r: any) {
       return `rId${r.length + 1}`;
     }
 
-    model.hyperlinks.forEach(hyperlink => {
+    model.hyperlinks.forEach((hyperlink: any) => {
       const rId = nextRid(rels);
       hyperlink.rId = rId;
       rels.push({
@@ -195,7 +195,7 @@ class WorkSheetXform extends BaseXform {
       };
       rels.push(vmlDrawing);
 
-      model.comments.forEach(item => {
+      model.comments.forEach((item: any) => {
         item.refAddress = colCache.decodeAddress(item.ref);
       });
 
@@ -205,9 +205,9 @@ class WorkSheetXform extends BaseXform {
       });
     }
 
-    const drawingRelsHash = [];
+    const drawingRelsHash: any = [];
     let bookImage;
-    model.media.forEach(medium => {
+    model.media.forEach((medium: any) => {
       if (medium.type === 'background') {
         const rId = nextRid(rels);
         bookImage = options.media[medium.imageId];
@@ -237,7 +237,7 @@ class WorkSheetXform extends BaseXform {
             Target: `../drawings/${drawing.name}.xml`,
           });
         }
-        let rIdImage =
+        let rIdImage: any =
           this.preImageId === medium.imageId ? drawingRelsHash[medium.imageId] : drawingRelsHash[drawing.rels.length];
         if (!rIdImage) {
           rIdImage = nextRid(drawing.rels);
@@ -275,7 +275,7 @@ class WorkSheetXform extends BaseXform {
     });
 
     // prepare tables
-    model.tables.forEach(table => {
+    model.tables.forEach((table: any) => {
       // relationships
       const rId = nextRid(rels);
       table.rId = rId;
@@ -286,7 +286,7 @@ class WorkSheetXform extends BaseXform {
       });
 
       // dynamic styles
-      table.columns.forEach(column => {
+      table.columns.forEach((column: any) => {
         const {style} = column;
         if (style) {
           column.dxfId = options.styles.addDxfStyle(style);
@@ -360,7 +360,7 @@ class WorkSheetXform extends BaseXform {
 
     if (model.rels) {
       // add a <legacyDrawing /> node for each comment
-      model.rels.forEach(rel => {
+      model.rels.forEach((rel: any) => {
         if (rel.Type === RelType.VmlDrawing) {
           xmlStream.leafNode('legacyDrawing', {'r:id': rel.Id});
         }
@@ -461,26 +461,26 @@ class WorkSheetXform extends BaseXform {
   reconcile(model: XformModel, options: XformOptions) {
     // options.merges = new Merges();
     // options.merges.reconcile(model.mergeCells, model.rows);
-    const rels = (model.relationships || []).reduce((h, rel) => {
+    const rels = (model.relationships || []).reduce((h: any, rel: any) => {
       h[rel.Id] = rel;
       if (rel.Type === RelType.Comments) {
         model.comments = options.comments[rel.Target].comments;
       }
       if (rel.Type === RelType.VmlDrawing && model.comments && model.comments.length) {
         const vmlComment = options.vmlDrawings[rel.Target].comments;
-        model.comments.forEach((comment, index) => {
+        model.comments.forEach((comment: any, index: any) => {
           comment.note = Object.assign({}, comment.note, vmlComment[index]);
         });
       }
       return h;
     }, {});
-    options.commentsMap = (model.comments || []).reduce((h, comment) => {
+    options.commentsMap = (model.comments || []).reduce((h: any, comment: any) => {
       if (comment.ref) {
         h[comment.ref] = comment;
       }
       return h;
     }, {});
-    options.hyperlinkMap = (model.hyperlinks || []).reduce((h, hyperlink) => {
+    options.hyperlinkMap = (model.hyperlinks || []).reduce((h: any, hyperlink: any) => {
       if (hyperlink.rId) {
         h[hyperlink.address] = rels[hyperlink.rId].Target;
       }
@@ -490,7 +490,7 @@ class WorkSheetXform extends BaseXform {
 
     // compact the rows and cells
     model.rows = (model.rows && model.rows.filter(Boolean)) || [];
-    model.rows.forEach(row => {
+    model.rows.forEach((row: any) => {
       row.cells = (row.cells && row.cells.filter(Boolean)) || [];
     });
 
@@ -505,7 +505,7 @@ class WorkSheetXform extends BaseXform {
       if (match) {
         const drawingName = match[1];
         const drawing = options.drawings[drawingName];
-        drawing.anchors.forEach(anchor => {
+        drawing.anchors.forEach((anchor: any) => {
           if (anchor.medium) {
             const image = {
               type: 'image',
@@ -531,7 +531,7 @@ class WorkSheetXform extends BaseXform {
       }
     }
 
-    model.tables = (model.tables || []).map(tablePart => {
+    model.tables = (model.tables || []).map((tablePart: any) => {
       const rel = rels[tablePart.rId];
       return options.tables[rel.Target];
     });

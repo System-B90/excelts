@@ -10,7 +10,7 @@ class DateXform extends BaseXform {
   model: any;
   text: any;
 
-  constructor(options) {
+  constructor(options: any) {
     super();
 
     this.tag = options.tag;
@@ -18,7 +18,7 @@ class DateXform extends BaseXform {
     this.attrs = options.attrs;
     this._format =
       options.format ||
-      function(dt) {
+      function(dt: any) {
         try {
           if (Number.isNaN(dt.getTime())) return '';
           return dt.toISOString();
@@ -28,7 +28,7 @@ class DateXform extends BaseXform {
       };
     this._parse =
       options.parse ||
-      function(str) {
+      function(str: any) {
         return new Date(str);
       };
   }

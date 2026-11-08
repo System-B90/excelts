@@ -11,7 +11,7 @@ class ListXform extends BaseXform {
   model: any;
   parser: any;
 
-  constructor(options) {
+  constructor(options: any) {
     super();
 
     this.tag = options.tag;
@@ -27,7 +27,7 @@ class ListXform extends BaseXform {
   prepare(model: XformModel, options: XformOptions) {
     const {childXform} = this;
     if (model) {
-      model.forEach((childModel, index) => {
+      model.forEach((childModel: any, index: any) => {
         options.index = index;
         childXform.prepare(childModel, options);
       });
@@ -42,7 +42,7 @@ class ListXform extends BaseXform {
       }
 
       const {childXform} = this;
-      (model || []).forEach((childModel, index) => {
+      (model || []).forEach((childModel: any, index: any) => {
         childXform.render(xmlStream, childModel, index);
       });
 
@@ -95,7 +95,7 @@ class ListXform extends BaseXform {
   reconcile(model: XformModel, options: XformOptions) {
     if (model) {
       const {childXform} = this;
-      model.forEach(childModel => {
+      model.forEach((childModel: any) => {
         childXform.reconcile(childModel, options);
       });
     }

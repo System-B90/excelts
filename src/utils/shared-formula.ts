@@ -4,12 +4,12 @@ import colCache from "./col-cache";
 const replacementCandidateRx = /(([a-z_\-0-9]*)!)?([a-z0-9_$]{2,})([(])?/gi;
 const CRrx = /^([$])?([a-z]+)([$])?([1-9][0-9]*)$/i;
 
-function slideFormula(formula, fromCell, toCell) {
+function slideFormula(formula: any, fromCell: any, toCell: any) {
   const offset = colCache.decode(fromCell);
   const to = colCache.decode(toCell);
   return formula.replace(
     replacementCandidateRx,
-    (refMatch, sheet, sheetMaybe, addrPart, trailingParen) => {
+    (refMatch: any, sheet: any, sheetMaybe: any, addrPart: any, trailingParen: any) => {
       if (trailingParen) {
         return refMatch;
       }

@@ -11,7 +11,7 @@ class StringChunk {
   _encoding: any;
   _buffer?: Buffer;
 
-  constructor(data, encoding) {
+  constructor(data: any, encoding: any) {
     this._data = data;
     this._encoding = encoding;
   }
@@ -21,7 +21,7 @@ class StringChunk {
   }
 
   // copy to target buffer
-  copy(target, targetOffset, offset, length) {
+  copy(target: any, targetOffset: any, offset: any, length: any) {
     return this.toBuffer().copy(target, targetOffset, offset, length);
   }
 
@@ -36,7 +36,7 @@ class StringChunk {
 class StringBufChunk {
   _data: any;
 
-  constructor(data) {
+  constructor(data: any) {
     this._data = data;
   }
 
@@ -45,7 +45,7 @@ class StringBufChunk {
   }
 
   // copy to target buffer
-  copy(target, targetOffset, offset, length) {
+  copy(target: any, targetOffset: any, offset: any, length: any) {
     // eslint-disable-next-line no-underscore-dangle
     return this._data._buf.copy(target, targetOffset, offset, length);
   }
@@ -58,7 +58,7 @@ class StringBufChunk {
 class BufferChunk {
   _data: any;
 
-  constructor(data) {
+  constructor(data: any) {
     this._data = data;
   }
 
@@ -67,7 +67,7 @@ class BufferChunk {
   }
 
   // copy to target buffer
-  copy(target, targetOffset, offset, length) {
+  copy(target: any, targetOffset: any, offset: any, length: any) {
     this._data.copy(target, targetOffset, offset, length);
   }
 
@@ -84,7 +84,7 @@ class ReadWriteBuf {
   iRead: number;
   iWrite: number;
 
-  constructor(size) {
+  constructor(size: any) {
     this.size = size;
     // the buffer
     this.buffer = Buffer.alloc(size);
@@ -116,7 +116,7 @@ class ReadWriteBuf {
     return this.iWrite === this.size;
   }
 
-  read(size) {
+  read(size: any) {
     let buf;
     // read size bytes from buffer and return buffer
     if (size === 0) {
@@ -138,7 +138,7 @@ class ReadWriteBuf {
     return buf;
   }
 
-  write(chunk, offset, length) {
+  write(chunk: any, offset: any, length: any) {
     // write as many bytes from data from optional source offset
     // and return number of bytes written
     const size = Math.min(length, this.size - this.iWrite);
@@ -225,8 +225,8 @@ class StreamBuf {
     return buf;
   }
 
-  async _pipe(chunk) {
-    const write = function(pipe) {
+  async _pipe(chunk: any) {
+    const write = function(pipe: any) {
       return new Promise<void>(resolve => {
         pipe.write(chunk.toBuffer(), () => {
           resolve();
@@ -235,7 +235,7 @@ class StreamBuf {
     };
     await Promise.all(this.pipes.map(write));
   }
-  _writeToBuffers(chunk) {
+  _writeToBuffers(chunk: any) {
     let inPos = 0;
     const inLen = chunk.length;
     while (inPos < inLen) {
@@ -246,7 +246,7 @@ class StreamBuf {
       inPos += buffer.write(chunk, inPos, inLen - inPos);
     }
   }
-  async write(data, encoding, callback) {
+  async write(data: any, encoding: any, callback: any) {
     if (encoding instanceof Function) {
       callback = encoding;
       encoding = 'utf8';
@@ -306,7 +306,7 @@ class StreamBuf {
     this.corked = false;
     this._flush();
   }
-  end(chunk?, encoding?, callback?) {
+  end(chunk?: any, encoding?: any, callback?: any) {
     const writeComplete = (error?: Error) => {
       if (error) {
         callback(error);
@@ -331,7 +331,7 @@ class StreamBuf {
   // event end - no more data
   // event close - optional, indicates upstream close
   // event error - duh
-  read(size?) {
+  read(size?: any) {
     let buffers;
     // read min(buffer, size || infinity)
     if (size) {
@@ -352,7 +352,7 @@ class StreamBuf {
     this.buffers = [];
     return Buffer.concat(buffers);
   }
-  setEncoding(encoding) {
+  setEncoding(encoding: any) {
     // causes stream.read or stream.on('data) to return strings of encoding instead of Buffer objects
     this.encoding = encoding;
   }
@@ -365,14 +365,14 @@ class StreamBuf {
   isPaused() {
     return !!this.paused;
   }
-  pipe(destination) {
+  pipe(destination: any) {
     // add destination to pipe list & write current buffer
     this.pipes.push(destination);
     if (!this.paused && this.buffers.length) {
       this.end();
     }
   }
-  unpipe(destination) {
+  unpipe(destination: any) {
     // remove destination from pipe list
     this.pipes = this.pipes.filter(pipe => pipe !== destination);
   }

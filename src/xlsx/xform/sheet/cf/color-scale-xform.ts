@@ -21,27 +21,27 @@ class ColorScaleXform extends CompositeXform {
     return 'colorScale';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: any, model: any) {
     xmlStream.openNode(this.tag);
 
-    model.cfvo.forEach(cfvo => {
+    model.cfvo.forEach((cfvo: any) => {
       this.cfvoXform.render(xmlStream, cfvo);
     });
-    model.color.forEach(color => {
+    model.color.forEach((color: any) => {
       this.colorXform.render(xmlStream, color);
     });
 
     xmlStream.closeNode();
   }
 
-  createNewModel(node) {
+  createNewModel(node: any) {
     return {
       cfvo: [],
       color: [],
     };
   }
 
-  onParserClose(name, parser) {
+  onParserClose(name: any, parser: any) {
     this.model[name].push(parser.model);
   }
 }

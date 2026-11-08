@@ -9,7 +9,7 @@ class CompositeXform extends BaseXform {
   parser: any;
   model: any;
 
-  createNewModel(node) {
+  createNewModel(node: any) {
     return {};
   }
 
@@ -36,7 +36,7 @@ class CompositeXform extends BaseXform {
     }
   }
 
-  onParserClose(name, parser) {
+  onParserClose(name: any, parser: any) {
     // parseClose has seen a child parser close
     // now need to incorporate into this.model somehow
     this.model[name] = parser.model;

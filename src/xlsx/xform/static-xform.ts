@@ -10,10 +10,10 @@ import XmlStream from "../../utils/xml-stream";
 //   t: 'some text'
 // };
 
-function build(xmlStream, model) {
+function build(xmlStream: any, model: any) {
   xmlStream.openNode(model.tag, model.$);
   if (model.c) {
-    model.c.forEach(child => {
+    model.c.forEach((child: any) => {
       build(xmlStream, child);
     });
   }
@@ -27,7 +27,7 @@ class StaticXform extends BaseXform {
   _model: any;
   _xml: any;
 
-  constructor(model) {
+  constructor(model: any) {
     super();
 
     // This class is an optimisation for static (unimportant and unchanging) xml

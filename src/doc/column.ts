@@ -20,7 +20,7 @@ class Column {
   _key: any;
   _outlineLevel: any;
 
-  constructor(worksheet, number, defn?) {
+  constructor(worksheet: any, number: any, defn?: any) {
     this._worksheet = worksheet;
     this._number = number;
     if (defn !== false) {
@@ -144,7 +144,7 @@ class Column {
     });
   }
 
-  equivalentTo(other) {
+  equivalentTo(other: any) {
     return (
       this.width === other.width &&
       this.hidden === other.hidden &&
@@ -174,20 +174,20 @@ class Column {
     return this.headers.length;
   }
 
-  eachCell(options, iteratee?) {
+  eachCell(options: any, iteratee?: any) {
     const colNumber = this.number;
     if (!iteratee) {
       iteratee = options;
       options = null;
     }
-    this._worksheet.eachRow(options, (row, rowNumber) => {
+    this._worksheet.eachRow(options, (row: any, rowNumber: any) => {
       iteratee(row.getCell(colNumber), rowNumber);
     });
   }
 
   get values() {
-    const v = [];
-    this.eachCell((cell, rowNumber) => {
+    const v: any = [];
+    this.eachCell((cell: any, rowNumber: any) => {
       if (cell && cell.type !== Enums.ValueType.Null) {
         v[rowNumber] = cell.value;
       }
@@ -205,16 +205,16 @@ class Column {
       // assume contiguous array, start at row 1
       offset = 1;
     }
-    v.forEach((value, index) => {
+    v.forEach((value: any, index: any) => {
       this._worksheet.getCell(index + offset, colNumber).value = value;
     });
   }
 
   // =========================================================================
   // styles
-  _applyStyle(name, value) {
+  _applyStyle(name: any, value: any) {
     this.style[name] = value;
-    this.eachCell(cell => {
+    this.eachCell((cell: any) => {
       cell[name] = value;
     });
     return value;
@@ -271,12 +271,12 @@ class Column {
   // =============================================================================
   // static functions
 
-  static toModel(columns) {
+  static toModel(columns: any) {
     // Convert array of Column into compressed list cols
-    const cols = [];
-    let col = null;
+    const cols: any = [];
+    let col: any = null;
     if (columns) {
-      columns.forEach((column, index) => {
+      columns.forEach((column: any, index: any) => {
         if (column.isDefault) {
           if (col) {
             col = null;
@@ -301,7 +301,7 @@ class Column {
     return cols.length ? cols : undefined;
   }
 
-  static fromModel(worksheet, cols?) {
+  static fromModel(worksheet: any, cols?: any) {
     cols = cols || [];
     const columns = [];
     let count = 1;
@@ -310,7 +310,7 @@ class Column {
      * sort cols by min
      * If it is not sorted, the subsequent column configuration will be overwritten
      * */
-    cols = cols.sort(function(pre, next)  {
+    cols = cols.sort(function(pre: any, next: any)  {
       return pre.min - next.min;
     });
     while (index < cols.length) {

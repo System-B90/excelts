@@ -1,7 +1,7 @@
 import fs from "node:fs";
 
 // useful stuff
-const inherits = function(cls, superCtor, statics, prototype) {
+const inherits = function(cls: any, superCtor: any, statics: any, prototype: any) {
   // eslint-disable-next-line no-underscore-dangle
   cls.super_ = superCtor;
 
@@ -37,7 +37,7 @@ const inherits = function(cls, superCtor, statics, prototype) {
 const xmlDecodeRegex = /[<>&'"\x7F\x00-\x08\x0B-\x0C\x0E-\x1F]/;
 const utils = {
   nop() {},
-  promiseImmediate(value) {
+  promiseImmediate(value: any) {
     return new Promise(resolve => {
       if (global.setImmediate) {
         setImmediate(() => {
@@ -52,25 +52,25 @@ const utils = {
     });
   },
   inherits,
-  dateToExcel(d, date1904?) {
+  dateToExcel(d: any, date1904?: any) {
     return 25569 + ( d.getTime() / (24 * 3600 * 1000) ) - (date1904 ? 1462 : 0);
   },
-  excelToDate(v, date1904?) {
+  excelToDate(v: any, date1904?: any) {
     const millisecondSinceEpoch = Math.round((v - 25569 + (date1904 ? 1462 : 0)) * 24 * 3600 * 1000);
     return new Date(millisecondSinceEpoch);
   },
-  parsePath(filepath) {
+  parsePath(filepath: any) {
     const last = filepath.lastIndexOf('/');
     return {
       path: filepath.substring(0, last),
       name: filepath.substring(last + 1),
     };
   },
-  getRelsPath(filepath) {
+  getRelsPath(filepath: any) {
     const path = utils.parsePath(filepath);
     return `${path.path}/_rels/${path.name}.rels`;
   },
-  xmlEncode(text) {
+  xmlEncode(text: any) {
     const regexResult = xmlDecodeRegex.exec(text);
     if (!regexResult) return text;
 
@@ -114,8 +114,8 @@ const utils = {
     if (lastIndex !== i) return result + text.substring(lastIndex, i);
     return result;
   },
-  xmlDecode(text) {
-    return text.replace(/&([a-z]*);/g, c => {
+  xmlDecode(text: any) {
+    return text.replace(/&([a-z]*);/g, (c: any) => {
       switch (c) {
         case '&lt;':
           return '<';
@@ -132,12 +132,12 @@ const utils = {
       }
     });
   },
-  validInt(value) {
+  validInt(value: any) {
     const i = parseInt(value, 10);
     return !Number.isNaN(i) ? i : 0;
   },
 
-  isDateFmt(fmt) {
+  isDateFmt(fmt: any) {
     if (!fmt) {
       return false;
     }
@@ -151,7 +151,7 @@ const utils = {
   },
 
   fs: {
-    exists(path) {
+    exists(path: any) {
       return new Promise(resolve => {
         fs.access(path, fs.constants.F_OK, err => {
           resolve(!err);
@@ -160,11 +160,11 @@ const utils = {
     },
   },
 
-  toIsoDateString(dt) {
+  toIsoDateString(dt: any) {
     return dt.toIsoString().subsstr(0, 10);
   },
 
-  parseBoolean(value) {
+  parseBoolean(value: any) {
     return value === true || value === 'true' || value === 1 || value === '1';
   },
 };

@@ -21,11 +21,11 @@ class SharedStrings {
     return this._totalRefs;
   }
 
-  getString(index) {
+  getString(index: any) {
     return this._values[index];
   }
 
-  add(value) {
+  add(value: any) {
     let index = this._hash[value];
     if (index === undefined) {
       index = this._hash[value] = this._values.length;

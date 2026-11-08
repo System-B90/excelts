@@ -22,7 +22,7 @@ class TextXform extends BaseXform {
   get model() {
     return this._text
       .join('')
-      .replace(/_x([0-9A-F]{4})_/g, ($0, $1) => String.fromCharCode(parseInt($1, 16)));
+      .replace(/_x([0-9A-F]{4})_/g, ($0: any, $1: any) => String.fromCharCode(parseInt($1, 16)));
   }
 
   parseOpen(node: XmlNode) {

@@ -8,7 +8,7 @@ class Range {
     this.decode(arguments);
   }
 
-  setTLBR(t, l, b?, r?, s?) {
+  setTLBR(t: any, l: any, b?: any, r?: any, s?: any) {
     if (arguments.length < 4) {
       // setTLBR(tl, br, s)
       const tl = colCache.decodeAddress(t);
@@ -34,7 +34,7 @@ class Range {
     }
   }
 
-  decode(argv) {
+  decode(argv: any) {
     switch (argv.length) {
       case 5: // [t,l,b,r,s]
         this.setTLBR(argv[0], argv[1], argv[2], argv[3], argv[4]);
@@ -162,14 +162,14 @@ class Range {
     return '';
   }
 
-  expand(top, left, bottom, right) {
+  expand(top: any, left: any, bottom: any, right: any) {
     if (!this.model.top || top < this.top) this.top = top;
     if (!this.model.left || left < this.left) this.left = left;
     if (!this.model.bottom || bottom > this.bottom) this.bottom = bottom;
     if (!this.model.right || right > this.right) this.right = right;
   }
 
-  expandRow(row) {
+  expandRow(row: any) {
     if (row) {
       const {dimensions, number} = row;
       if (dimensions) {
@@ -178,7 +178,7 @@ class Range {
     }
   }
 
-  expandToAddress(addressStr) {
+  expandToAddress(addressStr: any) {
     const address = colCache.decodeEx(addressStr);
     this.expand(address.row, address.col, address.row, address.col);
   }
@@ -223,7 +223,7 @@ class Range {
     return this.range;
   }
 
-  intersects(other) {
+  intersects(other: any) {
     if (other.sheetName && this.sheetName && other.sheetName !== this.sheetName) return false;
     if (other.bottom < this.top) return false;
     if (other.top > this.bottom) return false;
@@ -232,12 +232,12 @@ class Range {
     return true;
   }
 
-  contains(addressStr) {
+  contains(addressStr: any) {
     const address = colCache.decodeEx(addressStr);
     return this.containsEx(address);
   }
 
-  containsEx(address) {
+  containsEx(address: any) {
     if (address.sheetName && this.sheetName && address.sheetName !== this.sheetName) return false;
     return (
       address.row >= this.top &&
@@ -247,7 +247,7 @@ class Range {
     );
   }
 
-  forEachAddress(cb) {
+  forEachAddress(cb: any) {
     for (let col = this.left; col <= this.right; col++) {
       for (let row = this.top; row <= this.bottom; row++) {
         cb(colCache.encodeAddress(row, col), row, col);

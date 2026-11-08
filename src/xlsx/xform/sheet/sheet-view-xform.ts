@@ -33,7 +33,7 @@ class SheetViewXform extends BaseXform {
     xmlStream.openNode('sheetView', {
       workbookViewId: model.workbookViewId || 0,
     });
-    const add = function(name, value, included) {
+    const add = function(name: any, value: any, included: any) {
       if (included) {
         xmlStream.addAttribute(name, value);
       }

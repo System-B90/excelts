@@ -11,7 +11,7 @@ class HyperlinkReader extends EventEmitter {
   options: any;
   hyperlinks: any;
 
-  constructor({workbook, id, iterator, options}) {
+  constructor({workbook, id, iterator, options}: any) {
     super();
 
     this.workbook = workbook;
@@ -24,7 +24,7 @@ class HyperlinkReader extends EventEmitter {
     return (this.hyperlinks && this.hyperlinks.length) || 0;
   }
 
-  each(fn) {
+  each(fn: any) {
     return this.hyperlinks.forEach(fn);
   }
 

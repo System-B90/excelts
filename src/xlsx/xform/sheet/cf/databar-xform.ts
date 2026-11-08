@@ -21,10 +21,10 @@ class DatabarXform extends CompositeXform {
     return 'dataBar';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: any, model: any) {
     xmlStream.openNode(this.tag);
 
-    model.cfvo.forEach(cfvo => {
+    model.cfvo.forEach((cfvo: any) => {
       this.cfvoXform.render(xmlStream, cfvo);
     });
     this.colorXform.render(xmlStream, model.color);
@@ -38,7 +38,7 @@ class DatabarXform extends CompositeXform {
     };
   }
 
-  onParserClose(name, parser) {
+  onParserClose(name: any, parser: any) {
     switch (name) {
       case 'cfvo':
         this.model.cfvo.push(parser.model);

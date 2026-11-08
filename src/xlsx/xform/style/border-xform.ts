@@ -30,7 +30,7 @@ class EdgeXform extends BaseXform {
   model: any;
   parser: any;
 
-  constructor(name) {
+  constructor(name: any) {
     super();
 
     this.name = name;
@@ -43,7 +43,7 @@ class EdgeXform extends BaseXform {
     return this.name;
   }
 
-  render(xmlStream: XmlStream, model: XformModel, defaultColor) {
+  render(xmlStream: XmlStream, model: XformModel, defaultColor: any) {
     const color = (model && model.color) || defaultColor || this.defaultColor;
     xmlStream.openNode(this.name);
     if (model && model.style) {
@@ -107,7 +107,7 @@ class EdgeXform extends BaseXform {
     return false;
   }
 
-  validStyle(value) {
+  validStyle(value: any) {
     return EdgeXform.validStyleValues[value];
   }
 }
@@ -143,7 +143,7 @@ class BorderXform extends BaseXform {
         xmlStream.addAttribute('diagonalDown', '1');
       }
     }
-    function add(edgeModel, edgeXform) {
+    function add(edgeModel: any, edgeXform: any) {
       if (edgeModel && !edgeModel.color && model.color) {
         // don't mess with incoming models
         edgeModel = {
@@ -198,7 +198,7 @@ class BorderXform extends BaseXform {
     }
     if (name === 'border') {
       const model = (this.model = {});
-      const add = function(key, edgeModel, extensions?) {
+      const add = function(key: any, edgeModel: any, extensions?: any) {
         if (edgeModel) {
           if (extensions) {
             Object.assign(edgeModel, extensions);

@@ -16,7 +16,7 @@ class StyleXform extends BaseXform {
   model: any;
   parser: any;
 
-  constructor(options?) {
+  constructor(options?: any) {
     super();
 
     this.xfId = !!(options && options.xfId);

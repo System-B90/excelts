@@ -2,10 +2,10 @@ import * as _ from "../../../utils/under-dash";
 import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
 import XmlStream from "../../../utils/xml-stream";
 
-function booleanToXml(model) {
+function booleanToXml(model: any) {
   return model ? '1' : undefined;
 }
-function pageOrderToXml(model) {
+function pageOrderToXml(model: any) {
   switch (model) {
     case 'overThenDown':
       return model;
@@ -13,7 +13,7 @@ function pageOrderToXml(model) {
       return undefined;
   }
 }
-function cellCommentsToXml(model) {
+function cellCommentsToXml(model: any) {
   switch (model) {
     case 'atEnd':
     case 'asDisplyed':
@@ -22,7 +22,7 @@ function cellCommentsToXml(model) {
       return undefined;
   }
 }
-function errorsToXml(model) {
+function errorsToXml(model: any) {
   switch (model) {
     case 'dash':
     case 'blank':
@@ -32,7 +32,7 @@ function errorsToXml(model) {
       return undefined;
   }
 }
-function pageSizeToModel(value) {
+function pageSizeToModel(value: any) {
   return value !== undefined ? parseInt(value, 10) : undefined;
 }
 

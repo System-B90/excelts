@@ -13,7 +13,7 @@ class AppXform extends BaseXform {
 
   static DateAttrs = {'xsi:type': 'dcterms:W3CDTF'};
 
-  static DateFormat = function(dt) {
+  static DateFormat = function(dt: any) {
     return dt.toISOString().replace(/[.]\d{3,6}/, '');
   };
 

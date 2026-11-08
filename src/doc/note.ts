@@ -17,7 +17,7 @@ class Note {
 
   note: any;
 
-  constructor(note?) {
+  constructor(note?: any) {
     this.note = note;
   }
 
@@ -57,7 +57,7 @@ class Note {
     }
   }
 
-  static fromModel(model) {
+  static fromModel(model: any) {
     const note = new Note();
     note.model = model;
     return note;

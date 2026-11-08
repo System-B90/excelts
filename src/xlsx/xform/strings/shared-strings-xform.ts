@@ -9,7 +9,7 @@ class SharedStringsXform extends BaseXform {
   _sharedStringXform: any;
   parser: any;
 
-  constructor(model?) {
+  constructor(model?: any) {
     super();
 
     this.model = model || {
@@ -36,15 +36,15 @@ class SharedStringsXform extends BaseXform {
     return this.model.count;
   }
 
-  getString(index) {
+  getString(index: any) {
     return this.model.values[index];
   }
 
-  add(value) {
+  add(value: any) {
     return value.richText ? this.addRichText(value) : this.addText(value);
   }
 
-  addText(value) {
+  addText(value: any) {
     let index = this.hash[value];
     if (index === undefined) {
       index = this.hash[value] = this.model.values.length;
@@ -54,7 +54,7 @@ class SharedStringsXform extends BaseXform {
     return index;
   }
 
-  addRichText(value) {
+  addRichText(value: any) {
     // TODO: add WeakMap here
     const xml = this.sharedStringXform.toXml(value);
     let index = this.rich[xml];
@@ -83,7 +83,7 @@ class SharedStringsXform extends BaseXform {
     });
 
     const sx = this.sharedStringXform;
-    model.values.forEach(sharedString => {
+    model.values.forEach((sharedString: any) => {
       sx.render(xmlStream, sharedString);
     });
     xmlStream.closeNode();

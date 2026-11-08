@@ -208,7 +208,7 @@ class GradientFillXform extends BaseXform {
     }
 
     const stopXform = this.map.stop;
-    model.stops.forEach(stopModel => {
+    model.stops.forEach((stopModel: any) => {
       stopXform.render(xmlStream, stopModel);
     });
 
@@ -379,7 +379,7 @@ class FillXform extends BaseXform {
     return false;
   }
 
-  validStyle(value) {
+  validStyle(value: any) {
     return FillXform.validPatternValues[value];
   }
 }

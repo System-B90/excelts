@@ -34,7 +34,7 @@ class BaseCellAnchorXform extends BaseXform {
     }
   }
 
-  reconcilePicture(model, options) {
+  reconcilePicture(model: any, options: any) {
     if (model && model.rId) {
       const rel = options.rels[model.rId];
       const match = rel.Target.match(/.*\/media\/(.+[.][a-zA-Z]{3,4})/);

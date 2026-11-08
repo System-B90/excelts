@@ -12,7 +12,7 @@ class Merges {
     this.merges = {};
   }
 
-  add(merge) {
+  add(merge: any) {
     // merge is {address, master}
     if (this.merges[merge.master]) {
       this.merges[merge.master].expandToAddress(merge.address);
@@ -26,7 +26,7 @@ class Merges {
     return _.map(this.merges, merge => merge.range);
   }
 
-  reconcile(mergeCells, rows) {
+  reconcile(mergeCells: any, rows: any) {
     // reconcile merge list with merge cells
     _.each(mergeCells, merge => {
       const dimensions = colCache.decode(merge);
@@ -48,7 +48,7 @@ class Merges {
     });
   }
 
-  getMasterAddress(address) {
+  getMasterAddress(address: any) {
     // if address has been merged, return its master's address. Assumes reconcile has been called
     const range = this.hash[address];
     return range && range.tl;

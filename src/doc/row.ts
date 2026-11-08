@@ -15,7 +15,7 @@ class Row {
   _outlineLevel: any;
   height: any;
 
-  constructor(worksheet, number) {
+  constructor(worksheet: any, number: any) {
     this._worksheet = worksheet;
     this._number = number;
     this._cells = [];
@@ -45,12 +45,12 @@ class Row {
     delete this.style;
   }
 
-  findCell(colNumber) {
+  findCell(colNumber: any) {
     return this._cells[colNumber - 1];
   }
 
   // given {address, row, col}, find or create new cell
-  getCellEx(address) {
+  getCellEx(address: any) {
     let cell = this._cells[address.col - 1];
     if (!cell) {
       const column = this._worksheet.getColumn(address.col);
@@ -61,7 +61,7 @@ class Row {
   }
 
   // get cell by key, letter or column number
-  getCell(col) {
+  getCell(col: any) {
     if (typeof col === 'string') {
       // is it a key?
       const column = this._worksheet.getColumnKey(col);
@@ -82,7 +82,7 @@ class Row {
   }
 
   // remove cell(s) and shift all higher cells down by count
-  splice(start, count, ...inserts) {
+  splice(start: any, count: any, ...inserts: any[]) {
     const nKeep = start + count;
     const nExpand = inserts.length - count;
     const nEnd = this._cells.length;
@@ -135,7 +135,7 @@ class Row {
   }
 
   // Iterate over all non-null cells in this row
-  eachCell(options, iteratee?) {
+  eachCell(options: any, iteratee?: any) {
     if (!iteratee) {
       iteratee = options;
       options = null;
@@ -146,7 +146,7 @@ class Row {
         iteratee(this.getCell(i), i);
       }
     } else {
-      this._cells.forEach((cell, index) => {
+      this._cells.forEach((cell: any, index: any) => {
         if (cell && cell.type !== Enums.ValueType.Null) {
           iteratee(cell, index + 1);
         }
@@ -156,7 +156,7 @@ class Row {
 
   // ===========================================================================
   // Page Breaks
-  addPageBreak(lft, rght) {
+  addPageBreak(lft: any, rght: any) {
     const ws = this._worksheet;
     const left = Math.max(0, lft - 1) || 0;
     const right = Math.max(0, rght - 1) || 16838;
@@ -172,8 +172,8 @@ class Row {
 
   // return a sparse array of cell values
   get values() {
-    const values = [];
-    this._cells.forEach(cell => {
+    const values: any = [];
+    this._cells.forEach((cell: any) => {
       if (cell && cell.type !== Enums.ValueType.Null) {
         values[cell.col] = cell.value;
       }
@@ -204,7 +204,7 @@ class Row {
       });
     } else {
       // assume object with column keys
-      this._worksheet.eachColumnKey((column, key) => {
+      this._worksheet.eachColumnKey((column: any, key: any) => {
         if (value[key] !== undefined) {
           this.getCellEx({
             address: colCache.encodeAddress(this._number, column.number),
@@ -237,7 +237,7 @@ class Row {
   get dimensions() {
     let min = 0;
     let max = 0;
-    this._cells.forEach(cell => {
+    this._cells.forEach((cell: any) => {
       if (cell && cell.type !== Enums.ValueType.Null) {
         if (!min || min > cell.col) {
           min = cell.col;
@@ -257,9 +257,9 @@ class Row {
 
   // =========================================================================
   // styles
-  _applyStyle(name, value) {
+  _applyStyle(name: any, value: any) {
     this.style[name] = value;
-    this._cells.forEach(cell => {
+    this._cells.forEach((cell: any) => {
       if (cell) {
         cell[name] = value;
       }
@@ -339,10 +339,10 @@ class Row {
 
   // =========================================================================
   get model() {
-    const cells = [];
+    const cells: any = [];
     let min = 0;
     let max = 0;
-    this._cells.forEach(cell => {
+    this._cells.forEach((cell: any) => {
       if (cell) {
         const cellModel = cell.model;
         if (cellModel) {
@@ -377,8 +377,8 @@ class Row {
       throw new Error('Invalid row number in model');
     }
     this._cells = [];
-    let previousAddress;
-    value.cells.forEach(cellModel => {
+    let previousAddress: any;
+    value.cells.forEach((cellModel: any) => {
       switch (cellModel.type) {
         case Cell.Types.Merge:
           // special case - don't add this types

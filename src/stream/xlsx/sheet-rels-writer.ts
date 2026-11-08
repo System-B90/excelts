@@ -5,11 +5,11 @@ import RelType from "../../xlsx/rel-type";
 class HyperlinksProxy {
   writer: any;
 
-  constructor(sheetRelsWriter) {
+  constructor(sheetRelsWriter: any) {
     this.writer = sheetRelsWriter;
   }
 
-  push(hyperlink) {
+  push(hyperlink: any) {
     this.writer.addHyperlink(hyperlink);
   }
 }
@@ -22,7 +22,7 @@ class SheetRelsWriter {
   _stream: any;
   _hyperlinksProxy: any;
 
-  constructor(options) {
+  constructor(options: any) {
     // in a workbook, each sheet will have a number
     this.id = options.id;
 
@@ -47,7 +47,7 @@ class SheetRelsWriter {
     return this._hyperlinks.length;
   }
 
-  each(fn) {
+  each(fn: any) {
     return this._hyperlinks.forEach(fn);
   }
 
@@ -55,7 +55,7 @@ class SheetRelsWriter {
     return this._hyperlinksProxy || (this._hyperlinksProxy = new HyperlinksProxy(this));
   }
 
-  addHyperlink(hyperlink) {
+  addHyperlink(hyperlink: any) {
     // Write to stream
     const relationship = {
       Target: hyperlink.target,
@@ -71,11 +71,11 @@ class SheetRelsWriter {
     });
   }
 
-  addMedia(media) {
+  addMedia(media: any) {
     return this._writeRelationship(media);
   }
 
-  addRelationship(rel) {
+  addRelationship(rel: any) {
     return this._writeRelationship(rel);
   }
 
@@ -96,7 +96,7 @@ class SheetRelsWriter {
     );
   }
 
-  _writeRelationship(relationship) {
+  _writeRelationship(relationship: any) {
     if (!this.count) {
       this._writeOpen();
     }

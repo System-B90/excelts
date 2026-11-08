@@ -2,11 +2,11 @@ import * as _ from "../../../utils/under-dash";
 import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
 import XmlStream from "../../../utils/xml-stream";
 
-function booleanToXml(model, value) {
+function booleanToXml(model: any, value: any) {
   return model ? value : undefined;
 }
 
-function xmlToBoolean(value, equals) {
+function xmlToBoolean(value: any, equals: any) {
   return value === equals ? true : undefined;
 }
 

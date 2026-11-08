@@ -6,7 +6,7 @@ class ColorXform extends BaseXform {
   name: any;
   model: any;
 
-  constructor(name?) {
+  constructor(name?: any) {
     super();
 
     // this.name controls the xm node name

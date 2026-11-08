@@ -15,7 +15,7 @@ class AutoFilterXform extends BaseXform {
         // assume range
         xmlStream.leafNode('autoFilter', {ref: model});
       } else {
-        const getAddress = function(addr) {
+        const getAddress = function(addr: any) {
           if (typeof addr === 'string') {
             return addr;
           }

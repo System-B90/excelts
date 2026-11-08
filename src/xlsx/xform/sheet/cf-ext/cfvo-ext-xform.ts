@@ -18,7 +18,7 @@ class CfvoExtXform extends CompositeXform {
     return 'x14:cfvo';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: any, model: any) {
     xmlStream.openNode(this.tag, {
       type: model.type,
     });
@@ -28,13 +28,13 @@ class CfvoExtXform extends CompositeXform {
     xmlStream.closeNode();
   }
 
-  createNewModel(node) {
+  createNewModel(node: any) {
     return {
       type: node.attributes.type,
     };
   }
 
-  onParserClose(name, parser) {
+  onParserClose(name: any, parser: any) {
     switch (name) {
       case 'xm:f':
         this.model.value = parser.model ? parseFloat(parser.model) : 0;

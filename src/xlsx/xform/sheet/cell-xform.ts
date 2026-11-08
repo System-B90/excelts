@@ -6,7 +6,7 @@ import * as Enums from "../../../doc/enums";
 
 import RichTextXform from "../strings/rich-text-xform";
 
-function getValueType(v) {
+function getValueType(v: any) {
   if (v === null || v === undefined) {
     return Enums.ValueType.Null;
   }
@@ -34,7 +34,7 @@ function getValueType(v) {
   throw new Error('I could not understand type of value');
 }
 
-function getEffectiveCellType(cell) {
+function getEffectiveCellType(cell: any) {
   switch (cell.type) {
     case Enums.ValueType.Formula:
       return getValueType(cell.result);
@@ -134,7 +134,7 @@ class CellXform extends BaseXform {
     }
   }
 
-  renderFormula(xmlStream, model) {
+  renderFormula(xmlStream: any, model: any) {
     let attrs = null;
     switch (model.shareType) {
       case 'shared':
@@ -242,7 +242,7 @@ class CellXform extends BaseXform {
         } else if (model.value && model.value.richText) {
           xmlStream.addAttribute('t', 'inlineStr');
           xmlStream.openNode('is');
-          model.value.richText.forEach(text => {
+          model.value.richText.forEach((text: any) => {
             this.richTextXForm.render(xmlStream, text);
           });
           xmlStream.closeNode('is');

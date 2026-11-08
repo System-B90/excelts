@@ -6,7 +6,7 @@ class StringBuf {
   _inPos: any;
   _buffer: any;
 
-  constructor(options?) {
+  constructor(options?: any) {
     this._buf = Buffer.alloc((options && options.size) || 16384);
     this._encoding = (options && options.encoding) || 'utf8';
 
@@ -38,13 +38,13 @@ class StringBuf {
     return this._buffer;
   }
 
-  reset(position?) {
+  reset(position?: any) {
     position = position || 0;
     this._buffer = undefined;
     this._inPos = position;
   }
 
-  _grow(min) {
+  _grow(min: any) {
     let size = this._buf.length * 2;
     while (size < min) {
       size *= 2;
@@ -54,7 +54,7 @@ class StringBuf {
     this._buf = buf;
   }
 
-  addText(text) {
+  addText(text: any) {
     this._buffer = undefined;
 
     let inPos = this._inPos + this._buf.write(text, this._inPos, this._encoding);
@@ -70,7 +70,7 @@ class StringBuf {
     this._inPos = inPos;
   }
 
-  addStringBuf(inBuf) {
+  addStringBuf(inBuf: any) {
     if (inBuf.length) {
       this._buffer = undefined;
 

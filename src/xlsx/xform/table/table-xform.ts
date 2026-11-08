@@ -110,7 +110,7 @@ class TableXform extends BaseXform {
         this.model.columns = this.map.tableColumns.model;
         if (this.map.autoFilter.model) {
           this.model.autoFilterRef = this.map.autoFilter.model.autoFilterRef;
-          this.map.autoFilter.model.columns.forEach((column, index) => {
+          this.map.autoFilter.model.columns.forEach((column: any, index: any) => {
             this.model.columns[index].filterButton = column.filterButton;
           });
         }
@@ -124,7 +124,7 @@ class TableXform extends BaseXform {
 
   reconcile(model: XformModel, options: XformOptions) {
     // fetch the dfxs from styles
-    model.columns.forEach(column => {
+    model.columns.forEach((column: any) => {
       if (column.dxfId !== undefined) {
         column.style = options.styles.getDxfStyle(column.dxfId);
       }

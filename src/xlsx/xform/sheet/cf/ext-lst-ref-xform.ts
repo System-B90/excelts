@@ -58,7 +58,7 @@ class ExtXform extends CompositeXform {
     return {};
   }
 
-  onParserClose(name, parser) {
+  onParserClose(name: any, parser: any) {
     this.model.x14Id = parser.model;
   }
 }
@@ -87,7 +87,7 @@ class ExtLstRefXform extends CompositeXform {
     return {};
   }
 
-  onParserClose(name, parser) {
+  onParserClose(name: any, parser: any) {
     Object.assign(this.model, parser.model);
   }
 }

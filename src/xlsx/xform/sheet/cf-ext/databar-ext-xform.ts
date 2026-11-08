@@ -29,7 +29,7 @@ class DatabarExtXform extends CompositeXform {
     };
   }
 
-  static isExt(rule) {
+  static isExt(rule: any) {
     // not all databars need ext
     // TODO: refine this
     return !rule.gradient;
@@ -57,7 +57,7 @@ class DatabarExtXform extends CompositeXform {
       direction: BaseXform.toAttribute(model.direction, 'leftToRight'),
     });
 
-    model.cfvo.forEach(cfvo => {
+    model.cfvo.forEach((cfvo: any) => {
       this.cfvoXform.render(xmlStream, cfvo);
     });
 
@@ -69,7 +69,7 @@ class DatabarExtXform extends CompositeXform {
     xmlStream.closeNode();
   }
 
-  createNewModel({attributes}) {
+  createNewModel({attributes}: any) {
     return {
       cfvo: [],
       minLength: BaseXform.toIntValue(attributes.minLength, 0),
@@ -89,7 +89,7 @@ class DatabarExtXform extends CompositeXform {
     };
   }
 
-  onParserClose(name, parser) {
+  onParserClose(name: any, parser: any) {
     const [, prop] = name.split(':');
     switch (prop) {
       case 'cfvo':

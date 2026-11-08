@@ -1,19 +1,19 @@
 class DataValidations {
   model: any;
 
-  constructor(model?) {
+  constructor(model?: any) {
     this.model = model || {};
   }
 
-  add(address, validation) {
+  add(address: any, validation: any) {
     return (this.model[address] = validation);
   }
 
-  find(address) {
+  find(address: any) {
     return this.model[address];
   }
 
-  remove(address) {
+  remove(address: any) {
     this.model[address] = undefined;
   }
 }

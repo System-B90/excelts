@@ -49,7 +49,7 @@ class DefinedNamesXform extends BaseXform {
   }
 }
 
-function isValidRange(range) {
+function isValidRange(range: any) {
   try {
     colCache.decodeEx(range);
     return true;
@@ -58,11 +58,11 @@ function isValidRange(range) {
   }
 }
 
-function extractRanges(parsedText) {
-  const ranges = [];
+function extractRanges(parsedText: any) {
+  const ranges: any = [];
   let quotesOpened = false;
   let last = '';
-  parsedText.split(',').forEach(item => {
+  parsedText.split(',').forEach((item: any) => {
     if (!item) {
       return;
     }

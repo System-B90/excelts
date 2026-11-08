@@ -9,7 +9,7 @@ class VmlAnchorXform extends BaseXform {
     return 'x:Anchor';
   }
 
-  getAnchorRect(anchor) {
+  getAnchorRect(anchor: any) {
     const l = Math.floor(anchor.left);
     const lf = Math.floor((anchor.left - l) * 68);
     const t = Math.floor(anchor.top);
@@ -21,7 +21,7 @@ class VmlAnchorXform extends BaseXform {
     return [l, lf, t, tf, r, rf, b, bf];
   }
 
-  getDefaultRect(ref) {
+  getDefaultRect(ref: any) {
     const l = ref.col;
     const lf = 6;
     const t = Math.max(ref.row - 2, 0);

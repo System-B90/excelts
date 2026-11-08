@@ -5,7 +5,7 @@ import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
 import XmlStream from "../../../utils/xml-stream";
 import Range from "../../../doc/range";
 
-function assign(definedName, attributes, name, defaultValue?) {
+function assign(definedName: any, attributes: any, name: any, defaultValue?: any) {
   const value = attributes[name];
   if (value !== undefined) {
     definedName[name] = value;
@@ -14,7 +14,7 @@ function assign(definedName, attributes, name, defaultValue?) {
   }
 }
 
-function assignBool(definedName, attributes, name, defaultValue?) {
+function assignBool(definedName: any, attributes: any, name: any, defaultValue?: any) {
   const value = attributes[name];
   if (value !== undefined) {
     definedName[name] = utils.parseBoolean(value);
@@ -23,7 +23,7 @@ function assignBool(definedName, attributes, name, defaultValue?) {
   }
 }
 
-function optimiseDataValidations(model) {
+function optimiseDataValidations(model: any) {
   // Squeeze alike data validations together into rectangular ranges
   // to reduce file size and speed up Excel load time
   const dvList = _.map(model, (dataValidation, address) => ({
@@ -32,7 +32,7 @@ function optimiseDataValidations(model) {
     marked: false,
   })).sort((a, b) => _.strcmp(a.address, b.address));
   const dvMap = _.keyBy(dvList, 'address');
-  const matchCol = (addr, height, col) => {
+  const matchCol = (addr: any, height: any, col: any) => {
     for (let i = 0; i < height; i++) {
       const otherAddress = colCache.encodeAddress(addr.row + i, col);
       if (!model[otherAddress] || !_.isEqual(model[addr.address], model[otherAddress])) {
@@ -144,7 +144,7 @@ class DataValidationsXform extends BaseXform {
           xmlStream.addAttribute('error', value.error);
         }
         xmlStream.addAttribute('sqref', value.sqref);
-        (value.formulae || []).forEach((formula, index) => {
+        (value.formulae || []).forEach((formula: any, index: any) => {
           xmlStream.openNode(`formula${index + 1}`);
           if (value.type === 'date') {
             xmlStream.writeText(utils.dateToExcel(new Date(formula)));
@@ -221,10 +221,10 @@ class DataValidationsXform extends BaseXform {
         }
         // The four known cases: 1. E4:L9 N4:U9  2.E4 L9  3. N4:U9  4. E4
         const list = this._address.split(/\s+/g) || [];
-        list.forEach(addr => {
+        list.forEach((addr: any) => {
           if (addr.includes(':')) {
             const range = new Range(addr);
-            range.forEachAddress(address => {
+            range.forEachAddress((address: any) => {
               this.model[address] = this._dataValidation;
             });
           } else {

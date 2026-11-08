@@ -16,7 +16,7 @@ class RowBreaksXform extends ListXform {
 
   // get tag() { return 'rowBreaks'; }
 
-  render(xmlStream, model) {
+  render(xmlStream: any, model: any) {
     if (model && model.length) {
       xmlStream.openNode(this.tag, this.$);
       if (this.count) {
@@ -25,7 +25,7 @@ class RowBreaksXform extends ListXform {
       }
 
       const {childXform} = this;
-      model.forEach(childModel => {
+      model.forEach((childModel: any) => {
         childXform.render(xmlStream, childModel);
       });
 

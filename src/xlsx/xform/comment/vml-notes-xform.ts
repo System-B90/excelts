@@ -45,7 +45,7 @@ class VmlNotesXform extends BaseXform {
     xmlStream.leafNode('v:path', {gradientshapeok: 't', 'o:connecttype': 'rect'});
     xmlStream.closeNode();
 
-    model.comments.forEach((item, index) => {
+    model.comments.forEach((item: any, index: any) => {
       this.map['v:shape'].render(xmlStream, item, index);
     });
 
@@ -98,7 +98,7 @@ class VmlNotesXform extends BaseXform {
   }
 
   reconcile(model: XformModel, options: XformOptions) {
-    model.anchors.forEach(anchor => {
+    model.anchors.forEach((anchor: any) => {
       if (anchor.br) {
         this.map['xdr:twoCellAnchor'].reconcile(anchor, options);
       } else {

@@ -11,7 +11,7 @@ class RowXform extends BaseXform {
   model: any;
   parser: any;
 
-  constructor(options?) {
+  constructor(options?: any) {
     super();
 
     this.maxItems = options && options.maxItems;
@@ -30,7 +30,7 @@ class RowXform extends BaseXform {
       model.styleId = styleId;
     }
     const cellXform = this.map.c;
-    model.cells.forEach(cellModel => {
+    model.cells.forEach((cellModel: any) => {
       cellXform.prepare(cellModel, options);
     });
   }
@@ -61,7 +61,7 @@ class RowXform extends BaseXform {
     }
 
     const cellXform = this.map.c;
-    model.cells.forEach(cellModel => {
+    model.cells.forEach((cellModel: any) => {
       cellXform.render(xmlStream, cellModel, options);
     });
 
@@ -140,7 +140,7 @@ class RowXform extends BaseXform {
     }
 
     const cellXform = this.map.c;
-    model.cells.forEach(cellModel => {
+    model.cells.forEach((cellModel: any) => {
       cellXform.reconcile(cellModel, options);
     });
   }

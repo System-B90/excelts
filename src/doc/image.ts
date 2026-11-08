@@ -7,7 +7,7 @@ class Image {
   imageId: any;
   range: any;
 
-  constructor(worksheet, model) {
+  constructor(worksheet: any, model: any) {
     this.worksheet = worksheet;
     this.model = model;
   }

@@ -16,7 +16,7 @@ const extIcons = {
   '5Boxes': true,
 };
 
-const getTextFormula = model => {
+const getTextFormula = (model: any) => {
   if (model.formulae && model.formulae[0]) {
     return model.formulae[0];
   }
@@ -39,7 +39,7 @@ const getTextFormula = model => {
   }
 };
 
-const getTimePeriodFormula = model => {
+const getTimePeriodFormula = (model: any) => {
   if (model.formulae && model.formulae[0]) {
     return model.formulae[0];
   }
@@ -72,7 +72,7 @@ const getTimePeriodFormula = model => {
   }
 };
 
-const opType = attributes => {
+const opType = (attributes: any) => {
   const {type, operator} = attributes;
   switch (type) {
     case 'containsText':
@@ -114,7 +114,7 @@ class CfRuleXform extends CompositeXform {
     return 'cfRule';
   }
 
-  static isPrimitive(rule) {
+  static isPrimitive(rule: any) {
     // is this rule primitive?
     if (rule.type === 'iconSet') {
       if (rule.custom || extIcons[rule.iconSet]) {
@@ -156,7 +156,7 @@ class CfRuleXform extends CompositeXform {
     }
   }
 
-  renderExpression(xmlStream, model) {
+  renderExpression(xmlStream: any, model: any) {
     xmlStream.openNode(this.tag, {
       type: 'expression',
       dxfId: model.dxfId,
@@ -168,7 +168,7 @@ class CfRuleXform extends CompositeXform {
     xmlStream.closeNode();
   }
 
-  renderCellIs(xmlStream, model) {
+  renderCellIs(xmlStream: any, model: any) {
     xmlStream.openNode(this.tag, {
       type: 'cellIs',
       dxfId: model.dxfId,
@@ -176,14 +176,14 @@ class CfRuleXform extends CompositeXform {
       operator: model.operator,
     });
 
-    model.formulae.forEach(formula => {
+    model.formulae.forEach((formula: any) => {
       this.formulaXform.render(xmlStream, formula);
     });
 
     xmlStream.closeNode();
   }
 
-  renderTop10(xmlStream, model) {
+  renderTop10(xmlStream: any, model: any) {
     xmlStream.leafNode(this.tag, {
       type: 'top10',
       dxfId: model.dxfId,
@@ -194,7 +194,7 @@ class CfRuleXform extends CompositeXform {
     });
   }
 
-  renderAboveAverage(xmlStream, model) {
+  renderAboveAverage(xmlStream: any, model: any) {
     xmlStream.leafNode(this.tag, {
       type: 'aboveAverage',
       dxfId: model.dxfId,
@@ -203,7 +203,7 @@ class CfRuleXform extends CompositeXform {
     });
   }
 
-  renderDataBar(xmlStream, model) {
+  renderDataBar(xmlStream: any, model: any) {
     xmlStream.openNode(this.tag, {
       type: 'dataBar',
       priority: model.priority,
@@ -215,7 +215,7 @@ class CfRuleXform extends CompositeXform {
     xmlStream.closeNode();
   }
 
-  renderColorScale(xmlStream, model) {
+  renderColorScale(xmlStream: any, model: any) {
     xmlStream.openNode(this.tag, {
       type: 'colorScale',
       priority: model.priority,
@@ -226,7 +226,7 @@ class CfRuleXform extends CompositeXform {
     xmlStream.closeNode();
   }
 
-  renderIconSet(xmlStream, model) {
+  renderIconSet(xmlStream: any, model: any) {
     // iconset is all primitive or all extLst
     if (!CfRuleXform.isPrimitive(model)) {
       return;
@@ -242,7 +242,7 @@ class CfRuleXform extends CompositeXform {
     xmlStream.closeNode();
   }
 
-  renderText(xmlStream, model) {
+  renderText(xmlStream: any, model: any) {
     xmlStream.openNode(this.tag, {
       type: model.operator,
       dxfId: model.dxfId,
@@ -258,7 +258,7 @@ class CfRuleXform extends CompositeXform {
     xmlStream.closeNode();
   }
 
-  renderTimePeriod(xmlStream, model) {
+  renderTimePeriod(xmlStream: any, model: any) {
     xmlStream.openNode(this.tag, {
       type: 'timePeriod',
       dxfId: model.dxfId,
@@ -274,7 +274,7 @@ class CfRuleXform extends CompositeXform {
     xmlStream.closeNode();
   }
 
-  createNewModel({attributes}) {
+  createNewModel({attributes}: any) {
     return {
       ...opType(attributes),
       dxfId: BaseXform.toIntValue(attributes.dxfId),
@@ -287,7 +287,7 @@ class CfRuleXform extends CompositeXform {
     };
   }
 
-  onParserClose(name, parser) {
+  onParserClose(name: any, parser: any) {
     switch (name) {
       case 'dataBar':
       case 'extLst':

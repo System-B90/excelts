@@ -8,12 +8,12 @@ const CLOSE_ANGLE = '>';
 const OPEN_ANGLE_SLASH = '</';
 const CLOSE_SLASH_ANGLE = '/>';
 
-function pushAttribute(xml, name, value) {
+function pushAttribute(xml: any, name: any, value: any) {
   xml.push(` ${name}="${utils.xmlEncode(value.toString())}"`);
 }
-function pushAttributes(xml, attributes) {
+function pushAttributes(xml: any, attributes: any) {
   if (attributes) {
-    const tmp = [];
+    const tmp: any = [];
     _.each(attributes, (value, name) => {
       if (value !== undefined) {
         pushAttribute(tmp, name, value);
@@ -51,7 +51,7 @@ class XmlStream {
     return this._xml.length;
   }
 
-  openXml(docAttributes) {
+  openXml(docAttributes: any) {
     const xml = this._xml;
     // <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
     xml.push('<?xml');
@@ -59,7 +59,7 @@ class XmlStream {
     xml.push('?>\n');
   }
 
-  openNode(name, attributes?) {
+  openNode(name: any, attributes?: any) {
     const parent = this.tos;
     const xml = this._xml;
     if (parent && this.open) {
@@ -76,7 +76,7 @@ class XmlStream {
     this.open = true;
   }
 
-  addAttribute(name, value) {
+  addAttribute(name: any, value: any) {
     if (!this.open) {
       throw new Error('Cannot write attributes to node if it is not open');
     }
@@ -85,14 +85,14 @@ class XmlStream {
     }
   }
 
-  addAttributes(attrs) {
+  addAttributes(attrs: any) {
     if (!this.open) {
       throw new Error('Cannot write attributes to node if it is not open');
     }
     pushAttributes(this._xml, attrs);
   }
 
-  writeText(text) {
+  writeText(text: any) {
     const xml = this._xml;
     if (this.open) {
       xml.push(CLOSE_ANGLE);
@@ -102,7 +102,7 @@ class XmlStream {
     xml.push(utils.xmlEncode(text.toString()));
   }
 
-  writeXml(xml) {
+  writeXml(xml: any) {
     if (this.open) {
       this._xml.push(CLOSE_ANGLE);
       this.open = false;
@@ -125,7 +125,7 @@ class XmlStream {
     this.leaf = false;
   }
 
-  leafNode(name, attributes?, text?) {
+  leafNode(name: any, attributes?: any, text?: any) {
     this.openNode(name, attributes);
     if (text !== undefined) {
       // zeros need to be written

@@ -17,7 +17,7 @@ class ConditionalFormattingXform extends CompositeXform {
     return 'conditionalFormatting';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: any, model: any) {
     // if there are no primitive rules, exit now
     if (!model.rules.some(CfRuleXform.isPrimitive)) {
       return;
@@ -25,7 +25,7 @@ class ConditionalFormattingXform extends CompositeXform {
 
     xmlStream.openNode(this.tag, {sqref: model.ref});
 
-    model.rules.forEach(rule => {
+    model.rules.forEach((rule: any) => {
       if (CfRuleXform.isPrimitive(rule)) {
         rule.ref = model.ref;
         this.map.cfRule.render(xmlStream, rule);
@@ -35,14 +35,14 @@ class ConditionalFormattingXform extends CompositeXform {
     xmlStream.closeNode();
   }
 
-  createNewModel({attributes}) {
+  createNewModel({attributes}: any) {
     return {
       ref: attributes.sqref,
       rules: [],
     };
   }
 
-  onParserClose(name, parser) {
+  onParserClose(name: any, parser: any) {
     this.model.rules.push(parser.model);
   }
 }

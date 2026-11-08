@@ -17,7 +17,7 @@ const validation = {
     p[v] = true;
     return p;
   }, {}),
-  horizontal(value) {
+  horizontal(value: any) {
     return this.horizontalValues[value] ? value : undefined;
   },
 
@@ -25,17 +25,17 @@ const validation = {
     p[v] = true;
     return p;
   }, {}),
-  vertical(value) {
+  vertical(value: any) {
     if (value === 'middle') return 'center';
     return this.verticalValues[value] ? value : undefined;
   },
-  wrapText(value) {
+  wrapText(value: any) {
     return value ? true : undefined;
   },
-  shrinkToFit(value) {
+  shrinkToFit(value: any) {
     return value ? true : undefined;
   },
-  textRotation(value) {
+  textRotation(value: any) {
     switch (value) {
       case 'vertical':
         return value;
@@ -44,11 +44,11 @@ const validation = {
         return value >= -90 && value <= 90 ? value : undefined;
     }
   },
-  indent(value) {
+  indent(value: any) {
     value = utils.validInt(value);
     return Math.max(0, value);
   },
-  readingOrder(value) {
+  readingOrder(value: any) {
     switch (value) {
       case 'ltr':
         return Enums.ReadingOrder.LeftToRight;
@@ -61,7 +61,7 @@ const validation = {
 };
 
 const textRotationXform = {
-  toXml(textRotation) {
+  toXml(textRotation: any) {
     textRotation = validation.textRotation(textRotation);
     if (textRotation) {
       if (textRotation === 'vertical') {
@@ -79,7 +79,7 @@ const textRotationXform = {
     }
     return undefined;
   },
-  toModel(textRotation) {
+  toModel(textRotation: any) {
     const tr = utils.validInt(textRotation);
     if (tr !== undefined) {
       if (tr === 255) {
@@ -109,7 +109,7 @@ class AlignmentXform extends BaseXform {
     xmlStream.openNode('alignment');
 
     let isValid = false;
-    function add(name, value) {
+    function add(name: any, value: any) {
       if (value) {
         xmlStream.addAttribute(name, value);
         isValid = true;
@@ -136,7 +136,7 @@ class AlignmentXform extends BaseXform {
     const model = {};
 
     let valid = false;
-    function add(truthy, name, value) {
+    function add(truthy: any, name: any, value: any) {
       if (truthy) {
         model[name] = value;
         valid = true;

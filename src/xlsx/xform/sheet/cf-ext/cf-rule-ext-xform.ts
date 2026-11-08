@@ -30,7 +30,7 @@ class CfRuleExtXform extends CompositeXform {
     return 'x14:cfRule';
   }
 
-  static isExt(rule) {
+  static isExt(rule: any) {
     // is this rule primitive?
     if (rule.type === 'dataBar') {
       return DatabarExtXform.isExt(rule);
@@ -64,7 +64,7 @@ class CfRuleExtXform extends CompositeXform {
     }
   }
 
-  renderDataBar(xmlStream, model) {
+  renderDataBar(xmlStream: any, model: any) {
     xmlStream.openNode(this.tag, {
       type: 'dataBar',
       id: model.x14Id,
@@ -75,7 +75,7 @@ class CfRuleExtXform extends CompositeXform {
     xmlStream.closeNode();
   }
 
-  renderIconSet(xmlStream, model) {
+  renderIconSet(xmlStream: any, model: any) {
     xmlStream.openNode(this.tag, {
       type: 'iconSet',
       priority: model.priority,
@@ -87,7 +87,7 @@ class CfRuleExtXform extends CompositeXform {
     xmlStream.closeNode();
   }
 
-  createNewModel({attributes}) {
+  createNewModel({attributes}: any) {
     return {
       type: attributes.type,
       x14Id: attributes.id,
@@ -95,7 +95,7 @@ class CfRuleExtXform extends CompositeXform {
     };
   }
 
-  onParserClose(name, parser) {
+  onParserClose(name: any, parser: any) {
     Object.assign(this.model, parser.model);
   }
 }

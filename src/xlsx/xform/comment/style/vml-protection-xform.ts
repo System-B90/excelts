@@ -5,7 +5,7 @@ class VmlProtectionXform extends BaseXform {
   _model: any;
   text: any;
 
-  constructor(model) {
+  constructor(model: any) {
     super();
     this._model = model;
   }

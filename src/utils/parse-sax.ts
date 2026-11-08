@@ -7,7 +7,7 @@ const textDecoder = new TextDecoder("utf-8");
 const bufferToString = (chunk: string | Uint8Array): string =>
   typeof chunk === "string" ? chunk : textDecoder.decode(chunk);
 
-export default async function* parseSax(iterable) {
+export default async function* parseSax(iterable: any) {
   // TODO: Remove once node v8 is deprecated
   // Detect and upgrade old streams
   if (iterable.pipe && !iterable[Symbol.asyncIterator]) {
@@ -18,7 +18,7 @@ export default async function* parseSax(iterable) {
   saxesParser.on('error', err => {
     error = err;
   });
-  let events = [];
+  let events: any = [];
   saxesParser.on('opentag', value => events.push({eventType: 'opentag', value}));
   saxesParser.on('text', value => events.push({eventType: 'text', value}));
   saxesParser.on('closetag', value => events.push({eventType: 'closetag', value}));

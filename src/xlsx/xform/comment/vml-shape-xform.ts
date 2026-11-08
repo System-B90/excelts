@@ -4,7 +4,7 @@ import VmlTextboxXform from "./vml-textbox-xform";
 import VmlClientDataXform from "./vml-client-data-xform";
 
 class VmlShapeXform extends BaseXform {
-  static V_SHAPE_ATTRIBUTES = (model, index) => ({
+  static V_SHAPE_ATTRIBUTES = (model: any, index: any) => ({
     id: `_x0000_s${1025 + index}`,
     type: '#_x0000_t202',
     style:
@@ -30,7 +30,7 @@ class VmlShapeXform extends BaseXform {
     return 'v:shape';
   }
 
-  render(xmlStream: XmlStream, model: XformModel, index) {
+  render(xmlStream: XmlStream, model: XformModel, index: any) {
     xmlStream.openNode('v:shape', VmlShapeXform.V_SHAPE_ATTRIBUTES(model, index));
 
     xmlStream.leafNode('v:fill', {color2: 'infoBackground [80]'});

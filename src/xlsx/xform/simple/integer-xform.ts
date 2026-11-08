@@ -9,7 +9,7 @@ class IntegerXform extends BaseXform {
   model: any;
   text: any;
 
-  constructor(options) {
+  constructor(options: any) {
     super();
 
     this.tag = options.tag;

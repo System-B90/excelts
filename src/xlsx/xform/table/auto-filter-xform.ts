@@ -21,7 +21,7 @@ class AutoFilterXform extends BaseXform {
   }
 
   prepare(model: XformModel) {
-    model.columns.forEach((column, index) => {
+    model.columns.forEach((column: any, index: any) => {
       this.map.filterColumn.prepare(column, {index});
     });
   }
@@ -29,7 +29,7 @@ class AutoFilterXform extends BaseXform {
   render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openNode(this.tag, {ref: model.autoFilterRef});
 
-    model.columns.forEach(column => {
+    model.columns.forEach((column: any) => {
       this.map.filterColumn.render(xmlStream, column);
     });
 

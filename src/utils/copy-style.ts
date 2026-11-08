@@ -1,18 +1,18 @@
-const oneDepthCopy = (obj, nestKeys) => ({
+const oneDepthCopy = (obj: any, nestKeys: any) => ({
   ...obj,
-  ...nestKeys.reduce((memo, key) => {
+  ...nestKeys.reduce((memo: any, key: any) => {
     if (obj[key]) memo[key] = {...obj[key]};
     return memo;
   }, {}),
 });
 
-const setIfExists = (src, dst, key, nestKeys = []) => {
+const setIfExists = (src: any, dst: any, key: any, nestKeys = []) => {
   if (src[key]) dst[key] = oneDepthCopy(src[key], nestKeys);
 };
 
-const isEmptyObj = obj => Object.keys(obj).length === 0;
+const isEmptyObj = (obj: any) => Object.keys(obj).length === 0;
 
-const copyStyle = style => {
+const copyStyle = (style: any) => {
   if (!style) return style;
   if (isEmptyObj(style)) return {};
 
@@ -33,7 +33,7 @@ const copyStyle = style => {
   if (style.fill) {
     setIfExists(style, copied, 'fill', ['fgColor', 'bgColor', 'center']);
     if (style.fill.stops) {
-      copied.fill.stops = style.fill.stops.map(s => oneDepthCopy(s, ['color']));
+      copied.fill.stops = style.fill.stops.map((s: any) => oneDepthCopy(s, ['color']));
     }
   }
 

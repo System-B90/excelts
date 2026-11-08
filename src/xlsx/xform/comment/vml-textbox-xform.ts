@@ -8,12 +8,12 @@ class VmlTextboxXform extends BaseXform {
     return 'v:textbox';
   }
 
-  conversionUnit(value, multiple, unit) {
+  conversionUnit(value: any, multiple: any, unit: any) {
     return `${parseFloat(value) * multiple.toFixed(2)}${unit}`;
   }
 
-  reverseConversionUnit(inset) {
-    return (inset || '').split(',').map(margin => {
+  reverseConversionUnit(inset: any) {
+    return (inset || '').split(',').map((margin: any) => {
       return Number(parseFloat(this.conversionUnit(parseFloat(margin), 0.1, '')).toFixed(2));
     });
   }

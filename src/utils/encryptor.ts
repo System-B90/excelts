@@ -8,7 +8,7 @@ const Encryptor = {
    * @param {string} algorithm - The hash algorithm.
    * @returns {Buffer} The hash
    */
-  hash(algorithm, ...buffers) {
+  hash(algorithm: any, ...buffers: any[]) {
     const hash = crypto.createHash(algorithm);
     hash.update(Buffer.concat(buffers));
     return hash.digest();
@@ -23,7 +23,7 @@ const Encryptor = {
    * @param {Buffer} blockKey - The block key
    * @returns {Buffer} The encryption key
    */
-  convertPasswordToHash(password, hashAlgorithm, saltValue, spinCount) {
+  convertPasswordToHash(password: any, hashAlgorithm: any, saltValue: any, spinCount: any) {
     hashAlgorithm = hashAlgorithm.toLowerCase();
     const hashes = crypto.getHashes();
     if (hashes.indexOf(hashAlgorithm) < 0) {
@@ -48,7 +48,7 @@ const Encryptor = {
    * Generates cryptographically strong pseudo-random data.
    * @param size The size argument is a number indicating the number of bytes to generate.
    */
-  randomBytes(size) {
+  randomBytes(size: any) {
     return crypto.randomBytes(size);
   },
 };

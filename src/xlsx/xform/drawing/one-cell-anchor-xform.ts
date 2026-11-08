@@ -24,11 +24,11 @@ class OneCellAnchorXform extends BaseCellAnchorXform {
     return 'xdr:oneCellAnchor';
   }
 
-  prepare(model, options) {
+  prepare(model: any, options: any) {
     this.map['xdr:pic'].prepare(model.picture, options);
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: any, model: any) {
     xmlStream.openNode(this.tag, {editAs: model.range.editAs || 'oneCell'});
 
     this.map['xdr:from'].render(xmlStream, model.range.tl);
@@ -39,7 +39,7 @@ class OneCellAnchorXform extends BaseCellAnchorXform {
     xmlStream.closeNode();
   }
 
-  parseClose(name) {
+  parseClose(name: any) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.parser = undefined;
@@ -58,7 +58,7 @@ class OneCellAnchorXform extends BaseCellAnchorXform {
     }
   }
 
-  reconcile(model, options) {
+  reconcile(model: any, options: any) {
     model.medium = this.reconcilePicture(model.picture, options);
   }
 }

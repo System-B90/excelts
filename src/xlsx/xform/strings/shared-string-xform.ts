@@ -17,7 +17,7 @@ class SharedStringXform extends BaseXform {
   map: any;
   parser: any;
 
-  constructor(model?) {
+  constructor(model?: any) {
     super();
 
     this.model = model;
@@ -37,7 +37,7 @@ class SharedStringXform extends BaseXform {
     xmlStream.openNode(this.tag);
     if (model && model.hasOwnProperty('richText') && model.richText) {
       if (model.richText.length) {
-        model.richText.forEach(text => {
+        model.richText.forEach((text: any) => {
           this.map.r.render(xmlStream, text);
         });
       } else {

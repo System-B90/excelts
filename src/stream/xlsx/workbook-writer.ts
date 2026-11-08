@@ -38,7 +38,7 @@ class WorkbookWriter {
   stream: any;
   promise: any;
 
-  constructor(options) {
+  constructor(options: any) {
     options = options || {};
 
     this.created = options.created || new Date();
@@ -83,7 +83,7 @@ class WorkbookWriter {
     return this._definedNames;
   }
 
-  _openStream(path) {
+  _openStream(path: any) {
     const stream = new StreamBuf({bufSize: 65536, batch: true});
     this.zip.append(stream, {name: path});
     stream.on('finish', () => {
@@ -93,7 +93,7 @@ class WorkbookWriter {
   }
 
   _commitWorksheets() {
-    const commitWorksheet = function(worksheet) {
+    const commitWorksheet = function(worksheet: any) {
       if (!worksheet.committed) {
         return new Promise<void>(resolve => {
           worksheet.stream.on('zipped', () => {
@@ -140,18 +140,18 @@ class WorkbookWriter {
     return this._worksheets.length || 1;
   }
 
-  addImage(image) {
+  addImage(image: any) {
     const id = this.media.length;
     const medium = Object.assign({}, image, {type: 'image', name: `image${id}.${image.extension}`});
     this.media.push(medium);
     return id;
   }
 
-  getImage(id) {
+  getImage(id: any) {
     return this.media[id];
   }
 
-  addWorksheet(name, options) {
+  addWorksheet(name: any, options: any) {
     // it's possible to add a worksheet with different than default
     // shared string handling
     // in fact, it's even possible to switch it mid-sheet
@@ -190,7 +190,7 @@ class WorkbookWriter {
     return worksheet;
   }
 
-  getWorksheet(id) {
+  getWorksheet(id: any) {
     if (id === undefined) {
       return this._worksheets.find(() => true);
     }
@@ -198,7 +198,7 @@ class WorkbookWriter {
       return this._worksheets[id];
     }
     if (typeof id === 'string') {
-      return this._worksheets.find(worksheet => worksheet && worksheet.name === id);
+      return this._worksheets.find((worksheet: any) => worksheet && worksheet.name === id);
     }
     return undefined;
   }
@@ -247,7 +247,7 @@ class WorkbookWriter {
 
   addMedia() {
     return Promise.all(
-      this.media.map(medium => {
+      this.media.map((medium: any) => {
         if (medium.type === 'image') {
           const filename = `xl/media/${medium.name}`;
           if (medium.filename) {
@@ -313,7 +313,7 @@ class WorkbookWriter {
         Target: 'sharedStrings.xml',
       });
     }
-    this._worksheets.forEach(worksheet => {
+    this._worksheets.forEach((worksheet: any) => {
       if (worksheet) {
         worksheet.rId = `rId${count++}`;
         relationships.push({

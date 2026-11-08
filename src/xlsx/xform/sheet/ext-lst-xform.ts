@@ -18,15 +18,15 @@ class ExtXform extends CompositeXform {
     return 'ext';
   }
 
-  hasContent(model) {
+  hasContent(model: any) {
     return this.conditionalFormattings.hasContent(model.conditionalFormattings);
   }
 
-  prepare(model, options) {
+  prepare(model: any, options: any) {
     this.conditionalFormattings.prepare(model.conditionalFormattings, options);
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: any, model: any) {
     xmlStream.openNode('ext', {
       uri: '{78C0D931-6437-407d-A8EE-F0AAD7539E65}',
       'xmlns:x14': 'http://schemas.microsoft.com/office/spreadsheetml/2009/9/main',
@@ -41,7 +41,7 @@ class ExtXform extends CompositeXform {
     return {};
   }
 
-  onParserClose(name, parser) {
+  onParserClose(name: any, parser: any) {
     this.model[name] = parser.model;
   }
 }
@@ -62,15 +62,15 @@ class ExtLstXform extends CompositeXform {
     return 'extLst';
   }
 
-  prepare(model, options) {
+  prepare(model: any, options: any) {
     this.ext.prepare(model, options);
   }
 
-  hasContent(model) {
+  hasContent(model: any) {
     return this.ext.hasContent(model);
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: any, model: any) {
     if (!this.hasContent(model)) {
       return;
     }
@@ -84,7 +84,7 @@ class ExtLstXform extends CompositeXform {
     return {};
   }
 
-  onParserClose(name, parser) {
+  onParserClose(name: any, parser: any) {
     Object.assign(this.model, parser.model);
   }
 }

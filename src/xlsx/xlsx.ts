@@ -25,7 +25,7 @@ import VmlNotesXform from "./xform/comment/vml-notes-xform";
 
 import theme1Xml from "./xml/theme1";
 
-function fsReadFileAsync(filename, options?) {
+function fsReadFileAsync(filename: any, options?: any) {
   return new Promise((resolve, reject) => {
     fs.readFile(filename, options, (error, data) => {
       if (error) {
@@ -40,7 +40,7 @@ function fsReadFileAsync(filename, options?) {
 class XLSX {
   workbook: any;
 
-  constructor(workbook) {
+  constructor(workbook: any) {
     this.workbook = workbook;
   }
 
@@ -49,7 +49,7 @@ class XLSX {
   // =========================================================================
   // Read
 
-  async readFile(filename, options) {
+  async readFile(filename: any, options: any) {
     if (!(await utils.fs.exists(filename))) {
       throw new Error(`File not found: ${filename}`);
     }
@@ -64,22 +64,22 @@ class XLSX {
     }
   }
 
-  parseRels(stream) {
+  parseRels(stream: any) {
     const xform = new RelationshipsXform();
     return xform.parseStream(stream);
   }
 
-  parseWorkbook(stream) {
+  parseWorkbook(stream: any) {
     const xform = new WorkbookXform();
     return xform.parseStream(stream);
   }
 
-  parseSharedStrings(stream) {
+  parseSharedStrings(stream: any) {
     const xform = new SharedStringsXform();
     return xform.parseStream(stream);
   }
 
-  reconcile(model, options) {
+  reconcile(model: any, options: any) {
     const workbookXform = new WorkbookXform();
     const worksheetXform = new WorksheetXform(options);
     const drawingXform = new DrawingXform();
@@ -96,11 +96,11 @@ class XLSX {
       const drawing = model.drawings[name];
       const drawingRel = model.drawingRels[name];
       if (drawingRel) {
-        drawingOptions.rels = drawingRel.reduce((o, rel) => {
+        drawingOptions.rels = drawingRel.reduce((o: any, rel: any) => {
           o[rel.Id] = rel;
           return o;
         }, {});
-        (drawing.anchors || []).forEach(anchor => {
+        (drawing.anchors || []).forEach((anchor: any) => {
           const hyperlinks = anchor.picture && anchor.picture.hyperlinks;
           if (hyperlinks && drawingOptions.rels[hyperlinks.rId]) {
             hyperlinks.hyperlink = drawingOptions.rels[hyperlinks.rId].Target;
@@ -130,7 +130,7 @@ class XLSX {
       tables: model.tables,
       vmlDrawings: model.vmlDrawings,
     };
-    model.worksheets.forEach(worksheet => {
+    model.worksheets.forEach((worksheet: any) => {
       worksheet.relationships = model.worksheetRels[worksheet.sheetNo];
       worksheetXform.reconcile(worksheet, sheetOptions);
     });
@@ -149,7 +149,7 @@ class XLSX {
     delete model.vmlDrawings;
   }
 
-  async _processWorksheetEntry(stream, model, sheetNo, options, path) {
+  async _processWorksheetEntry(stream: any, model: any, sheetNo: any, options: any, path: any) {
     const xform = new WorksheetXform(options);
     const worksheet = await xform.parseStream(stream);
     worksheet.sheetNo = sheetNo;
@@ -157,25 +157,25 @@ class XLSX {
     model.worksheets.push(worksheet);
   }
 
-  async _processCommentEntry(stream, model, name) {
+  async _processCommentEntry(stream: any, model: any, name: any) {
     const xform = new CommentsXform();
     const comments = await xform.parseStream(stream);
     model.comments[`../${name}.xml`] = comments;
   }
 
-  async _processTableEntry(stream, model, name) {
+  async _processTableEntry(stream: any, model: any, name: any) {
     const xform = new TableXform();
     const table = await xform.parseStream(stream);
     model.tables[`../tables/${name}.xml`] = table;
   }
 
-  async _processWorksheetRelsEntry(stream, model, sheetNo) {
+  async _processWorksheetRelsEntry(stream: any, model: any, sheetNo: any) {
     const xform = new RelationshipsXform();
     const relationships = await xform.parseStream(stream);
     model.worksheetRels[sheetNo] = relationships;
   }
 
-  async _processMediaEntry(entry, model, filename) {
+  async _processMediaEntry(entry: any, model: any, filename: any) {
     const lastDot = filename.lastIndexOf('.');
     // if we can't determine extension, ignore it
     if (lastDot >= 1) {
@@ -195,7 +195,7 @@ class XLSX {
           model.media.push(medium);
           resolve();
         });
-        entry.on('error', error => {
+        entry.on('error', (error: any) => {
           reject(error);
         });
         entry.pipe(streamBuf);
@@ -203,25 +203,25 @@ class XLSX {
     }
   }
 
-  async _processDrawingEntry(entry, model, name) {
+  async _processDrawingEntry(entry: any, model: any, name: any) {
     const xform = new DrawingXform();
     const drawing = await xform.parseStream(entry);
     model.drawings[name] = drawing;
   }
 
-  async _processDrawingRelsEntry(entry, model, name) {
+  async _processDrawingRelsEntry(entry: any, model: any, name: any) {
     const xform = new RelationshipsXform();
     const relationships = await xform.parseStream(entry);
     model.drawingRels[name] = relationships;
   }
 
-  async _processVmlDrawingEntry(entry, model, name) {
+  async _processVmlDrawingEntry(entry: any, model: any, name: any) {
     const xform = new VmlNotesXform();
     const vmlDrawing = await xform.parseStream(entry);
     model.vmlDrawings[`../drawings/${name}.vml`] = vmlDrawing;
   }
 
-  async _processThemeEntry(entry, model, name) {
+  async _processThemeEntry(entry: any, model: any, name: any) {
     await new Promise<void>((resolve, reject) => {
       // TODO: stream entry into buffer and store the xml in the model.themes[]
       const stream = new StreamBuf();
@@ -244,7 +244,7 @@ class XLSX {
     );
   }
 
-  async read(stream, options) {
+  async read(stream: any, options: any) {
     // TODO: Remove once node v8 is deprecated
     // Detect and upgrade old streams
     if (!stream[Symbol.asyncIterator] && stream.pipe) {
@@ -257,7 +257,7 @@ class XLSX {
     return this.load(Buffer.concat(chunks), options);
   }
 
-  async load(data, options) {
+  async load(data: any, options: any) {
     let buffer;
     if (options && options.base64) {
       buffer = Buffer.from(data.toString(), 'base64');
@@ -413,9 +413,9 @@ class XLSX {
   // =========================================================================
   // Write
 
-  async addMedia(zip, model) {
+  async addMedia(zip: any, model: any) {
     await Promise.all(
-      model.media.map(async medium => {
+      model.media.map(async (medium: any) => {
         if (medium.type === 'image') {
           const filename = `xl/media/${medium.name}.${medium.extension}`;
           if (medium.filename) {
@@ -436,11 +436,11 @@ class XLSX {
     );
   }
 
-  addDrawings(zip, model) {
+  addDrawings(zip: any, model: any) {
     const drawingXform = new DrawingXform();
     const relsXform = new RelationshipsXform();
 
-    model.worksheets.forEach(worksheet => {
+    model.worksheets.forEach((worksheet: any) => {
       const {drawing} = worksheet;
       if (drawing) {
         drawingXform.prepare(drawing, {});
@@ -453,12 +453,12 @@ class XLSX {
     });
   }
 
-  addTables(zip, model) {
+  addTables(zip: any, model: any) {
     const tableXform = new TableXform();
 
-    model.worksheets.forEach(worksheet => {
+    model.worksheets.forEach((worksheet: any) => {
       const {tables} = worksheet;
-      tables.forEach(table => {
+      tables.forEach((table: any) => {
         tableXform.prepare(table, {});
         const tableXml = tableXform.toXml(table);
         zip.append(tableXml, {name: `xl/tables/${table.target}`});
@@ -466,24 +466,24 @@ class XLSX {
     });
   }
 
-  async addContentTypes(zip, model) {
+  async addContentTypes(zip: any, model: any) {
     const xform = new ContentTypesXform();
     const xml = xform.toXml(model);
     zip.append(xml, {name: '[Content_Types].xml'});
   }
 
-  async addApp(zip, model) {
+  async addApp(zip: any, model: any) {
     const xform = new AppXform();
     const xml = xform.toXml(model);
     zip.append(xml, {name: 'docProps/app.xml'});
   }
 
-  async addCore(zip, model) {
+  async addCore(zip: any, model: any) {
     const coreXform = new CoreXform();
     zip.append(coreXform.toXml(model), {name: 'docProps/core.xml'});
   }
 
-  async addThemes(zip, model) {
+  async addThemes(zip: any, model: any) {
     const themes = model.themes || {theme1: theme1Xml};
     Object.keys(themes).forEach(name => {
       const xml = themes[name];
@@ -492,7 +492,7 @@ class XLSX {
     });
   }
 
-  async addOfficeRels(zip) {
+  async addOfficeRels(zip: any) {
     const xform = new RelationshipsXform();
     const xml = xform.toXml([
       {Id: 'rId1', Type: RelType.OfficeDocument, Target: 'xl/workbook.xml'},
@@ -502,7 +502,7 @@ class XLSX {
     zip.append(xml, {name: '_rels/.rels'});
   }
 
-  async addWorkbookRels(zip, model) {
+  async addWorkbookRels(zip: any, model: any) {
     let count = 1;
     const relationships = [
       {Id: `rId${count++}`, Type: RelType.Styles, Target: 'styles.xml'},
@@ -515,7 +515,7 @@ class XLSX {
         Target: 'sharedStrings.xml',
       });
     }
-    model.worksheets.forEach(worksheet => {
+    model.worksheets.forEach((worksheet: any) => {
       worksheet.rId = `rId${count++}`;
       relationships.push({
         Id: worksheet.rId,
@@ -528,25 +528,25 @@ class XLSX {
     zip.append(xml, {name: 'xl/_rels/workbook.xml.rels'});
   }
 
-  async addSharedStrings(zip, model) {
+  async addSharedStrings(zip: any, model: any) {
     if (model.sharedStrings && model.sharedStrings.count) {
       zip.append(model.sharedStrings.xml, {name: 'xl/sharedStrings.xml'});
     }
   }
 
-  async addStyles(zip, model) {
+  async addStyles(zip: any, model: any) {
     const {xml} = model.styles;
     if (xml) {
       zip.append(xml, {name: 'xl/styles.xml'});
     }
   }
 
-  async addWorkbook(zip, model) {
+  async addWorkbook(zip: any, model: any) {
     const xform = new WorkbookXform();
     zip.append(xform.toXml(model), {name: 'xl/workbook.xml'});
   }
 
-  async addWorksheets(zip, model) {
+  async addWorksheets(zip: any, model: any) {
     // preparation phase
     const worksheetXform = new WorksheetXform();
     const relationshipsXform = new RelationshipsXform();
@@ -554,7 +554,7 @@ class XLSX {
     const vmlNotesXform = new VmlNotesXform();
 
     // write sheets
-    model.worksheets.forEach(worksheet => {
+    model.worksheets.forEach((worksheet: any) => {
       let xmlStream = new XmlStream();
       worksheetXform.render(xmlStream, worksheet);
       zip.append(xmlStream.xml, {name: `xl/worksheets/sheet${worksheet.id}.xml`});
@@ -577,7 +577,7 @@ class XLSX {
     });
   }
 
-  _finalize(zip) {
+  _finalize(zip: any) {
     return new Promise((resolve, reject) => {
       zip.on('finish', () => {
         resolve(this);
@@ -587,7 +587,7 @@ class XLSX {
     });
   }
 
-  prepareModel(model, options) {
+  prepareModel(model: any, options: any) {
     // ensure following properties have sane values
     model.creator = model.creator || 'excelts';
     model.lastModifiedBy = model.lastModifiedBy || 'excelts';
@@ -620,9 +620,9 @@ class XLSX {
     worksheetOptions.commentRefs = model.commentRefs = [];
     let tableCount = 0;
     model.tables = [];
-    model.worksheets.forEach(worksheet => {
+    model.worksheets.forEach((worksheet: any) => {
       // assign unique filenames to tables
-      worksheet.tables.forEach(table => {
+      worksheet.tables.forEach((table: any) => {
         tableCount++;
         table.target = `table${tableCount}.xml`;
         table.id = tableCount;
@@ -635,7 +635,7 @@ class XLSX {
     // TODO: workbook drawing list
   }
 
-  async write(stream, options) {
+  async write(stream: any, options: any) {
     options = options || {};
     const {model} = this.workbook;
     const zip = new ZipWriter(options.zip);
@@ -658,7 +658,7 @@ class XLSX {
     return this._finalize(zip);
   }
 
-  writeFile(filename, options) {
+  writeFile(filename: any, options: any) {
     const stream = fs.createWriteStream(filename);
 
     return new Promise<void>((resolve, reject) => {
@@ -677,7 +677,7 @@ class XLSX {
     });
   }
 
-  async writeBuffer(options) {
+  async writeBuffer(options: any) {
     const stream = new StreamBuf();
     await this.write(stream, options);
     return stream.read();

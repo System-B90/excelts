@@ -8,7 +8,7 @@ class CellPositionXform extends BaseXform {
   parser: any;
   model: any;
 
-  constructor(options) {
+  constructor(options: any) {
     super();
 
     this.tag = options.tag;

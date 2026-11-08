@@ -2,7 +2,7 @@ import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
 import XmlStream from "../../../utils/xml-stream";
 
 const validation = {
-  boolean(value, dflt) {
+  boolean(value: any, dflt: any) {
     if (value === undefined) {
       return dflt;
     }
@@ -23,7 +23,7 @@ class ProtectionXform extends BaseXform {
     xmlStream.openNode('protection');
 
     let isValid = false;
-    function add(name, value) {
+    function add(name: any, value: any) {
       if (value !== undefined) {
         xmlStream.addAttribute(name, value);
         isValid = true;

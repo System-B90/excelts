@@ -31,12 +31,12 @@ class IconSetExtXform extends CompositeXform {
       custom: BaseXform.toBoolAttribute(model.icons, false),
     });
 
-    model.cfvo.forEach(cfvo => {
+    model.cfvo.forEach((cfvo: any) => {
       this.cfvoXform.render(xmlStream, cfvo);
     });
 
     if (model.icons) {
-      model.icons.forEach((icon, i) => {
+      model.icons.forEach((icon: any, i: any) => {
         icon.iconId = i;
         this.cfIconXform.render(xmlStream, icon);
       });
@@ -45,7 +45,7 @@ class IconSetExtXform extends CompositeXform {
     xmlStream.closeNode();
   }
 
-  createNewModel({attributes}) {
+  createNewModel({attributes}: any) {
     return {
       cfvo: [],
       iconSet: BaseXform.toStringValue(attributes.iconSet, '3TrafficLights'),
@@ -54,7 +54,7 @@ class IconSetExtXform extends CompositeXform {
     };
   }
 
-  onParserClose(name, parser) {
+  onParserClose(name: any, parser: any) {
     const [, prop] = name.split(':');
     switch (prop) {
       case 'cfvo':

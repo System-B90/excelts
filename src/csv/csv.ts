@@ -28,12 +28,12 @@ class CSV {
   workbook: any;
   worksheet: any;
 
-  constructor(workbook) {
+  constructor(workbook: any) {
     this.workbook = workbook;
     this.worksheet = null;
   }
 
-  async readFile(filename, options) {
+  async readFile(filename: any, options: any) {
     options = options || {};
     if (!(await exists(filename))) {
       throw new Error(`File not found: ${filename}`);
@@ -44,7 +44,7 @@ class CSV {
     return worksheet;
   }
 
-  read(stream, options) {
+  read(stream: any, options: any) {
     options = options || {};
 
     return new Promise((resolve, reject) => {
@@ -58,7 +58,7 @@ class CSV {
       ];
       const map =
         options.map ||
-        function(datum) {
+        function(datum: any) {
           if (datum === '') {
             return null;
           }
@@ -66,7 +66,7 @@ class CSV {
           if (!Number.isNaN(datumNumber) && datumNumber !== Infinity) {
             return datumNumber;
           }
-          const dt = dateFormats.reduce((matchingDate, currentDateFormat) => {
+          const dt = dateFormats.reduce((matchingDate: any, currentDateFormat: any) => {
             if (matchingDate) {
               return matchingDate;
             }
@@ -110,7 +110,7 @@ class CSV {
     );
   }
 
-  write(stream, options) {
+  write(stream: any, options: any) {
     return new Promise<void>((resolve, reject) => {
       options = options || {};
       // const encoding = options.encoding || 'utf8';
@@ -129,7 +129,7 @@ class CSV {
       const {dateFormat, dateUTC} = options;
       const map =
         options.map ||
-        (value => {
+        ((value: any) => {
           if (value) {
             if (value.text || value.hyperlink) {
               return value.hyperlink || value.text || '';
@@ -158,7 +158,7 @@ class CSV {
       const includeEmptyRows = options.includeEmptyRows === undefined || options.includeEmptyRows;
       let lastRow = 1;
       if (worksheet) {
-        worksheet.eachRow((row, rowNumber) => {
+        worksheet.eachRow((row: any, rowNumber: any) => {
           if (includeEmptyRows) {
             while (lastRow++ < rowNumber - 1) {
               csvStream.write([]);
@@ -174,7 +174,7 @@ class CSV {
     });
   }
 
-  writeFile(filename, options) {
+  writeFile(filename: any, options: any) {
     options = options || {};
 
     const streamOptions = {
@@ -185,7 +185,7 @@ class CSV {
     return this.write(stream, options);
   }
 
-  async writeBuffer(options) {
+  async writeBuffer(options: any) {
     const stream = new StreamBuf();
     await this.write(stream, options);
     return stream.read();

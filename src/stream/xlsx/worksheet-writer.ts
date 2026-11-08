@@ -89,7 +89,7 @@ class WorksheetWriter {
   _headerRowCount: any;
   _background: any;
 
-  constructor(options) {
+  constructor(options: any) {
     // in a workbook, each sheet will have a number
     this.id = options.id;
 
@@ -249,7 +249,7 @@ class WorksheetWriter {
       return;
     }
     // commit all rows
-    this._rows.forEach(cRow => {
+    this._rows.forEach((cRow: any) => {
       if (cRow) {
         // write the row to the stream
         this._writeRow(cRow);
@@ -314,7 +314,7 @@ class WorksheetWriter {
   // Note: any headers defined will overwrite existing values.
   set columns(value) {
     // calculate max header row count
-    this._headerRowCount = value.reduce((pv, cv) => {
+    this._headerRowCount = value.reduce((pv: any, cv: any) => {
       const headerCount = (cv.header && 1) || (cv.headers && cv.headers.length) || 0;
       return Math.max(pv, headerCount);
     }, 0);
@@ -322,32 +322,32 @@ class WorksheetWriter {
     // construct Column objects
     let count = 1;
     const columns = (this._columns = []);
-    value.forEach(defn => {
+    value.forEach((defn: any) => {
       const column = new Column(this, count++, false);
       columns.push(column);
       column.defn = defn;
     });
   }
 
-  getColumnKey(key) {
+  getColumnKey(key: any) {
     return this._keys[key];
   }
 
-  setColumnKey(key, value) {
+  setColumnKey(key: any, value: any) {
     this._keys[key] = value;
   }
 
-  deleteColumnKey(key) {
+  deleteColumnKey(key: any) {
     delete this._keys[key];
   }
 
-  eachColumnKey(f) {
+  eachColumnKey(f: any) {
     _.each(this._keys, f);
   }
 
   // get a single column by col number. If it doesn't exist, it and any gaps before it
   // are created.
-  getColumn(c) {
+  getColumn(c: any) {
     if (typeof c === 'string') {
       // if it matches a key'd column, return that
       const col = this._keys[c];
@@ -375,7 +375,7 @@ class WorksheetWriter {
   }
 
   // iterate over every uncommitted row in the worksheet, including maybe empty rows
-  eachRow(options, iteratee) {
+  eachRow(options: any, iteratee: any) {
     if (!iteratee) {
       iteratee = options;
       options = undefined;
@@ -386,7 +386,7 @@ class WorksheetWriter {
         iteratee(this.getRow(i), i);
       }
     } else {
-      this._rows.forEach(row => {
+      this._rows.forEach((row: any) => {
         if (row.hasValues) {
           iteratee(row, row.number);
         }
@@ -394,7 +394,7 @@ class WorksheetWriter {
     }
   }
 
-  _commitRow(cRow) {
+  _commitRow(cRow: any) {
     // since rows must be written in order, we commit all rows up till and including cRow
     let found = false;
     while (this._rows.length && !found) {
@@ -417,12 +417,12 @@ class WorksheetWriter {
   }
 
   // find a row (if exists) by row number
-  findRow(rowNumber) {
+  findRow(rowNumber: any) {
     const index = rowNumber - this._rowZero;
     return this._rows[index];
   }
 
-  getRow(rowNumber) {
+  getRow(rowNumber: any) {
     const index = rowNumber - this._rowZero;
 
     // may fail if rows have been comitted
@@ -436,7 +436,7 @@ class WorksheetWriter {
     return row;
   }
 
-  addRow(value) {
+  addRow(value: any) {
     const row = new Row(this, this._nextRow);
     this._rows[row.number - this._rowZero] = row;
     row.values = value;
@@ -447,25 +447,25 @@ class WorksheetWriter {
   // Cells
 
   // returns the cell at [r,c] or address given by r. If not found, return undefined
-  findCell(r, c) {
+  findCell(r: any, c: any) {
     const address = colCache.getAddress(r, c);
     const row = this.findRow(address.row);
     return row ? row.findCell(address.column) : undefined;
   }
 
   // return the cell at [r,c] or address given by r. If not found, create a new one.
-  getCell(r, c) {
+  getCell(r: any, c: any) {
     const address = colCache.getAddress(r, c);
     const row = this.getRow(address.row);
     return row.getCellEx(address);
   }
 
-  mergeCells(...cells) {
+  mergeCells(...cells: any[]) {
     // may fail if rows have been comitted
     const dimensions = new Dimensions(cells);
 
     // check cells aren't already merged
-    this._merges.forEach(merge => {
+    this._merges.forEach((merge: any) => {
       if (merge.intersects(dimensions)) {
         throw new Error('Cannot merge already merged cells');
       }
@@ -487,11 +487,11 @@ class WorksheetWriter {
 
   // ===========================================================================
   // Conditional Formatting
-  addConditionalFormatting(cf) {
+  addConditionalFormatting(cf: any) {
     this.conditionalFormatting.push(cf);
   }
 
-  removeConditionalFormatting(filter) {
+  removeConditionalFormatting(filter: any) {
     if (typeof filter === 'number') {
       this.conditionalFormatting.splice(filter, 1);
     } else if (filter instanceof Function) {
@@ -503,7 +503,7 @@ class WorksheetWriter {
 
   // =========================================================================
 
-  addBackgroundImage(imageId) {
+  addBackgroundImage(imageId: any) {
     this._background = {
       imageId,
     };
@@ -515,7 +515,7 @@ class WorksheetWriter {
 
   // =========================================================================
   // Worksheet Protection
-  protect(password, options) {
+  protect(password: any, options: any) {
     // TODO: make this function truly async
     // perhaps marshal to worker thread or something
     return new Promise<void>(resolve => {
@@ -553,13 +553,13 @@ class WorksheetWriter {
 
   // ================================================================================
 
-  _write(text) {
+  _write(text: any) {
     xmlBuffer.reset();
     xmlBuffer.addText(text);
     this.stream.write(xmlBuffer);
   }
 
-  _writeSheetProperties(xmlBuf, properties, pageSetup) {
+  _writeSheetProperties(xmlBuf: any, properties: any, pageSetup: any) {
     const sheetPropertiesModel = {
       outlineProperties: properties && properties.outlineProperties,
       tabColor: properties && properties.tabColor,
@@ -574,7 +574,7 @@ class WorksheetWriter {
     xmlBuf.addText(xform.sheetProperties.toXml(sheetPropertiesModel));
   }
 
-  _writeSheetFormatProperties(xmlBuf, properties) {
+  _writeSheetFormatProperties(xmlBuf: any, properties: any) {
     const sheetFormatPropertiesModel = properties
       ? {
           defaultRowHeight: properties.defaultRowHeight,
@@ -623,7 +623,7 @@ class WorksheetWriter {
     this._write('<sheetData>');
   }
 
-  _writeRow(row) {
+  _writeRow(row: any) {
     if (!this.startedData) {
       this._writeColumns();
       this._writeOpenSheetData();
@@ -659,7 +659,7 @@ class WorksheetWriter {
     if (this._merges.length) {
       xmlBuffer.reset();
       xmlBuffer.addText(`<mergeCells count="${this._merges.length}">`);
-      this._merges.forEach(merge => {
+      this._merges.forEach((merge: any) => {
         xmlBuffer.addText(`<mergeCell ref="${merge}"/>`);
       });
       xmlBuffer.addText('</mergeCells>');

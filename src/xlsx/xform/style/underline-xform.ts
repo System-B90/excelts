@@ -11,7 +11,7 @@ class UnderlineXform extends BaseXform {
 
   model: any;
 
-  constructor(model?) {
+  constructor(model?: any) {
     super();
 
     this.model = model;

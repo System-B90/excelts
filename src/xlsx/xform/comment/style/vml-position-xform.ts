@@ -5,7 +5,7 @@ class VmlPositionXform extends BaseXform {
   _model: any;
   model: any;
 
-  constructor(model) {
+  constructor(model: any) {
     super();
     this._model = model;
   }
@@ -14,7 +14,7 @@ class VmlPositionXform extends BaseXform {
     return this._model && this._model.tag;
   }
 
-  render(xmlStream: XmlStream, model: XformModel, type) {
+  render(xmlStream: XmlStream, model: XformModel, type: any) {
     if (model === type[2]) {
       xmlStream.leafNode(this.tag);
     } else if (this.tag === 'x:SizeWithCells' && model === type[1]) {

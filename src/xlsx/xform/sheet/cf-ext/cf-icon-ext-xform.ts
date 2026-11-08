@@ -15,7 +15,7 @@ class CfIconExtXform extends BaseXform {
     });
   }
 
-  parseOpen({attributes}) {
+  parseOpen({attributes}: any) {
     this.model = {
       iconSet: attributes.iconSet,
       iconId: BaseXform.toIntValue(attributes.iconId),

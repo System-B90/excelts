@@ -33,7 +33,7 @@ const colCache = {
   _l2nFill: 0,
   _l2n: {},
   _n2l: [],
-  _level(n) {
+  _level(n: any) {
     if (n <= 26) {
       return 1;
     }
@@ -42,7 +42,7 @@ const colCache = {
     }
     return 3;
   },
-  _fill(level) {
+  _fill(level: any) {
     let c;
     let v;
     let l1;
@@ -89,7 +89,7 @@ const colCache = {
       this._l2nFill = 3;
     }
   },
-  l2n(l) {
+  l2n(l: any) {
     if (!this._l2n[l]) {
       this._fill(l.length);
     }
@@ -98,7 +98,7 @@ const colCache = {
     }
     return this._l2n[l];
   },
-  n2l(n) {
+  n2l(n: any) {
     if (n < 1 || n > 16384) {
       throw new Error(`${n} is out of bounds. Excel supports columns from 1 to 16384`);
     }
@@ -113,7 +113,7 @@ const colCache = {
   _hash: {},
 
   // check if value looks like an address
-  validateAddress(value) {
+  validateAddress(value: any) {
     if (!addressRegex.test(value)) {
       throw new Error(`Invalid Address: ${value}`);
     }
@@ -121,7 +121,7 @@ const colCache = {
   },
 
   // convert address string into structure
-  decodeAddress(value) {
+  decodeAddress(value: any) {
     const addr = value.length < 5 && this._hash[value];
     if (addr) {
       return addr;
@@ -183,7 +183,7 @@ const colCache = {
   },
 
   // convert r,c into structure (if only 1 arg, assume r is address string)
-  getAddress(r, c) {
+  getAddress(r: any, c: any) {
     if (c) {
       const address = this.n2l(c) + r;
       return this.decodeAddress(address);
@@ -192,7 +192,7 @@ const colCache = {
   },
 
   // convert [address], [tl:br] into address structures
-  decode(value) {
+  decode(value: any) {
     const parts = value.split(':');
     if (parts.length === 2) {
       const tl = this.decodeAddress(parts[0]);
@@ -213,7 +213,7 @@ const colCache = {
   },
 
   // convert [sheetName!][$]col[$]row[[$]col[$]row] into address or range structures
-  decodeEx(value) {
+  decodeEx(value: any) {
     const groups = value.match(/(?:(?:(?:'((?:[^']|'')*)')|([^'^ !]*))!)?(.*)/);
 
     const sheetName = groups[1] || groups[2]; // Qouted and unqouted groups
@@ -257,7 +257,7 @@ const colCache = {
   },
 
   // convert row,col into address string
-  encodeAddress(row, col) {
+  encodeAddress(row: any, col: any) {
     return colCache.n2l(col) + row;
   },
 
@@ -277,7 +277,7 @@ const colCache = {
   },
 
   // return true if address is contained within range
-  inRange(range, address) {
+  inRange(range: any, address: any) {
     const [left, top, , right, bottom] = range;
     const [col, row] = address;
     return col >= left && col <= right && row >= top && row <= bottom;

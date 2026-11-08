@@ -20,7 +20,7 @@ class Cell {
   _mergeCount: any;
   _comment: any;
 
-  constructor(row, column, address) {
+  constructor(row: any, column: any, address: any) {
     if (!row || !column) {
       throw new Error('A Cell needs a Row');
     }
@@ -106,7 +106,7 @@ class Cell {
     this.style.protection = value;
   }
 
-  _mergeStyle(rowStyle, colStyle, style) {
+  _mergeStyle(rowStyle: any, colStyle: any, style: any) {
     const numFmt = (rowStyle && rowStyle.numFmt) || (colStyle && colStyle.numFmt);
     if (numFmt) style.numFmt = numFmt;
 
@@ -176,7 +176,7 @@ class Cell {
     return this._mergeCount > 0 || this.type === Cell.Types.Merge;
   }
 
-  merge(master, ignoreStyle) {
+  merge(master: any, ignoreStyle: any) {
     this._value.release();
     this._value = Value.create(Cell.Types.Merge, this, master);
     if (!ignoreStyle) {
@@ -192,7 +192,7 @@ class Cell {
     }
   }
 
-  isMergedTo(master) {
+  isMergedTo(master: any) {
     if (this._value.type !== Cell.Types.Merge) return false;
     return this._value.isMergedTo(master);
   }
@@ -251,7 +251,7 @@ class Cell {
     return this.text;
   }
 
-  _upgradeToHyperlink(hyperlink) {
+  _upgradeToHyperlink(hyperlink: any) {
     // if this cell is a string, turn it into a Hyperlink
     if (this.type === Cell.Types.String) {
       this._value = Value.create(Cell.Types.Hyperlink, this, {
@@ -302,16 +302,16 @@ class Cell {
   set names(value) {
     const {definedNames} = this.workbook;
     definedNames.removeAllNames(this.fullAddress);
-    value.forEach(name => {
+    value.forEach((name: any) => {
       definedNames.addEx(this.fullAddress, name);
     });
   }
 
-  addName(name) {
+  addName(name: any) {
     this.workbook.definedNames.addEx(this.fullAddress, name);
   }
 
-  removeName(name) {
+  removeName(name: any) {
     this.workbook.definedNames.removeEx(this.fullAddress, name);
   }
 
@@ -372,7 +372,7 @@ class Cell {
 class NullValue {
   model: any;
 
-  constructor(cell) {
+  constructor(cell: any) {
     this.model = {
       address: cell.address,
       type: Cell.Types.Null,
@@ -417,7 +417,7 @@ class NullValue {
 class NumberValue {
   model: any;
 
-  constructor(cell, value) {
+  constructor(cell: any, value: any) {
     this.model = {
       address: cell.address,
       type: Cell.Types.Number,
@@ -463,7 +463,7 @@ class NumberValue {
 class StringValue {
   model: any;
 
-  constructor(cell, value) {
+  constructor(cell: any, value: any) {
     this.model = {
       address: cell.address,
       type: Cell.Types.String,
@@ -509,7 +509,7 @@ class StringValue {
 class RichTextValue {
   model: any;
 
-  constructor(cell, value) {
+  constructor(cell: any, value: any) {
     this.model = {
       address: cell.address,
       type: Cell.Types.String,
@@ -526,7 +526,7 @@ class RichTextValue {
   }
 
   toString() {
-    return this.model.value.richText.map(t => t.text).join('');
+    return this.model.value.richText.map((t: any) => t.text).join('');
   }
 
   get type() {
@@ -555,7 +555,7 @@ class RichTextValue {
 class DateValue {
   model: any;
 
-  constructor(cell, value) {
+  constructor(cell: any, value: any) {
     this.model = {
       address: cell.address,
       type: Cell.Types.Date,
@@ -601,7 +601,7 @@ class DateValue {
 class HyperlinkValue {
   model: any;
 
-  constructor(cell, value) {
+  constructor(cell: any, value: any) {
     this.model = {
       address: cell.address,
       type: Cell.Types.Hyperlink,
@@ -690,7 +690,7 @@ class MergeValue {
   model: any;
   _master: any;
 
-  constructor(cell, master) {
+  constructor(cell: any, master: any) {
     this.model = {
       address: cell.address,
       type: Cell.Types.Merge,
@@ -718,7 +718,7 @@ class MergeValue {
     }
   }
 
-  isMergedTo(master) {
+  isMergedTo(master: any) {
     return master === this._master;
   }
 
@@ -760,7 +760,7 @@ class FormulaValue {
   model: any;
   _translatedFormula: any;
 
-  constructor(cell, value) {
+  constructor(cell: any, value: any) {
     this.cell = cell;
 
     this.model = {
@@ -774,9 +774,9 @@ class FormulaValue {
     };
   }
 
-  _copyModel(model) {
+  _copyModel(model: any) {
     const copy = {};
-    const cp = name => {
+    const cp = (name: any) => {
       const value = model[name];
       if (value) {
         copy[name] = value;
@@ -798,7 +798,7 @@ class FormulaValue {
     this.model = this._copyModel(value);
   }
 
-  validate(value) {
+  validate(value: any) {
     switch (Value.getType(value)) {
       case Cell.Types.Null:
       case Cell.Types.String:
@@ -910,7 +910,7 @@ class FormulaValue {
 class SharedStringValue {
   model: any;
 
-  constructor(cell, value) {
+  constructor(cell: any, value: any) {
     this.model = {
       address: cell.address,
       type: Cell.Types.SharedString,
@@ -956,7 +956,7 @@ class SharedStringValue {
 class BooleanValue {
   model: any;
 
-  constructor(cell, value) {
+  constructor(cell: any, value: any) {
     this.model = {
       address: cell.address,
       type: Cell.Types.Boolean,
@@ -1002,7 +1002,7 @@ class BooleanValue {
 class ErrorValue {
   model: any;
 
-  constructor(cell, value) {
+  constructor(cell: any, value: any) {
     this.model = {
       address: cell.address,
       type: Cell.Types.Error,
@@ -1048,7 +1048,7 @@ class ErrorValue {
 class JSONValue {
   model: any;
 
-  constructor(cell, value) {
+  constructor(cell: any, value: any) {
     this.model = {
       address: cell.address,
       type: Cell.Types.String,
@@ -1095,7 +1095,7 @@ class JSONValue {
 
 // Value is a place to hold common static Value type functions
 const Value = {
-  getType(value) {
+  getType(value: any) {
     if (value === null || value === undefined) {
       return Cell.Types.Null;
     }
@@ -1148,7 +1148,7 @@ const Value = {
     return p;
   }, []),
 
-  create(type, cell, value?) {
+  create(type: any, cell: any, value?: any) {
     const T = this.types[type];
     if (!T) {
       throw new Error(`Could not create Value of type ${type}`);

@@ -26,7 +26,7 @@ class RichTextXform extends BaseXform {
   _fontXform: any;
   parser: any;
 
-  constructor(model?) {
+  constructor(model?: any) {
     super();
 
     this.model = model;

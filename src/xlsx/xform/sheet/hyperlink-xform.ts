@@ -48,7 +48,7 @@ class HyperlinkXform extends BaseXform {
     return false;
   }
 
-  isInternalLink(model) {
+  isInternalLink(model: any) {
     // @example: Sheet2!D3, return true
     return model.target && /^[^!]+![a-zA-Z]+[\d]+$/.test(model.target);
   }

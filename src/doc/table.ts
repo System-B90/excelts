@@ -7,13 +7,13 @@ class Column {
   index: any;
 
   // wrapper around column model, allowing access and manipulation
-  constructor(table, column, index) {
+  constructor(table: any, column: any, index: any) {
     this.table = table;
     this.column = column;
     this.index = index;
   }
 
-  _set(name, value) {
+  _set(name: any, value: any) {
     this.table.cacheState();
     this.column[name] = value;
   }
@@ -75,7 +75,7 @@ class Table {
   table: any;
   _cache: any;
 
-  constructor(worksheet?, table?) {
+  constructor(worksheet?: any, table?: any) {
     this.worksheet = worksheet;
     if (table) {
       this.table = table;
@@ -86,7 +86,7 @@ class Table {
     }
   }
 
-  getFormula(column) {
+  getFormula(column: any) {
     // get the correct formula to apply to the totals row
     switch (column.totalsRowFunction) {
       case 'none':
@@ -137,7 +137,7 @@ class Table {
   validate() {
     const {table} = this;
     // set defaults and check is valid
-    const assign = (o, name, dflt) => {
+    const assign = (o: any, name: any, dflt: any) => {
       if (o[name] === undefined) {
         o[name] = dflt;
       }
@@ -152,7 +152,7 @@ class Table {
     assign(table.style, 'showRowStripes', false);
     assign(table.style, 'showColumnStripes', false);
 
-    const assert = (test, message) => {
+    const assert = (test: any, message: any) => {
       if (!test) {
         throw new Error(message);
       }
@@ -174,7 +174,7 @@ class Table {
     // tableRef is a range that includes optional headers and totals
     table.tableRef = colCache.encode(row, col, row + tableHeight - 1, col + width - 1);
 
-    table.columns.forEach((column, i) => {
+    table.columns.forEach((column: any, i: any) => {
       assert(column.name, `Column ${i} must have a name`);
       if (i === 0) {
         assign(column, 'totalsRowLabel', 'Total');
@@ -188,7 +188,7 @@ class Table {
   store() {
     // where the table needs to store table data, headers, footers in
     // the sheet...
-    const assignStyle = (cell, style) => {
+    const assignStyle = (cell: any, style: any) => {
       if (style) {
         Object.keys(style).forEach(key => {
           cell[key] = style[key];
@@ -201,16 +201,16 @@ class Table {
     let count = 0;
     if (table.headerRow) {
       const r = worksheet.getRow(row + count++);
-      table.columns.forEach((column, j) => {
+      table.columns.forEach((column: any, j: any) => {
         const {style, name} = column;
         const cell = r.getCell(col + j);
         cell.value = name;
         assignStyle(cell, style);
       });
     }
-    table.rows.forEach(data => {
+    table.rows.forEach((data: any) => {
       const r = worksheet.getRow(row + count++);
-      data.forEach((value, j) => {
+      data.forEach((value: any, j: any) => {
         const cell = r.getCell(col + j);
         cell.value = value;
 
@@ -220,7 +220,7 @@ class Table {
 
     if (table.totalsRow) {
       const r = worksheet.getRow(row + count++);
-      table.columns.forEach((column, j) => {
+      table.columns.forEach((column: any, j: any) => {
         const cell = r.getCell(col + j);
         if (j === 0) {
           cell.value = column.totalsRowLabel;
@@ -241,21 +241,21 @@ class Table {
     }
   }
 
-  load(worksheet) {
+  load(worksheet: any) {
     // where the table will read necessary features from a loaded sheet
     const {table} = this;
     const {row, col} = table.tl;
     let count = 0;
     if (table.headerRow) {
       const r = worksheet.getRow(row + count++);
-      table.columns.forEach((column, j) => {
+      table.columns.forEach((column: any, j: any) => {
         const cell = r.getCell(col + j);
         cell.value = column.name;
       });
     }
-    table.rows.forEach(data => {
+    table.rows.forEach((data: any) => {
       const r = worksheet.getRow(row + count++);
-      data.forEach((value, j) => {
+      data.forEach((value: any, j: any) => {
         const cell = r.getCell(col + j);
         cell.value = value;
       });
@@ -263,7 +263,7 @@ class Table {
 
     if (table.totalsRow) {
       const r = worksheet.getRow(row + count++);
-      table.columns.forEach((column, j) => {
+      table.columns.forEach((column: any, j: any) => {
         const cell = r.getCell(col + j);
         if (j === 0) {
           cell.value = column.totalsRowLabel;
@@ -342,7 +342,7 @@ class Table {
     this.store();
   }
 
-  addRow(values, rowNumber) {
+  addRow(values: any, rowNumber: any) {
     // Add a row of data, either insert at rowNumber or append
     this.cacheState();
 
@@ -353,46 +353,46 @@ class Table {
     }
   }
 
-  removeRows(rowIndex, count = 1) {
+  removeRows(rowIndex: any, count = 1) {
     // Remove a rows of data
     this.cacheState();
     this.table.rows.splice(rowIndex, count);
   }
 
-  getColumn(colIndex) {
+  getColumn(colIndex: any) {
     const column = this.table.columns[colIndex];
     return new Column(this, column, colIndex);
   }
 
-  addColumn(column, values, colIndex) {
+  addColumn(column: any, values: any, colIndex: any) {
     // Add a new column, including column defn and values
     // Inserts at colNumber or adds to the right
     this.cacheState();
 
     if (colIndex === undefined) {
       this.table.columns.push(column);
-      this.table.rows.forEach((row, i) => {
+      this.table.rows.forEach((row: any, i: any) => {
         row.push(values[i]);
       });
     } else {
       this.table.columns.splice(colIndex, 0, column);
-      this.table.rows.forEach((row, i) => {
+      this.table.rows.forEach((row: any, i: any) => {
         row.splice(colIndex, 0, values[i]);
       });
     }
   }
 
-  removeColumns(colIndex, count = 1) {
+  removeColumns(colIndex: any, count = 1) {
     // Remove a column with data
     this.cacheState();
 
     this.table.columns.splice(colIndex, count);
-    this.table.rows.forEach(row => {
+    this.table.rows.forEach((row: any) => {
       row.splice(colIndex, count);
     });
   }
 
-  _assign(target, prop, value) {
+  _assign(target: any, prop: any, value: any) {
     this.cacheState();
     target[prop] = value;
   }
@@ -413,9 +413,10 @@ class Table {
   }
 
   get displayName() {
-    return this.table.displyName || this.table.name;
+    return this.table.displayName || this.table.name;
   }
-  set displayNamename(value) {
+
+  set displayName(value: string) {
     this.table.displayName = value;
   }
 

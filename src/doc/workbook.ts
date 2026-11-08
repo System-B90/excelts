@@ -75,7 +75,7 @@ class Workbook {
     return this._worksheets.length || 1;
   }
 
-  addWorksheet(name, options) {
+  addWorksheet(name: any, options: any) {
     const id = this.nextId;
 
     // if options is a color, call it tabColor (and signal deprecated message)
@@ -103,7 +103,7 @@ class Workbook {
       }
     }
 
-    const lastOrderNo = this._worksheets.reduce((acc, ws) => ((ws && ws.orderNo) > acc ? ws.orderNo : acc), 0);
+    const lastOrderNo = this._worksheets.reduce((acc: any, ws: any) => ((ws && ws.orderNo) > acc ? ws.orderNo : acc), 0);
     const worksheetOptions = Object.assign({}, options, {
       id,
       name,
@@ -117,18 +117,18 @@ class Workbook {
     return worksheet;
   }
 
-  removeWorksheetEx(worksheet) {
+  removeWorksheetEx(worksheet: any) {
     delete this._worksheets[worksheet.id];
   }
 
-  removeWorksheet(id) {
+  removeWorksheet(id: any) {
     const worksheet = this.getWorksheet(id);
     if (worksheet) {
       worksheet.destroy();
     }
   }
 
-  getWorksheet(id) {
+  getWorksheet(id: any) {
     if (id === undefined) {
       return this._worksheets.find(Boolean);
     }
@@ -136,7 +136,7 @@ class Workbook {
       return this._worksheets[id];
     }
     if (typeof id === 'string') {
-      return this._worksheets.find(worksheet => worksheet && worksheet.name === id);
+      return this._worksheets.find((worksheet: any) => worksheet && worksheet.name === id);
     }
     return undefined;
   }
@@ -145,12 +145,12 @@ class Workbook {
     // return a clone of _worksheets
     return this._worksheets
       .slice(1)
-      .sort((a, b) => a.orderNo - b.orderNo)
+      .sort((a: any, b: any) => a.orderNo - b.orderNo)
       .filter(Boolean);
   }
 
-  eachSheet(iteratee) {
-    this.worksheets.forEach(sheet => {
+  eachSheet(iteratee: any) {
+    this.worksheets.forEach((sheet: any) => {
       iteratee(sheet, sheet.id);
     });
   }
@@ -164,14 +164,14 @@ class Workbook {
     this._themes = undefined;
   }
 
-  addImage(image) {
+  addImage(image: any) {
     // TODO:  validation?
     const id = this.media.length;
     this.media.push(Object.assign({}, image, {type: 'image'}));
     return id;
   }
 
-  getImage(id) {
+  getImage(id: any) {
     return this.media[id];
   }
 
@@ -183,8 +183,8 @@ class Workbook {
       created: this.created,
       modified: this.modified,
       properties: this.properties,
-      worksheets: this.worksheets.map(worksheet => worksheet.model),
-      sheets: this.worksheets.map(ws => ws.model).filter(Boolean),
+      worksheets: this.worksheets.map((worksheet: any) => worksheet.model),
+      sheets: this.worksheets.map((ws: any) => ws.model).filter(Boolean),
       definedNames: this._definedNames.model,
       views: this.views,
       company: this.company,
@@ -223,9 +223,9 @@ class Workbook {
     this.properties = value.properties;
     this.calcProperties = value.calcProperties;
     this._worksheets = [];
-    value.worksheets.forEach(worksheetModel => {
+    value.worksheets.forEach((worksheetModel: any) => {
       const {id, name, state} = worksheetModel;
-      const orderNo = value.sheets && value.sheets.findIndex(ws => ws.id === id);
+      const orderNo = value.sheets && value.sheets.findIndex((ws: any) => ws.id === id);
       const worksheet = (this._worksheets[id] = new Worksheet({
         id,
         name,

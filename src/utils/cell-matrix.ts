@@ -5,30 +5,30 @@ class CellMatrix {
   template: any;
   sheets: any;
 
-  constructor(template?) {
+  constructor(template?: any) {
     this.template = template;
     this.sheets = {};
   }
 
-  addCell(addressStr) {
+  addCell(addressStr: any) {
     this.addCellEx(colCache.decodeEx(addressStr));
   }
 
-  getCell(addressStr) {
+  getCell(addressStr: any) {
     return this.findCellEx(colCache.decodeEx(addressStr), true);
   }
 
-  findCell(addressStr) {
+  findCell(addressStr: any) {
     return this.findCellEx(colCache.decodeEx(addressStr), false);
   }
 
-  findCellAt(sheetName, rowNumber, colNumber) {
+  findCellAt(sheetName: any, rowNumber: any, colNumber: any) {
     const sheet = this.sheets[sheetName];
     const row = sheet && sheet[rowNumber];
     return row && row[colNumber];
   }
 
-  addCellEx(address) {
+  addCellEx(address: any) {
     if (address.top) {
       for (let row = address.top; row <= address.bottom; row++) {
         for (let col = address.left; col <= address.right; col++) {
@@ -40,17 +40,17 @@ class CellMatrix {
     }
   }
 
-  getCellEx(address) {
+  getCellEx(address: any) {
     return this.findCellEx(address, true);
   }
 
-  findCellEx(address, create) {
+  findCellEx(address: any, create: any) {
     const sheet = this.findSheet(address, create);
     const row = this.findSheetRow(sheet, address, create);
     return this.findRowCell(row, address, create);
   }
 
-  getCellAt(sheetName, rowNumber, colNumber) {
+  getCellAt(sheetName: any, rowNumber: any, colNumber: any) {
     const sheet = this.sheets[sheetName] || (this.sheets[sheetName] = []);
     const row = sheet[rowNumber] || (sheet[rowNumber] = []);
     const cell =
@@ -64,7 +64,7 @@ class CellMatrix {
     return cell;
   }
 
-  removeCellEx(address) {
+  removeCellEx(address: any) {
     const sheet = this.findSheet(address);
     if (!sheet) {
       return;
@@ -76,12 +76,12 @@ class CellMatrix {
     delete row[address.col];
   }
 
-  forEachInSheet(sheetName, callback) {
+  forEachInSheet(sheetName: any, callback: any) {
     const sheet = this.sheets[sheetName];
     if (sheet) {
-      sheet.forEach((row, rowNumber) => {
+      sheet.forEach((row: any, rowNumber: any) => {
         if (row) {
-          row.forEach((cell, colNumber) => {
+          row.forEach((cell: any, colNumber: any) => {
             if (cell) {
               callback(cell, rowNumber, colNumber);
             }
@@ -91,21 +91,21 @@ class CellMatrix {
     }
   }
 
-  forEach(callback) {
+  forEach(callback: any) {
     _.each(this.sheets, (sheet, sheetName) => {
       this.forEachInSheet(sheetName, callback);
     });
   }
 
-  map(callback) {
-    const results = [];
-    this.forEach(cell => {
+  map(callback: any) {
+    const results: any = [];
+    this.forEach((cell: any) => {
       results.push(callback(cell));
     });
     return results;
   }
 
-  findSheet(address, create?) {
+  findSheet(address: any, create?: any) {
     const name = address.sheetName;
     if (this.sheets[name]) {
       return this.sheets[name];
@@ -116,7 +116,7 @@ class CellMatrix {
     return undefined;
   }
 
-  findSheetRow(sheet, address, create?) {
+  findSheetRow(sheet: any, address: any, create?: any) {
     const {row} = address;
     if (sheet && sheet[row]) {
       return sheet[row];
@@ -127,7 +127,7 @@ class CellMatrix {
     return undefined;
   }
 
-  findRowCell(row, address, create) {
+  findRowCell(row: any, address: any, create: any) {
     const {col} = address;
     if (row && row[col]) {
       return row[col];
@@ -140,7 +140,7 @@ class CellMatrix {
     return undefined;
   }
 
-  spliceRows(sheetName, start, numDelete, numInsert) {
+  spliceRows(sheetName: any, start: any, numDelete: any, numInsert: any) {
     const sheet = this.sheets[sheetName];
     if (sheet) {
       const inserts = [];
@@ -151,10 +151,10 @@ class CellMatrix {
     }
   }
 
-  spliceColumns(sheetName, start, numDelete, numInsert) {
+  spliceColumns(sheetName: any, start: any, numDelete: any, numInsert: any) {
     const sheet = this.sheets[sheetName];
     if (sheet) {
-      const inserts = [];
+      const inserts: any = [];
       for (let i = 0; i < numInsert; i++) {
         inserts.push(null);
       }

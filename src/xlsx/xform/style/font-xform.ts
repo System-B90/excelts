@@ -22,7 +22,7 @@ class FontXform extends BaseXform {
   parser: any;
   model: any;
 
-  constructor(options?) {
+  constructor(options?: any) {
     super();
 
     this.options = options || FontXform.OPTIONS;

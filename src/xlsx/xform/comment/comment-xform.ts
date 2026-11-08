@@ -56,7 +56,7 @@ class CommentXform extends BaseXform {
     });
     xmlStream.openNode('text');
     if (model && model.note && model.note.texts) {
-      model.note.texts.forEach(text => {
+      model.note.texts.forEach((text: any) => {
         this.richTextXform.render(xmlStream, text);
       });
     }

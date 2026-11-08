@@ -25,7 +25,7 @@ class RelationshipsXform extends BaseXform {
     xmlStream.openXml(XmlStream.StdDocAttributes);
     xmlStream.openNode('Relationships', RelationshipsXform.RELATIONSHIPS_ATTRIBUTES);
 
-    model.forEach(relationship => {
+    model.forEach((relationship: any) => {
       this.map.Relationship.render(xmlStream, relationship);
     });
 

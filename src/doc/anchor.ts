@@ -9,7 +9,7 @@ class Anchor {
   nativeRow: any;
   nativeRowOff: any;
 
-  constructor(worksheet, address?, offset = 0) {
+  constructor(worksheet: any, address?: any, offset = 0) {
     this.worksheet = worksheet;
 
     if (!address) {
@@ -39,7 +39,7 @@ class Anchor {
     }
   }
 
-  static asInstance(model) {
+  static asInstance(model: any) {
     return model instanceof Anchor || model == null ? model : new Anchor(model);
   }
 

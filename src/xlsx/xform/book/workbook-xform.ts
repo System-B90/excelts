@@ -57,11 +57,11 @@ class WorkbookXform extends BaseXform {
     model.sheets = model.worksheets;
 
     // collate all the print areas from all of the sheets and add them to the defined names
-    const printAreas = [];
+    const printAreas: any = [];
     let index = 0; // sheets is sparse array - calc index manually
-    model.sheets.forEach(sheet => {
+    model.sheets.forEach((sheet: any) => {
       if (sheet.pageSetup && sheet.pageSetup.printArea) {
-        sheet.pageSetup.printArea.split('&&').forEach(printArea => {
+        sheet.pageSetup.printArea.split('&&').forEach((printArea: any) => {
           const printAreaComponents = printArea.split(':');
           const definedName = {
             name: '_xlnm.Print_Area',
@@ -102,7 +102,7 @@ class WorkbookXform extends BaseXform {
       model.definedNames = model.definedNames.concat(printAreas);
     }
 
-    (model.media || []).forEach((medium, i) => {
+    (model.media || []).forEach((medium: any, i: any) => {
       // assign name
       medium.name = medium.type + (i + 1);
     });
@@ -172,17 +172,17 @@ class WorkbookXform extends BaseXform {
   }
 
   reconcile(model: XformModel) {
-    const rels = (model.workbookRels || []).reduce((map, rel) => {
+    const rels = (model.workbookRels || []).reduce((map: any, rel: any) => {
       map[rel.Id] = rel;
       return map;
     }, {});
 
     // reconcile sheet ids, rIds and names
-    const worksheets = [];
+    const worksheets: any = [];
     let worksheet;
     let index = 0;
 
-    (model.sheets || []).forEach(sheet => {
+    (model.sheets || []).forEach((sheet: any) => {
       const rel = rels[sheet.rId];
       if (!rel) {
         return;
@@ -204,7 +204,7 @@ class WorkbookXform extends BaseXform {
     });
 
     // reconcile print areas
-    const definedNames = [];
+    const definedNames: any = [];
     _.each(model.definedNames, definedName => {
       if (definedName.name === '_xlnm.Print_Area') {
         worksheet = worksheets[definedName.localSheetId];
@@ -251,7 +251,7 @@ class WorkbookXform extends BaseXform {
     model.definedNames = definedNames;
 
     // used by sheets to build their image models
-    model.media.forEach((media, i) => {
+    model.media.forEach((media: any, i: any) => {
       media.index = i;
     });
   }

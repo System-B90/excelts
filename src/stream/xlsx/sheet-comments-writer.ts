@@ -15,7 +15,7 @@ class SheetCommentsWriter {
   vmlRelId: any;
   startedData: any;
 
-  constructor(worksheet, sheetRelsWriter, options) {
+  constructor(worksheet: any, sheetRelsWriter: any, options: any) {
     // in a workbook, each sheet will have a number
     this.id = options.id;
     this.count = 0;
@@ -81,7 +81,7 @@ class SheetCommentsWriter {
     );
   }
 
-  _writeComment(comment, index) {
+  _writeComment(comment: any, index: any) {
     const commentXform = new CommentXform();
     const commentsXmlStream = new XmlStream();
     commentXform.render(commentsXmlStream, comment);
@@ -98,7 +98,7 @@ class SheetCommentsWriter {
     this.vmlStream.write('</xml>');
   }
 
-  addComments(comments) {
+  addComments(comments: any) {
     if (comments && comments.length) {
       if (!this.startedData) {
         this._worksheet.comments = [];
@@ -108,11 +108,11 @@ class SheetCommentsWriter {
         this.startedData = true;
       }
 
-      comments.forEach(item => {
+      comments.forEach((item: any) => {
         item.refAddress = colCache.decodeAddress(item.ref);
       });
 
-      comments.forEach(comment => {
+      comments.forEach((comment: any) => {
         this._writeComment(comment, this.count);
         this.count += 1;
       });
