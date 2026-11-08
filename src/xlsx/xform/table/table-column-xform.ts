@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XformOptions, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class TableColumnXform extends BaseXform {
   model: any;
@@ -7,11 +8,11 @@ class TableColumnXform extends BaseXform {
     return 'tableColumn';
   }
 
-  prepare(model, options) {
+  prepare(model: XformModel, options: XformOptions) {
     model.id = options.index + 1;
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.leafNode(this.tag, {
       id: model.id.toString(),
       name: model.name,
@@ -22,7 +23,7 @@ class TableColumnXform extends BaseXform {
     return true;
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (node.name === this.tag) {
       const {attributes} = node;
       this.model = {

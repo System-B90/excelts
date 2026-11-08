@@ -1,7 +1,8 @@
 import _ from "../../../utils/under-dash";
 import defaultNumFormats from "../../defaultnumformats";
 
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 function hashDefaultFormats() {
   const hash = {};
@@ -17,11 +18,19 @@ const defaultFmtHash = hashDefaultFormats();
 
 // NumFmt encapsulates translation between number format and xlsx
 class NumFmtXform extends BaseXform {
+  static getDefaultFmtCode = function getDefaultFmtCode(numFmtId) {
+    return defaultNumFormats[numFmtId] && defaultNumFormats[numFmtId].f;
+  };
+
+  static getDefaultFmtId = function getDefaultFmtId(formatCode) {
+    return defaultFmtHash[formatCode];
+  };
+
   id: any;
   formatCode: any;
   model: any;
 
-  constructor(id, formatCode) {
+  constructor(id?, formatCode?) {
     super();
 
     this.id = id;
@@ -32,11 +41,11 @@ class NumFmtXform extends BaseXform {
     return 'numFmt';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.leafNode('numFmt', {numFmtId: model.id, formatCode: model.formatCode});
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     switch (node.name) {
       case 'numFmt':
         this.model = {
@@ -55,13 +64,5 @@ class NumFmtXform extends BaseXform {
     return false;
   }
 }
-
-NumFmtXform.getDefaultFmtId = function getDefaultFmtId(formatCode) {
-  return defaultFmtHash[formatCode];
-};
-
-NumFmtXform.getDefaultFmtCode = function getDefaultFmtCode(numFmtId) {
-  return defaultNumFormats[numFmtId] && defaultNumFormats[numFmtId].f;
-};
 
 export default NumFmtXform;

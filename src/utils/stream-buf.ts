@@ -306,8 +306,8 @@ class StreamBuf {
     this.corked = false;
     this._flush();
   }
-  end(chunk, encoding, callback) {
-    const writeComplete = error => {
+  end(chunk?, encoding?, callback?) {
+    const writeComplete = (error?: Error) => {
       if (error) {
         callback(error);
       } else {
@@ -331,7 +331,7 @@ class StreamBuf {
   // event end - no more data
   // event close - optional, indicates upstream close
   // event error - duh
-  read(size) {
+  read(size?) {
     let buffers;
     // read min(buffer, size || infinity)
     if (size) {

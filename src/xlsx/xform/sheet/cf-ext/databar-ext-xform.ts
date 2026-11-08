@@ -1,4 +1,5 @@
-import BaseXform from "../../base-xform";
+import BaseXform, { type XformModel } from "../../base-xform";
+import XmlStream from "../../../../utils/xml-stream";
 import CompositeXform from "../../composite-xform";
 
 import ColorXform from "../../style/color-xform";
@@ -38,7 +39,7 @@ class DatabarExtXform extends CompositeXform {
     return 'x14:dataBar';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openNode(this.tag, {
       minLength: BaseXform.toIntAttribute(model.minLength, 0, true),
       maxLength: BaseXform.toIntAttribute(model.maxLength, 100, true),

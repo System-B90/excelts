@@ -2,7 +2,7 @@
 import * as Enums from "../../../doc/enums";
 import XmlStream from "../../../utils/xml-stream";
 
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
 import StaticXform from "../static-xform";
 import ListXform from "../list-xform";
 import FontXform from "./font-xform";
@@ -19,13 +19,57 @@ const NUMFMT_BASE = 164;
 // StylesXform is used to generate and parse the styles.xml file
 // it manages the collections of fonts, number formats, alignments, etc
 class StylesXform extends BaseXform {
+  static Mock = StylesXformMock;
+
+  static STATIC_XFORMS = {
+    cellStyles: new StaticXform({
+      tag: 'cellStyles',
+      $: {count: 1},
+      c: [{tag: 'cellStyle', $: {name: 'Normal', xfId: 0, builtinId: 0}}],
+    }),
+    dxfs: new StaticXform({tag: 'dxfs', $: {count: 0}}),
+    tableStyles: new StaticXform({
+      tag: 'tableStyles',
+      $: {count: 0, defaultTableStyle: 'TableStyleMedium2', defaultPivotStyle: 'PivotStyleLight16'},
+    }),
+    extLst: new StaticXform({
+      tag: 'extLst',
+      c: [
+        {
+          tag: 'ext',
+          $: {
+            uri: '{EB79DEF2-80B8-43e5-95BD-54CBDDF9020C}',
+            'xmlns:x14': 'http://schemas.microsoft.com/office/spreadsheetml/2009/9/main',
+          },
+          c: [{tag: 'x14:slicerStyles', $: {defaultSlicerStyle: 'SlicerStyleLight1'}}],
+        },
+        {
+          tag: 'ext',
+          $: {
+            uri: '{9260A510-F301-46a8-8635-F512D64BE5F5}',
+            'xmlns:x15': 'http://schemas.microsoft.com/office/spreadsheetml/2010/11/main',
+          },
+          c: [{tag: 'x15:timelineStyles', $: {defaultTimelineStyle: 'TimeSlicerStyleLight1'}}],
+        },
+      ],
+    }),
+  };
+
+  static STYLESHEET_ATTRIBUTES = {
+    xmlns: 'http://schemas.openxmlformats.org/spreadsheetml/2006/main',
+    'xmlns:mc': 'http://schemas.openxmlformats.org/markup-compatibility/2006',
+    'mc:Ignorable': 'x14ac x16r2',
+    'xmlns:x14ac': 'http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac',
+    'xmlns:x16r2': 'http://schemas.microsoft.com/office/spreadsheetml/2015/02/main',
+  };
+
   map: any;
   index: any;
   model: any;
   weakMap: any;
   parser: any;
 
-  constructor(initialise) {
+  constructor(initialise?) {
     super();
 
     this.map = {
@@ -101,7 +145,7 @@ class StylesXform extends BaseXform {
     this.weakMap = new WeakMap();
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     model = model || this.model;
     //
     //   <fonts count="2" x14ac:knownFonts="1">
@@ -168,7 +212,7 @@ class StylesXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -186,13 +230,13 @@ class StylesXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.parser = undefined;
@@ -431,47 +475,6 @@ class StylesXform extends BaseXform {
   // =========================================================================
 }
 
-StylesXform.STYLESHEET_ATTRIBUTES = {
-  xmlns: 'http://schemas.openxmlformats.org/spreadsheetml/2006/main',
-  'xmlns:mc': 'http://schemas.openxmlformats.org/markup-compatibility/2006',
-  'mc:Ignorable': 'x14ac x16r2',
-  'xmlns:x14ac': 'http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac',
-  'xmlns:x16r2': 'http://schemas.microsoft.com/office/spreadsheetml/2015/02/main',
-};
-StylesXform.STATIC_XFORMS = {
-  cellStyles: new StaticXform({
-    tag: 'cellStyles',
-    $: {count: 1},
-    c: [{tag: 'cellStyle', $: {name: 'Normal', xfId: 0, builtinId: 0}}],
-  }),
-  dxfs: new StaticXform({tag: 'dxfs', $: {count: 0}}),
-  tableStyles: new StaticXform({
-    tag: 'tableStyles',
-    $: {count: 0, defaultTableStyle: 'TableStyleMedium2', defaultPivotStyle: 'PivotStyleLight16'},
-  }),
-  extLst: new StaticXform({
-    tag: 'extLst',
-    c: [
-      {
-        tag: 'ext',
-        $: {
-          uri: '{EB79DEF2-80B8-43e5-95BD-54CBDDF9020C}',
-          'xmlns:x14': 'http://schemas.microsoft.com/office/spreadsheetml/2009/9/main',
-        },
-        c: [{tag: 'x14:slicerStyles', $: {defaultSlicerStyle: 'SlicerStyleLight1'}}],
-      },
-      {
-        tag: 'ext',
-        $: {
-          uri: '{9260A510-F301-46a8-8635-F512D64BE5F5}',
-          'xmlns:x15': 'http://schemas.microsoft.com/office/spreadsheetml/2010/11/main',
-        },
-        c: [{tag: 'x15:timelineStyles', $: {defaultTimelineStyle: 'TimeSlicerStyleLight1'}}],
-      },
-    ],
-  }),
-};
-
 // the stylemanager mock acts like StyleManager except that it always returns 0 or {}
 class StylesXformMock extends StylesXform {
   model: any;
@@ -530,7 +533,5 @@ class StylesXformMock extends StylesXform {
     return {};
   }
 }
-
-StylesXform.Mock = StylesXformMock;
 
 export default StylesXform;

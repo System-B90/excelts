@@ -1,4 +1,5 @@
-import BaseXform from "../../base-xform";
+import BaseXform, { type XformModel } from "../../base-xform";
+import XmlStream from "../../../../utils/xml-stream";
 
 class FExtXform extends BaseXform {
   model: any;
@@ -7,7 +8,7 @@ class FExtXform extends BaseXform {
     return 'xm:f';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.leafNode(this.tag, null, model);
   }
 
@@ -15,11 +16,11 @@ class FExtXform extends BaseXform {
     this.model = '';
   }
 
-  parseText(text) {
+  parseText(text: string) {
     this.model += text;
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     return name !== this.tag;
   }
 }

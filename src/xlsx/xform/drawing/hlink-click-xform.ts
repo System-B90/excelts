@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class HLinkClickXform extends BaseXform {
   model: any;
@@ -7,7 +8,7 @@ class HLinkClickXform extends BaseXform {
     return 'a:hlinkClick';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     if (!(model.hyperlinks && model.hyperlinks.rId)) {
       return;
     }
@@ -18,7 +19,7 @@ class HLinkClickXform extends BaseXform {
     });
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     switch (node.name) {
       case this.tag:
         this.model = {

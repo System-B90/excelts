@@ -7,16 +7,22 @@ import StringXform from "../simple/string-xform";
 import UnderlineXform from "./underline-xform";
 
 import _ from "../../../utils/under-dash";
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 // Font encapsulates translation from font model to xlsx
 class FontXform extends BaseXform {
+  static OPTIONS = {
+    tagName: 'font',
+    fontNameTag: 'name',
+  };
+
   options: any;
   map: any;
   parser: any;
   model: any;
 
-  constructor(options) {
+  constructor(options?) {
     super();
 
     this.options = options || FontXform.OPTIONS;
@@ -47,7 +53,7 @@ class FontXform extends BaseXform {
     return this.options.tagName;
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     const {map} = this;
 
     xmlStream.openNode(this.options.tagName);
@@ -57,7 +63,7 @@ class FontXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -75,13 +81,13 @@ class FontXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser && !this.parser.parseClose(name)) {
       const item = this.map[name];
       if (this.parser.model) {
@@ -98,10 +104,5 @@ class FontXform extends BaseXform {
     }
   }
 }
-
-FontXform.OPTIONS = {
-  tagName: 'font',
-  fontNameTag: 'name',
-};
 
 export default FontXform;

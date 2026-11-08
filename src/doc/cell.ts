@@ -10,6 +10,8 @@ import Note from "./note";
 //  Manage/use and manipulate cell format either as local to cell or inherited from column or row.
 
 class Cell {
+  static Types = Enums.ValueType;
+
   _row: any;
   _column: any;
   _address: any;
@@ -363,7 +365,6 @@ class Cell {
     }
   }
 }
-Cell.Types = Enums.ValueType;
 
 // =============================================================================
 // Internal Value Types
@@ -1147,7 +1148,7 @@ const Value = {
     return p;
   }, []),
 
-  create(type, cell, value) {
+  create(type, cell, value?) {
     const T = this.types[type];
     if (!T) {
       throw new Error(`Could not create Value of type ${type}`);

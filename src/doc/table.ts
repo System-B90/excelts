@@ -75,7 +75,7 @@ class Table {
   table: any;
   _cache: any;
 
-  constructor(worksheet, table) {
+  constructor(worksheet?, table?) {
     this.worksheet = worksheet;
     if (table) {
       this.table = table;

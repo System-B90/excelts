@@ -1,11 +1,12 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 // Color encapsulates translation from color model to/from xlsx
 class ColorXform extends BaseXform {
   name: any;
   model: any;
 
-  constructor(name) {
+  constructor(name?) {
     super();
 
     // this.name controls the xm node name
@@ -16,7 +17,7 @@ class ColorXform extends BaseXform {
     return this.name;
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     if (model) {
       xmlStream.openNode(this.name);
       if (model.argb) {
@@ -37,7 +38,7 @@ class ColorXform extends BaseXform {
     return false;
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (node.name === this.name) {
       if (node.attributes.rgb) {
         this.model = {argb: node.attributes.rgb};

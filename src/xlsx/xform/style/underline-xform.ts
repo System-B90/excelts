@@ -1,9 +1,17 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class UnderlineXform extends BaseXform {
+  static Attributes = {
+    single: {},
+    double: {val: 'double'},
+    singleAccounting: {val: 'singleAccounting'},
+    doubleAccounting: {val: 'doubleAccounting'},
+  };
+
   model: any;
 
-  constructor(model) {
+  constructor(model?) {
     super();
 
     this.model = model;
@@ -13,7 +21,7 @@ class UnderlineXform extends BaseXform {
     return 'u';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     model = model || this.model;
 
     if (model === true) {
@@ -26,7 +34,7 @@ class UnderlineXform extends BaseXform {
     }
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (node.name === 'u') {
       this.model = node.attributes.val || true;
     }
@@ -38,12 +46,5 @@ class UnderlineXform extends BaseXform {
     return false;
   }
 }
-
-UnderlineXform.Attributes = {
-  single: {},
-  double: {val: 'double'},
-  singleAccounting: {val: 'singleAccounting'},
-  doubleAccounting: {val: 'doubleAccounting'},
-};
 
 export default UnderlineXform;

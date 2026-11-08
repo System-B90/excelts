@@ -1,10 +1,30 @@
 /* eslint-disable max-classes-per-file */
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 import utils from "../../../utils/utils";
 
 import ColorXform from "./color-xform";
 
 class EdgeXform extends BaseXform {
+  static validStyleValues = [
+    'thin',
+    'dashed',
+    'dotted',
+    'dashDot',
+    'hair',
+    'dashDotDot',
+    'slantDashDot',
+    'mediumDashed',
+    'mediumDashDotDot',
+    'mediumDashDot',
+    'medium',
+    'double',
+    'thick',
+  ].reduce((p, v) => {
+    p[v] = true;
+    return p;
+  }, {});
+
   name: any;
   map: any;
   model: any;
@@ -23,7 +43,7 @@ class EdgeXform extends BaseXform {
     return this.name;
   }
 
-  render(xmlStream, model, defaultColor) {
+  render(xmlStream: XmlStream, model: XformModel, defaultColor) {
     const color = (model && model.color) || defaultColor || this.defaultColor;
     xmlStream.openNode(this.name);
     if (model && model.style) {
@@ -35,7 +55,7 @@ class EdgeXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -61,13 +81,13 @@ class EdgeXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.parser = undefined;
@@ -92,25 +112,6 @@ class EdgeXform extends BaseXform {
   }
 }
 
-EdgeXform.validStyleValues = [
-  'thin',
-  'dashed',
-  'dotted',
-  'dashDot',
-  'hair',
-  'dashDotDot',
-  'slantDashDot',
-  'mediumDashed',
-  'mediumDashDotDot',
-  'mediumDashDot',
-  'medium',
-  'double',
-  'thick',
-].reduce((p, v) => {
-  p[v] = true;
-  return p;
-}, {});
-
 // Border encapsulates translation from border model to/from xlsx
 class BorderXform extends BaseXform {
   map: any;
@@ -131,7 +132,7 @@ class BorderXform extends BaseXform {
     };
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     const {color} = model;
     xmlStream.openNode('border');
     if (model.diagonal && model.diagonal.style) {
@@ -161,7 +162,7 @@ class BorderXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -182,13 +183,13 @@ class BorderXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.parser = undefined;
@@ -197,7 +198,7 @@ class BorderXform extends BaseXform {
     }
     if (name === 'border') {
       const model = (this.model = {});
-      const add = function(key, edgeModel, extensions) {
+      const add = function(key, edgeModel, extensions?) {
         if (edgeModel) {
           if (extensions) {
             Object.assign(edgeModel, extensions);

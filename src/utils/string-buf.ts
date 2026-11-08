@@ -6,7 +6,7 @@ class StringBuf {
   _inPos: any;
   _buffer: any;
 
-  constructor(options) {
+  constructor(options?) {
     this._buf = Buffer.alloc((options && options.size) || 16384);
     this._encoding = (options && options.encoding) || 'utf8';
 
@@ -38,7 +38,7 @@ class StringBuf {
     return this._buffer;
   }
 
-  reset(position) {
+  reset(position?) {
     position = position || 0;
     this._buffer = undefined;
     this._inPos = position;

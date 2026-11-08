@@ -63,7 +63,7 @@ class ZipWriter extends events.EventEmitter {
     return this.stream.isPaused();
   }
 
-  pipe(destination, options) {
+  pipe(destination, options?) {
     return this.stream.pipe(destination, options);
   }
 

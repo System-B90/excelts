@@ -1,4 +1,5 @@
-import BaseXform from "../../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../../base-xform";
+import XmlStream from "../../../../utils/xml-stream";
 
 class VmlPositionXform extends BaseXform {
   _model: any;
@@ -13,7 +14,7 @@ class VmlPositionXform extends BaseXform {
     return this._model && this._model.tag;
   }
 
-  render(xmlStream, model, type) {
+  render(xmlStream: XmlStream, model: XformModel, type) {
     if (model === type[2]) {
       xmlStream.leafNode(this.tag);
     } else if (this.tag === 'x:SizeWithCells' && model === type[1]) {
@@ -21,7 +22,7 @@ class VmlPositionXform extends BaseXform {
     }
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     switch (node.name) {
       case this.tag:
         this.model = {};

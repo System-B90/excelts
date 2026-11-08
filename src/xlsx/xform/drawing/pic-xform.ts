@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XformOptions, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 import StaticXform from "../static-xform";
 
 import BlipFillXform from "./blip-fill-xform";
@@ -24,11 +25,11 @@ class PicXform extends BaseXform {
     return 'xdr:pic';
   }
 
-  prepare(model, options) {
+  prepare(model: XformModel, options: XformOptions) {
     model.index = options.index + 1;
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openNode(this.tag);
 
     this.map['xdr:nvPicPr'].render(xmlStream, model);
@@ -38,7 +39,7 @@ class PicXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -59,7 +60,7 @@ class PicXform extends BaseXform {
 
   parseText() {}
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.mergeModel(this.parser.model);

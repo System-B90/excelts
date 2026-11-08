@@ -135,7 +135,7 @@ class Row {
   }
 
   // Iterate over all non-null cells in this row
-  eachCell(options, iteratee) {
+  eachCell(options, iteratee?) {
     if (!iteratee) {
       iteratee = options;
       options = null;

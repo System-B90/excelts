@@ -570,7 +570,7 @@ class Worksheet {
   }
 
   // iterate over every row in the worksheet, including maybe empty rows
-  eachRow(options, iteratee) {
+  eachRow(options, iteratee?) {
     if (!iteratee) {
       iteratee = options;
       options = undefined;
@@ -631,7 +631,7 @@ class Worksheet {
     this._mergeCellsInternal(dimensions, true);
   }
 
-  _mergeCellsInternal(dimensions, ignoreStyle) {
+  _mergeCellsInternal(dimensions, ignoreStyle?) {
     // check cells aren't already merged
     _.each(this._merges, merge => {
       if (merge.intersects(dimensions)) {

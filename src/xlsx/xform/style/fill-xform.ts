@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 import ColorXform from "./color-xform";
 
@@ -20,14 +21,14 @@ class StopXform extends BaseXform {
     return 'stop';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openNode('stop');
     xmlStream.addAttribute('position', model.position);
     this.map.color.render(xmlStream, model.color);
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -49,7 +50,7 @@ class StopXform extends BaseXform {
 
   parseText() {}
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.model.color = this.parser.model;
@@ -83,7 +84,7 @@ class PatternFillXform extends BaseXform {
     return 'patternFill';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openNode('patternFill');
     xmlStream.addAttribute('patternType', model.pattern);
     if (model.fgColor) {
@@ -95,7 +96,7 @@ class PatternFillXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -117,13 +118,13 @@ class PatternFillXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         if (this.parser.model) {
@@ -174,7 +175,7 @@ class GradientFillXform extends BaseXform {
     return 'gradientFill';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openNode('gradientFill');
     switch (model.gradient) {
       case 'angle':
@@ -214,7 +215,7 @@ class GradientFillXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -253,13 +254,13 @@ class GradientFillXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.model.stops.push(this.parser.model);
@@ -273,6 +274,39 @@ class GradientFillXform extends BaseXform {
 
 // Fill encapsulates translation from fill model to/from xlsx
 class FillXform extends BaseXform {
+  static GradientFillXform = GradientFillXform;
+
+  static PatternFillXform = PatternFillXform;
+
+  static StopXform = StopXform;
+
+  static validPatternValues = [
+    'none',
+    'solid',
+    'darkVertical',
+    'darkGray',
+    'mediumGray',
+    'lightGray',
+    'gray125',
+    'gray0625',
+    'darkHorizontal',
+    'darkVertical',
+    'darkDown',
+    'darkUp',
+    'darkGrid',
+    'darkTrellis',
+    'lightHorizontal',
+    'lightVertical',
+    'lightDown',
+    'lightUp',
+    'lightGrid',
+    'lightTrellis',
+    'lightGrid',
+  ].reduce((p, v) => {
+    p[v] = true;
+    return p;
+  }, {});
+
   map: any;
   model: any;
   parser: any;
@@ -290,7 +324,7 @@ class FillXform extends BaseXform {
     return 'fill';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.addRollback();
     xmlStream.openNode('fill');
     switch (model.type) {
@@ -308,7 +342,7 @@ class FillXform extends BaseXform {
     xmlStream.commit();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -327,13 +361,13 @@ class FillXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.model = this.parser.model;
@@ -349,36 +383,5 @@ class FillXform extends BaseXform {
     return FillXform.validPatternValues[value];
   }
 }
-
-FillXform.validPatternValues = [
-  'none',
-  'solid',
-  'darkVertical',
-  'darkGray',
-  'mediumGray',
-  'lightGray',
-  'gray125',
-  'gray0625',
-  'darkHorizontal',
-  'darkVertical',
-  'darkDown',
-  'darkUp',
-  'darkGrid',
-  'darkTrellis',
-  'lightHorizontal',
-  'lightVertical',
-  'lightDown',
-  'lightUp',
-  'lightGrid',
-  'lightTrellis',
-  'lightGrid',
-].reduce((p, v) => {
-  p[v] = true;
-  return p;
-}, {});
-
-FillXform.StopXform = StopXform;
-FillXform.PatternFillXform = PatternFillXform;
-FillXform.GradientFillXform = GradientFillXform;
 
 export default FillXform;

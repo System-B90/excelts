@@ -1,5 +1,6 @@
 import utils from "../../../utils/utils";
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XformOptions, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class ColXform extends BaseXform {
   model: any;
@@ -8,14 +9,14 @@ class ColXform extends BaseXform {
     return 'col';
   }
 
-  prepare(model, options) {
+  prepare(model: XformModel, options: XformOptions) {
     const styleId = options.styles.addStyleModel(model.style || {});
     if (styleId) {
       model.styleId = styleId;
     }
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openNode('col');
     xmlStream.addAttribute('min', model.min);
     xmlStream.addAttribute('max', model.max);
@@ -41,7 +42,7 @@ class ColXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (node.name === 'col') {
       const model = (this.model = {
         min: parseInt(node.attributes.min || '0', 10),
@@ -77,7 +78,7 @@ class ColXform extends BaseXform {
     return false;
   }
 
-  reconcile(model, options) {
+  reconcile(model: XformModel, options: XformOptions) {
     // reconcile column styles
     if (model.styleId) {
       model.style = options.styles.getStyleModel(model.styleId);

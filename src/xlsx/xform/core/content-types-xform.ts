@@ -1,11 +1,15 @@
 import XmlStream from "../../../utils/xml-stream";
 
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel } from "../base-xform";
 
 // used for rendering the [Content_Types].xml file
 // not used for parsing
 class ContentTypesXform extends BaseXform {
-  render(xmlStream, model) {
+  static PROPERTY_ATTRIBUTES = {
+    xmlns: 'http://schemas.openxmlformats.org/package/2006/content-types',
+  };
+
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openXml(XmlStream.StdDocAttributes);
 
     xmlStream.openNode('Types', ContentTypesXform.PROPERTY_ATTRIBUTES);
@@ -112,9 +116,5 @@ class ContentTypesXform extends BaseXform {
     return false;
   }
 }
-
-ContentTypesXform.PROPERTY_ATTRIBUTES = {
-  xmlns: 'http://schemas.openxmlformats.org/package/2006/content-types',
-};
 
 export default ContentTypesXform;

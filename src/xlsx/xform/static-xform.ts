@@ -39,7 +39,7 @@ class StaticXform extends BaseXform {
     this._model = model;
   }
 
-  render(xmlStream) {
+  render(xmlStream: XmlStream) {
     if (!this._xml) {
       const stream = new XmlStream();
       build(stream, this._model);
@@ -54,7 +54,7 @@ class StaticXform extends BaseXform {
 
   parseText() {}
 
-  parseClose(name) {
+  parseClose(name: string) {
     switch (name) {
       case this._model.tag:
         return false;

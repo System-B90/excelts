@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 const isDefined = attr => typeof attr !== 'undefined';
 
@@ -9,7 +10,7 @@ class OutlinePropertiesXform extends BaseXform {
     return 'outlinePr';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     if (model && (isDefined(model.summaryBelow) || isDefined(model.summaryRight))) {
       xmlStream.leafNode(this.tag, {
         summaryBelow: isDefined(model.summaryBelow) ? Number(model.summaryBelow) : undefined,
@@ -20,7 +21,7 @@ class OutlinePropertiesXform extends BaseXform {
     return false;
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (node.name === this.tag) {
       this.model = {
         summaryBelow: isDefined(node.attributes.summaryBelow)

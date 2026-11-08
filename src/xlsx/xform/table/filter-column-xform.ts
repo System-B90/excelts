@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XformOptions, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 import ListXform from "../list-xform";
 
 import CustomFilterXform from "./custom-filter-xform";
@@ -32,11 +33,11 @@ class FilterColumnXform extends BaseXform {
     return 'filterColumn';
   }
 
-  prepare(model, options) {
+  prepare(model: XformModel, options: XformOptions) {
     model.colId = options.index.toString();
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     if (model.customFilters) {
       xmlStream.openNode(this.tag, {
         colId: model.colId,
@@ -55,7 +56,7 @@ class FilterColumnXform extends BaseXform {
     return true;
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -79,7 +80,7 @@ class FilterColumnXform extends BaseXform {
 
   parseText() {}
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.parser = undefined;

@@ -9,7 +9,7 @@ class Anchor {
   nativeRow: any;
   nativeRowOff: any;
 
-  constructor(worksheet, address, offset = 0) {
+  constructor(worksheet, address?, offset = 0) {
     this.worksheet = worksheet;
 
     if (!address) {

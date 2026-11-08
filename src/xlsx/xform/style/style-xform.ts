@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 import AlignmentXform from "./alignment-xform";
 import ProtectionXform from "./protection-xform";
@@ -15,7 +16,7 @@ class StyleXform extends BaseXform {
   model: any;
   parser: any;
 
-  constructor(options) {
+  constructor(options?) {
     super();
 
     this.xfId = !!(options && options.xfId);
@@ -29,7 +30,7 @@ class StyleXform extends BaseXform {
     return 'xf';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openNode('xf', {
       numFmtId: model.numFmtId || 0,
       fontId: model.fontId || 0,
@@ -74,7 +75,7 @@ class StyleXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -105,13 +106,13 @@ class StyleXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         if (this.map.protection === this.parser) {

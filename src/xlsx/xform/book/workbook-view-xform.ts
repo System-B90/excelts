@@ -1,9 +1,10 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class WorkbookViewXform extends BaseXform {
   model: any;
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     const attributes = {
       xWindow: model.x || 0,
       yWindow: model.y || 0,
@@ -18,7 +19,7 @@ class WorkbookViewXform extends BaseXform {
     xmlStream.leafNode('workbookView', attributes);
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (node.name === 'workbookView') {
       const model = (this.model = {});
       const addS = function(name, value, dflt) {

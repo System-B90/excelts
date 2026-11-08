@@ -1,13 +1,14 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class RelationshipXform extends BaseXform {
   model: any;
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.leafNode('Relationship', model);
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     switch (node.name) {
       case 'Relationship':
         this.model = node.attributes;

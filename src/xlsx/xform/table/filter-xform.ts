@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class FilterXform extends BaseXform {
   model: any;
@@ -7,13 +8,13 @@ class FilterXform extends BaseXform {
     return 'filter';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.leafNode(this.tag, {
       val: model.val,
     });
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (node.name === this.tag) {
       this.model = {
         val: node.attributes.val,

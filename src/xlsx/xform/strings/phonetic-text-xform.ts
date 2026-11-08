@@ -1,7 +1,8 @@
 import TextXform from "./text-xform";
 import RichTextXform from "./rich-text-xform";
 
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 // <rPh sb="0" eb="1">
 //   <t>(its pronounciation in KATAKANA)</t>
@@ -25,7 +26,7 @@ class PhoneticTextXform extends BaseXform {
     return 'rPh';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openNode(this.tag, {
       sb: model.sb || 0,
       eb: model.eb || 0,
@@ -41,7 +42,7 @@ class PhoneticTextXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     const {name} = node;
     if (this.parser) {
       this.parser.parseOpen(node);
@@ -62,13 +63,13 @@ class PhoneticTextXform extends BaseXform {
     return false;
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         switch (name) {

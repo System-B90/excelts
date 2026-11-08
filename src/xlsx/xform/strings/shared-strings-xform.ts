@@ -1,5 +1,5 @@
 import XmlStream from "../../../utils/xml-stream";
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
 import SharedStringXform from "./shared-string-xform";
 
 class SharedStringsXform extends BaseXform {
@@ -9,7 +9,7 @@ class SharedStringsXform extends BaseXform {
   _sharedStringXform: any;
   parser: any;
 
-  constructor(model) {
+  constructor(model?) {
     super();
 
     this.model = model || {
@@ -72,7 +72,7 @@ class SharedStringsXform extends BaseXform {
   //   <si><r><rPr></rPr><t></t></r></si>
   // </sst>
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     model = model || this._values;
     xmlStream.openXml(XmlStream.StdDocAttributes);
 
@@ -89,7 +89,7 @@ class SharedStringsXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -106,13 +106,13 @@ class SharedStringsXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.model.values.push(this.parser.model);

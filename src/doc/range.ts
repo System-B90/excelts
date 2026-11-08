@@ -8,7 +8,7 @@ class Range {
     this.decode(arguments);
   }
 
-  setTLBR(t, l, b, r, s) {
+  setTLBR(t, l, b?, r?, s?) {
     if (arguments.length < 4) {
       // setTLBR(tl, br, s)
       const tl = colCache.decodeAddress(t);

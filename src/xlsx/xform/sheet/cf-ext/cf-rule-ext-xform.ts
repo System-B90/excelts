@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
-import BaseXform from "../../base-xform";
+import BaseXform, { type XformModel } from "../../base-xform";
+import XmlStream from "../../../../utils/xml-stream";
 import CompositeXform from "../../composite-xform";
 
 import DatabarExtXform from "./databar-ext-xform";
@@ -42,13 +43,13 @@ class CfRuleExtXform extends CompositeXform {
     return false;
   }
 
-  prepare(model) {
+  prepare(model: XformModel) {
     if (CfRuleExtXform.isExt(model)) {
       model.x14Id = `{${uuidv4()}}`.toUpperCase();
     }
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     if (!CfRuleExtXform.isExt(model)) {
       return;
     }

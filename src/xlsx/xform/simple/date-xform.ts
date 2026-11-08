@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class DateXform extends BaseXform {
   tag: any;
@@ -32,7 +33,7 @@ class DateXform extends BaseXform {
       };
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     if (model) {
       xmlStream.openNode(this.tag);
       if (this.attrs) {
@@ -47,7 +48,7 @@ class DateXform extends BaseXform {
     }
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (node.name === this.tag) {
       if (this.attr) {
         this.model = this._parse(node.attributes[this.attr]);
@@ -57,7 +58,7 @@ class DateXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (!this.attr) {
       this.text.push(text);
     }

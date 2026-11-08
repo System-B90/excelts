@@ -1,6 +1,6 @@
 import XmlStream from "../../../utils/xml-stream";
 
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XformOptions, type XmlNode } from "../base-xform";
 import ListXform from "../list-xform";
 
 import AutoFilterXform from "./auto-filter-xform";
@@ -8,6 +8,15 @@ import TableColumnXform from "./table-column-xform";
 import TableStyleInfoXform from "./table-style-info-xform";
 
 class TableXform extends BaseXform {
+  static TABLE_ATTRIBUTES = {
+    xmlns: 'http://schemas.openxmlformats.org/spreadsheetml/2006/main',
+    'xmlns:mc': 'http://schemas.openxmlformats.org/markup-compatibility/2006',
+    'mc:Ignorable': 'xr xr3',
+    'xmlns:xr': 'http://schemas.microsoft.com/office/spreadsheetml/2014/revision',
+    'xmlns:xr3': 'http://schemas.microsoft.com/office/spreadsheetml/2016/revision3',
+    // 'xr:uid': '{00000000-000C-0000-FFFF-FFFF00000000}',
+  };
+
   map: any;
   model: any;
   parser: any;
@@ -27,7 +36,7 @@ class TableXform extends BaseXform {
     };
   }
 
-  prepare(model, options) {
+  prepare(model: XformModel, options: XformOptions) {
     this.map.autoFilter.prepare(model);
     this.map.tableColumns.prepare(model.columns, options);
   }
@@ -36,7 +45,7 @@ class TableXform extends BaseXform {
     return 'table';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openXml(XmlStream.StdDocAttributes);
     xmlStream.openNode(this.tag, {
       ...TableXform.TABLE_ATTRIBUTES,
@@ -56,7 +65,7 @@ class TableXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -83,13 +92,13 @@ class TableXform extends BaseXform {
     return true;
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.parser = undefined;
@@ -113,7 +122,7 @@ class TableXform extends BaseXform {
     }
   }
 
-  reconcile(model, options) {
+  reconcile(model: XformModel, options: XformOptions) {
     // fetch the dfxs from styles
     model.columns.forEach(column => {
       if (column.dxfId !== undefined) {
@@ -122,14 +131,5 @@ class TableXform extends BaseXform {
     });
   }
 }
-
-TableXform.TABLE_ATTRIBUTES = {
-  xmlns: 'http://schemas.openxmlformats.org/spreadsheetml/2006/main',
-  'xmlns:mc': 'http://schemas.openxmlformats.org/markup-compatibility/2006',
-  'mc:Ignorable': 'xr xr3',
-  'xmlns:xr': 'http://schemas.microsoft.com/office/spreadsheetml/2014/revision',
-  'xmlns:xr3': 'http://schemas.microsoft.com/office/spreadsheetml/2016/revision3',
-  // 'xr:uid': '{00000000-000C-0000-FFFF-FFFF00000000}',
-};
 
 export default TableXform;

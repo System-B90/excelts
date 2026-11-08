@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 import colCache from "../../../utils/col-cache";
 
 class DefinedNamesXform extends BaseXform {
@@ -7,7 +8,7 @@ class DefinedNamesXform extends BaseXform {
   _parsedText: any;
   model: any;
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     // <definedNames>
     //   <definedName name="name">name.ranges.join(',')</definedName>
     //   <definedName name="_xlnm.Print_Area" localSheetId="0">name.ranges.join(',')</definedName>
@@ -20,7 +21,7 @@ class DefinedNamesXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     switch (node.name) {
       case 'definedName':
         this._parsedName = node.attributes.name;
@@ -32,7 +33,7 @@ class DefinedNamesXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     this._parsedText.push(text);
   }
 

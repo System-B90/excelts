@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class VmlTextboxXform extends BaseXform {
   model: any;
@@ -17,7 +18,7 @@ class VmlTextboxXform extends BaseXform {
     });
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     const attributes = {
       style: 'mso-direction-alt:auto',
     };
@@ -39,7 +40,7 @@ class VmlTextboxXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     switch (node.name) {
       case this.tag:
         this.model = {
@@ -53,7 +54,7 @@ class VmlTextboxXform extends BaseXform {
 
   parseText() {}
 
-  parseClose(name) {
+  parseClose(name: string) {
     switch (name) {
       case this.tag:
         return false;

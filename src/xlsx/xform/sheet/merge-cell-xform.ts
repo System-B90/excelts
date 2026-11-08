@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class MergeCellXform extends BaseXform {
   model: any;
@@ -7,11 +8,11 @@ class MergeCellXform extends BaseXform {
     return 'mergeCell';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.leafNode('mergeCell', {ref: model});
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (node.name === 'mergeCell') {
       this.model = node.attributes.ref;
       return true;

@@ -1,7 +1,8 @@
 import * as Enums from "../../../doc/enums";
 
 import utils from "../../../utils/utils";
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 const validation = {
   horizontalValues: [
@@ -103,7 +104,7 @@ class AlignmentXform extends BaseXform {
     return 'alignment';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.addRollback();
     xmlStream.openNode('alignment');
 
@@ -131,7 +132,7 @@ class AlignmentXform extends BaseXform {
     }
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     const model = {};
 
     let valid = false;

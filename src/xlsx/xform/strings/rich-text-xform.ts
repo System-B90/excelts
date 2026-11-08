@@ -1,7 +1,8 @@
 import TextXform from "./text-xform";
 import FontXform from "../style/font-xform";
 
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 // <r>
 //   <rPr>
@@ -15,12 +16,17 @@ import BaseXform from "../base-xform";
 // </r>
 
 class RichTextXform extends BaseXform {
+  static FONT_OPTIONS = {
+    tagName: 'rPr',
+    fontNameTag: 'rFont',
+  };
+
   model: any;
   _textXform: any;
   _fontXform: any;
   parser: any;
 
-  constructor(model) {
+  constructor(model?) {
     super();
 
     this.model = model;
@@ -38,7 +44,7 @@ class RichTextXform extends BaseXform {
     return this._fontXform || (this._fontXform = new FontXform(RichTextXform.FONT_OPTIONS));
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     model = model || this.model;
 
     xmlStream.openNode('r');
@@ -49,7 +55,7 @@ class RichTextXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -71,13 +77,13 @@ class RichTextXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     switch (name) {
       case 'r':
         return false;
@@ -97,10 +103,5 @@ class RichTextXform extends BaseXform {
     }
   }
 }
-
-RichTextXform.FONT_OPTIONS = {
-  tagName: 'rPr',
-  fontNameTag: 'rFont',
-};
 
 export default RichTextXform;

@@ -1,7 +1,8 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class AppTitlesOfPartsXform extends BaseXform {
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openNode('TitlesOfParts');
     xmlStream.openNode('vt:vector', {size: model.length, baseType: 'lpstr'});
 
@@ -13,14 +14,14 @@ class AppTitlesOfPartsXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     // no parsing
     return node.name === 'TitlesOfParts';
   }
 
   parseText() {}
 
-  parseClose(name) {
+  parseClose(name: string) {
     return name !== 'TitlesOfParts';
   }
 }

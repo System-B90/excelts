@@ -20,7 +20,7 @@ class Column {
   _key: any;
   _outlineLevel: any;
 
-  constructor(worksheet, number, defn) {
+  constructor(worksheet, number, defn?) {
     this._worksheet = worksheet;
     this._number = number;
     if (defn !== false) {
@@ -174,7 +174,7 @@ class Column {
     return this.headers.length;
   }
 
-  eachCell(options, iteratee) {
+  eachCell(options, iteratee?) {
     const colNumber = this.number;
     if (!iteratee) {
       iteratee = options;
@@ -301,7 +301,7 @@ class Column {
     return cols.length ? cols : undefined;
   }
 
-  static fromModel(worksheet, cols) {
+  static fromModel(worksheet, cols?) {
     cols = cols || [];
     const columns = [];
     let count = 1;

@@ -1,11 +1,17 @@
 import XmlStream from "../../../utils/xml-stream";
 
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XformOptions, type XmlNode } from "../base-xform";
 import VmlShapeXform from "./vml-shape-xform";
 
 // This class is (currently) single purposed to insert the triangle
 // drawing icons on commented cells
 class VmlNotesXform extends BaseXform {
+  static DRAWING_ATTRIBUTES = {
+    'xmlns:v': 'urn:schemas-microsoft-com:vml',
+    'xmlns:o': 'urn:schemas-microsoft-com:office:office',
+    'xmlns:x': 'urn:schemas-microsoft-com:office:excel',
+  };
+
   map: any;
   model: any;
   parser: any;
@@ -21,7 +27,7 @@ class VmlNotesXform extends BaseXform {
     return 'xml';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openXml(XmlStream.StdDocAttributes);
     xmlStream.openNode(this.tag, VmlNotesXform.DRAWING_ATTRIBUTES);
 
@@ -46,7 +52,7 @@ class VmlNotesXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -68,13 +74,13 @@ class VmlNotesXform extends BaseXform {
     return true;
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.model.comments.push(this.parser.model);
@@ -91,7 +97,7 @@ class VmlNotesXform extends BaseXform {
     }
   }
 
-  reconcile(model, options) {
+  reconcile(model: XformModel, options: XformOptions) {
     model.anchors.forEach(anchor => {
       if (anchor.br) {
         this.map['xdr:twoCellAnchor'].reconcile(anchor, options);
@@ -101,11 +107,5 @@ class VmlNotesXform extends BaseXform {
     });
   }
 }
-
-VmlNotesXform.DRAWING_ATTRIBUTES = {
-  'xmlns:v': 'urn:schemas-microsoft-com:vml',
-  'xmlns:o': 'urn:schemas-microsoft-com:office:office',
-  'xmlns:x': 'urn:schemas-microsoft-com:office:excel',
-};
 
 export default VmlNotesXform;

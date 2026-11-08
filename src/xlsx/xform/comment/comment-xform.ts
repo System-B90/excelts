@@ -1,5 +1,6 @@
 import RichTextXform from "../strings/rich-text-xform";
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 /**
   <comment ref="B1" authorId="0">
@@ -46,7 +47,7 @@ class CommentXform extends BaseXform {
     return this._richTextXform;
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     model = model || this.model;
 
     xmlStream.openNode('comment', {
@@ -63,7 +64,7 @@ class CommentXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -86,12 +87,12 @@ class CommentXform extends BaseXform {
         return false;
     }
   }
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
-  parseClose(name) {
+  parseClose(name: string) {
     switch (name) {
       case 'comment':
         return false;

@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 import ColorXform from "../style/color-xform";
 import PageSetupPropertiesXform from "./page-setup-properties-xform";
 import OutlinePropertiesXform from "./outline-properties-xform";
@@ -22,7 +23,7 @@ class SheetPropertiesXform extends BaseXform {
     return 'sheetPr';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     if (model) {
       xmlStream.addRollback();
       xmlStream.openNode('sheetPr');
@@ -41,7 +42,7 @@ class SheetPropertiesXform extends BaseXform {
     }
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -58,7 +59,7 @@ class SheetPropertiesXform extends BaseXform {
     return false;
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
       return true;
@@ -66,7 +67,7 @@ class SheetPropertiesXform extends BaseXform {
     return false;
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.parser = undefined;

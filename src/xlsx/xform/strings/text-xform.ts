@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 //   <t xml:space="preserve"> is </t>
 
@@ -9,7 +10,7 @@ class TextXform extends BaseXform {
     return 't';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openNode('t');
     if (/^\s|\n|\s$/.test(model)) {
       xmlStream.addAttribute('xml:space', 'preserve');
@@ -24,7 +25,7 @@ class TextXform extends BaseXform {
       .replace(/_x([0-9A-F]{4})_/g, ($0, $1) => String.fromCharCode(parseInt($1, 16)));
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     switch (node.name) {
       case 't':
         this._text = [];
@@ -34,7 +35,7 @@ class TextXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     this._text.push(text);
   }
 

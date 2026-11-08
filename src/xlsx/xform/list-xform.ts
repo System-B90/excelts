@@ -1,4 +1,5 @@
-import BaseXform from "./base-xform";
+import BaseXform, { type XformModel, type XformOptions, type XmlNode } from "./base-xform";
+import XmlStream from "../../utils/xml-stream";
 
 class ListXform extends BaseXform {
   tag: any;
@@ -23,7 +24,7 @@ class ListXform extends BaseXform {
     this.maxItems = options.maxItems;
   }
 
-  prepare(model, options) {
+  prepare(model: XformModel, options: XformOptions) {
     const {childXform} = this;
     if (model) {
       model.forEach((childModel, index) => {
@@ -33,7 +34,7 @@ class ListXform extends BaseXform {
     }
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     if (this.always || (model && model.length)) {
       xmlStream.openNode(this.tag, this.$);
       if (this.count) {
@@ -51,7 +52,7 @@ class ListXform extends BaseXform {
     }
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -69,13 +70,13 @@ class ListXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.model.push(this.parser.model);
@@ -91,7 +92,7 @@ class ListXform extends BaseXform {
     return false;
   }
 
-  reconcile(model, options) {
+  reconcile(model: XformModel, options: XformOptions) {
     if (model) {
       const {childXform} = this;
       model.forEach(childModel => {

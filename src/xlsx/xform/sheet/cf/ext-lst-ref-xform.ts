@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
-import BaseXform from "../../base-xform";
+import BaseXform, { type XformModel } from "../../base-xform";
+import XmlStream from "../../../../utils/xml-stream";
 import CompositeXform from "../../composite-xform";
 
 class X14IdXform extends BaseXform {
@@ -9,7 +10,7 @@ class X14IdXform extends BaseXform {
     return 'x14:id';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.leafNode(this.tag, null, model);
   }
 
@@ -17,11 +18,11 @@ class X14IdXform extends BaseXform {
     this.model = '';
   }
 
-  parseText(text) {
+  parseText(text: string) {
     this.model += text;
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     return name !== this.tag;
   }
 }
@@ -42,7 +43,7 @@ class ExtXform extends CompositeXform {
     return 'ext';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openNode(this.tag, {
       uri: '{B025F937-C7B1-47D3-B67F-A62EFF666E3E}',
       'xmlns:x14': 'http://schemas.microsoft.com/office/spreadsheetml/2009/9/main',
@@ -76,7 +77,7 @@ class ExtLstRefXform extends CompositeXform {
     return 'extLst';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openNode(this.tag);
     this.map.ext.render(xmlStream, model);
     xmlStream.closeNode();

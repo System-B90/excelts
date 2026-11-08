@@ -1,7 +1,7 @@
 class DataValidations {
   model: any;
 
-  constructor(model) {
+  constructor(model?) {
     this.model = model || {};
   }
 

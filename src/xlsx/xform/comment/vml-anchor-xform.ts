@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 // render the triangle in the cell for the comment
 class VmlAnchorXform extends BaseXform {
@@ -32,7 +33,7 @@ class VmlAnchorXform extends BaseXform {
     return [l, lf, t, tf, r, rf, b, bf];
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     const rect = model.anchor
       ? this.getAnchorRect(model.anchor)
       : this.getDefaultRect(model.refAddress);
@@ -40,7 +41,7 @@ class VmlAnchorXform extends BaseXform {
     xmlStream.leafNode('x:Anchor', null, rect.join(', '));
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     switch (node.name) {
       case this.tag:
         this.text = '';
@@ -50,7 +51,7 @@ class VmlAnchorXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     this.text = text;
   }
 

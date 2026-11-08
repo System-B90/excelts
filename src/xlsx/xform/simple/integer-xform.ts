@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class IntegerXform extends BaseXform {
   tag: any;
@@ -19,7 +20,7 @@ class IntegerXform extends BaseXform {
     this.zero = options.zero;
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     // int is different to float in that zero is not rendered
     if (model || this.zero) {
       xmlStream.openNode(this.tag);
@@ -35,7 +36,7 @@ class IntegerXform extends BaseXform {
     }
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (node.name === this.tag) {
       if (this.attr) {
         this.model = parseInt(node.attributes[this.attr], 10);
@@ -47,7 +48,7 @@ class IntegerXform extends BaseXform {
     return false;
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (!this.attr) {
       this.text.push(text);
     }

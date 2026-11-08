@@ -1,5 +1,6 @@
 import _ from "../../../utils/under-dash";
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 function booleanToXml(model, value) {
   return model ? value : undefined;
@@ -16,7 +17,7 @@ class SheetProtectionXform extends BaseXform {
     return 'sheetProtection';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     if (model) {
       const attributes = {
         sheet: booleanToXml(model.sheet, '1'),
@@ -48,7 +49,7 @@ class SheetProtectionXform extends BaseXform {
     }
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     switch (node.name) {
       case this.tag:
         this.model = {

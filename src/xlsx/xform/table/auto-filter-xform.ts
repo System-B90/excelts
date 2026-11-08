@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 import FilterColumnXform from "./filter-column-xform";
 
@@ -19,13 +20,13 @@ class AutoFilterXform extends BaseXform {
     return 'autoFilter';
   }
 
-  prepare(model) {
+  prepare(model: XformModel) {
     model.columns.forEach((column, index) => {
       this.map.filterColumn.prepare(column, {index});
     });
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openNode(this.tag, {ref: model.autoFilterRef});
 
     model.columns.forEach(column => {
@@ -36,7 +37,7 @@ class AutoFilterXform extends BaseXform {
     return true;
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -59,13 +60,13 @@ class AutoFilterXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.model.columns.push(this.parser.model);

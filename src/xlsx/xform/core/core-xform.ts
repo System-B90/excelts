@@ -1,10 +1,24 @@
 import XmlStream from "../../../utils/xml-stream";
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
 import DateXform from "../simple/date-xform";
 import StringXform from "../simple/string-xform";
 import IntegerXform from "../simple/integer-xform";
 
 class CoreXform extends BaseXform {
+  static CORE_PROPERTY_ATTRIBUTES = {
+    'xmlns:cp': 'http://schemas.openxmlformats.org/package/2006/metadata/core-properties',
+    'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
+    'xmlns:dcterms': 'http://purl.org/dc/terms/',
+    'xmlns:dcmitype': 'http://purl.org/dc/dcmitype/',
+    'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+  };
+
+  static DateAttrs = {'xsi:type': 'dcterms:W3CDTF'};
+
+  static DateFormat = function(dt) {
+    return dt.toISOString().replace(/[.]\d{3}/, '');
+  };
+
   map: any;
   parser: any;
   model: any;
@@ -40,7 +54,7 @@ class CoreXform extends BaseXform {
     };
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openXml(XmlStream.StdDocAttributes);
 
     xmlStream.openNode('cp:coreProperties', CoreXform.CORE_PROPERTY_ATTRIBUTES);
@@ -65,7 +79,7 @@ class CoreXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -84,13 +98,13 @@ class CoreXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.parser = undefined;
@@ -123,18 +137,5 @@ class CoreXform extends BaseXform {
     }
   }
 }
-
-CoreXform.DateFormat = function(dt) {
-  return dt.toISOString().replace(/[.]\d{3}/, '');
-};
-CoreXform.DateAttrs = {'xsi:type': 'dcterms:W3CDTF'};
-
-CoreXform.CORE_PROPERTY_ATTRIBUTES = {
-  'xmlns:cp': 'http://schemas.openxmlformats.org/package/2006/metadata/core-properties',
-  'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
-  'xmlns:dcterms': 'http://purl.org/dc/terms/',
-  'xmlns:dcmitype': 'http://purl.org/dc/dcmitype/',
-  'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
-};
 
 export default CoreXform;

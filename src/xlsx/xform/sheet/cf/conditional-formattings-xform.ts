@@ -1,4 +1,5 @@
-import BaseXform from "../../base-xform";
+import BaseXform, { type XformModel, type XformOptions, type XmlNode } from "../../base-xform";
+import XmlStream from "../../../../utils/xml-stream";
 
 import ConditionalFormattingXform from "./conditional-formatting-xform";
 
@@ -21,7 +22,7 @@ class ConditionalFormattingsXform extends BaseXform {
     this.model = [];
   }
 
-  prepare(model, options) {
+  prepare(model: XformModel, options: XformOptions) {
     // ensure each rule has a priority value
     let nextPriority = model.reduce(
       (p, cf) => Math.max(p, ...cf.rules.map(rule => rule.priority || 0)),
@@ -40,13 +41,13 @@ class ConditionalFormattingsXform extends BaseXform {
     });
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     model.forEach(cf => {
       this.cfXform.render(xmlStream, cf);
     });
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -63,13 +64,13 @@ class ConditionalFormattingsXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.model.push(this.parser.model);
@@ -81,7 +82,7 @@ class ConditionalFormattingsXform extends BaseXform {
     return false;
   }
 
-  reconcile(model, options) {
+  reconcile(model: XformModel, options: XformOptions) {
     model.forEach(cf => {
       cf.rules.forEach(rule => {
         if (rule.dxfId !== undefined) {

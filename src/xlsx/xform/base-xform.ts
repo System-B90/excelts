@@ -1,40 +1,60 @@
 import parseSax from "../../utils/parse-sax";
 import XmlStream from "../../utils/xml-stream";
 
+/** An opening tag, as the SAX parser reports it. */
+export interface XmlNode {
+  name: string;
+  attributes: Record<string, string>;
+}
+
+/**
+ * What an xform reads and writes: a plain-data model whose shape is private to
+ * each xform (a boolean for one, a nested object for another). It is the
+ * boundary between the workbook's objects and the file's XML, so it is
+ * deliberately untyped here and typed by each xform's own parsing and rendering.
+ */
+export type XformModel = any;
+
+/** Per-run state handed to `prepare` and `reconcile`: the shared styles, strings, media and so on. */
+export type XformOptions = any;
+
+/** An xform, or the wrapper some xforms use around theirs. */
+export type XformEntry = BaseXform | { xform: BaseXform };
+
 /* 'virtual' methods used as a form of documentation */
 /* eslint-disable class-methods-use-this */
 
 // Base class for Xforms
 class BaseXform {
-  model: any;
+  model: XformModel;
+
+  /** Child xforms by tag or role, reset together with this one. */
+  map?: Record<string, XformEntry>;
 
   // constructor(/* model, name */) {}
 
   // ============================================================
   // Virtual Interface
-  prepare(/* model, options */) {
-    // optional preparation (mutation) of model so it is ready for write
+
+  /** Optional preparation (mutation) of the model so it is ready for write. */
+  prepare(_model?: XformModel, _options?: XformOptions): void {}
+
+  /** Converts the model to XML. */
+  render(_xmlStream: XmlStream, _model?: XformModel): void {}
+
+  /** An XML node opened. Returns whether this xform took it. */
+  parseOpen(_node: XmlNode): boolean | void {}
+
+  /** A chunk of text in the current node. */
+  parseText(_text: string): void {}
+
+  /** An XML node closed. Returns whether this xform is still parsing. */
+  parseClose(_name: string): boolean {
+    return false;
   }
 
-  render(/* xmlStream, model */) {
-    // convert model to xml
-  }
-
-  parseOpen(node) {
-    // XML node opened
-  }
-
-  parseText(text) {
-    // chunk of text encountered for current node
-  }
-
-  parseClose(name) {
-    // XML node closed
-  }
-
-  reconcile(model, options) {
-    // optional post-parse step (opposite to prepare)
-  }
+  /** Optional post-parse step (the opposite of `prepare`). */
+  reconcile(_model?: XformModel, _options?: XformOptions): void {}
 
   // ============================================================
   reset() {
@@ -43,22 +63,22 @@ class BaseXform {
 
     // if we have a map - reset them too
     if (this.map) {
-      Object.values(this.map).forEach(xform => {
-        if (xform instanceof BaseXform) {
-          xform.reset();
-        } else if (xform.xform) {
-          xform.xform.reset();
+      Object.values(this.map).forEach(entry => {
+        if (entry instanceof BaseXform) {
+          entry.reset();
+        } else if (entry.xform) {
+          entry.xform.reset();
         }
       });
     }
   }
 
-  mergeModel(obj) {
+  mergeModel(obj: object) {
     // set obj's props to this.model
     this.model = Object.assign(this.model || {}, obj);
   }
 
-  async parse(saxParser) {
+  async parse(saxParser: AsyncIterable<any>) {
     for await (const events of saxParser) {
       for (const {eventType, value} of events) {
         if (eventType === 'opentag') {
@@ -75,7 +95,7 @@ class BaseXform {
     return this.model;
   }
 
-  async parseStream(stream) {
+  async parseStream(stream: any) {
     return this.parse(parseSax(stream));
   }
 
@@ -85,7 +105,7 @@ class BaseXform {
     return this.toXml(this.model);
   }
 
-  toXml(model) {
+  toXml(model: XformModel): string {
     const xmlStream = new XmlStream();
     this.render(xmlStream, model);
     return xmlStream.xml;
@@ -104,15 +124,15 @@ class BaseXform {
     return undefined;
   }
 
-  static toStringAttribute(value, dflt, always = false) {
+  static toStringAttribute(value: any, dflt?: any, always = false) {
     return BaseXform.toAttribute(value, dflt, always);
   }
 
-  static toStringValue(attr, dflt) {
+  static toStringValue(attr: string | undefined, dflt?: any) {
     return attr === undefined ? dflt : attr;
   }
 
-  static toBoolAttribute(value, dflt, always = false) {
+  static toBoolAttribute(value: any, dflt?: any, always = false) {
     if (value === undefined) {
       if (always) {
         return dflt;
@@ -123,23 +143,23 @@ class BaseXform {
     return undefined;
   }
 
-  static toBoolValue(attr, dflt) {
+  static toBoolValue(attr: string | undefined, dflt?: any) {
     return attr === undefined ? dflt : attr === '1';
   }
 
-  static toIntAttribute(value, dflt, always = false) {
+  static toIntAttribute(value: any, dflt?: any, always = false) {
     return BaseXform.toAttribute(value, dflt, always);
   }
 
-  static toIntValue(attr, dflt) {
+  static toIntValue(attr: string | undefined, dflt?: any) {
     return attr === undefined ? dflt : parseInt(attr, 10);
   }
 
-  static toFloatAttribute(value, dflt, always = false) {
+  static toFloatAttribute(value: any, dflt?: any, always = false) {
     return BaseXform.toAttribute(value, dflt, always);
   }
 
-  static toFloatValue(attr, dflt) {
+  static toFloatValue(attr: string | undefined, dflt?: any) {
     return attr === undefined ? dflt : parseFloat(attr);
   }
 }

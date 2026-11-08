@@ -1,4 +1,4 @@
-import BaseXform from "./base-xform";
+import BaseXform, { type XmlNode } from "./base-xform";
 
 /* 'virtual' methods used as a form of documentation */
 /* eslint-disable class-methods-use-this */
@@ -13,7 +13,7 @@ class CompositeXform extends BaseXform {
     return {};
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     // Typical pattern for composite xform
     this.parser = this.parser || this.map[node.name];
     if (this.parser) {
@@ -29,7 +29,7 @@ class CompositeXform extends BaseXform {
     return false;
   }
 
-  parseText(text) {
+  parseText(text: string) {
     // Default implementation. Send text to child parser
     if (this.parser) {
       this.parser.parseText(text);
@@ -42,7 +42,7 @@ class CompositeXform extends BaseXform {
     this.model[name] = parser.model;
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     // Default implementation
     if (this.parser) {
       if (!this.parser.parseClose(name)) {

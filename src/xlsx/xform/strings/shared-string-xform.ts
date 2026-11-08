@@ -2,7 +2,8 @@ import TextXform from "./text-xform";
 import RichTextXform from "./rich-text-xform";
 import PhoneticTextXform from "./phonetic-text-xform";
 
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 // <si>
 //   <r></r><r></r>...
@@ -16,7 +17,7 @@ class SharedStringXform extends BaseXform {
   map: any;
   parser: any;
 
-  constructor(model) {
+  constructor(model?) {
     super();
 
     this.model = model;
@@ -32,7 +33,7 @@ class SharedStringXform extends BaseXform {
     return 'si';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openNode(this.tag);
     if (model && model.hasOwnProperty('richText') && model.richText) {
       if (model.richText.length) {
@@ -48,7 +49,7 @@ class SharedStringXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     const {name} = node;
     if (this.parser) {
       this.parser.parseOpen(node);
@@ -66,13 +67,13 @@ class SharedStringXform extends BaseXform {
     return false;
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         switch (name) {

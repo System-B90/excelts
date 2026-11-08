@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XformOptions, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 import utils from "../../../utils/utils";
 
 import CellXform from "./cell-xform";
@@ -10,7 +11,7 @@ class RowXform extends BaseXform {
   model: any;
   parser: any;
 
-  constructor(options) {
+  constructor(options?) {
     super();
 
     this.maxItems = options && options.maxItems;
@@ -23,7 +24,7 @@ class RowXform extends BaseXform {
     return 'row';
   }
 
-  prepare(model, options) {
+  prepare(model: XformModel, options: XformOptions) {
     const styleId = options.styles.addStyleModel(model.style);
     if (styleId) {
       model.styleId = styleId;
@@ -34,7 +35,7 @@ class RowXform extends BaseXform {
     });
   }
 
-  render(xmlStream, model, options) {
+  render(xmlStream: XmlStream, model: XformModel, options: XformOptions) {
     xmlStream.openNode('row');
     xmlStream.addAttribute('r', model.number);
     if (model.height) {
@@ -67,7 +68,7 @@ class RowXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -112,13 +113,13 @@ class RowXform extends BaseXform {
     return false;
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.model.cells.push(this.parser.model);
@@ -132,7 +133,7 @@ class RowXform extends BaseXform {
     return false;
   }
 
-  reconcile(model, options) {
+  reconcile(model: XformModel, options: XformOptions) {
     model.style = model.styleId ? options.styles.getStyleModel(model.styleId) : {};
     if (model.styleId !== undefined) {
       model.styleId = undefined;

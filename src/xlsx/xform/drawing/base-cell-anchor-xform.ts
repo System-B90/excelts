@@ -1,10 +1,10 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XmlNode } from "../base-xform";
 
 class BaseCellAnchorXform extends BaseXform {
   model: any;
   parser: any;
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -28,7 +28,7 @@ class BaseCellAnchorXform extends BaseXform {
     return true;
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }

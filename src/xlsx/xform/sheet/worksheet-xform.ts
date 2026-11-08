@@ -7,7 +7,7 @@ import RelType from "../../rel-type";
 
 import Merges from "./merges";
 
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XformOptions, type XmlNode } from "../base-xform";
 import ListXform from "../list-xform";
 import RowXform from "./row-xform";
 import ColXform from "./col-xform";
@@ -89,13 +89,21 @@ const mergeConditionalFormattings = (model, extModel) => {
 };
 
 class WorkSheetXform extends BaseXform {
+  static WORKSHEET_ATTRIBUTES = {
+    xmlns: 'http://schemas.openxmlformats.org/spreadsheetml/2006/main',
+    'xmlns:r': 'http://schemas.openxmlformats.org/officeDocument/2006/relationships',
+    'xmlns:mc': 'http://schemas.openxmlformats.org/markup-compatibility/2006',
+    'mc:Ignorable': 'x14ac',
+    'xmlns:x14ac': 'http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac',
+  };
+
   ignoreNodes: any;
   map: any;
   preImageId: any;
   parser: any;
   model: any;
 
-  constructor(options) {
+  constructor(options?) {
     super();
 
     const {maxRows, maxCols, ignoreNodes} = options || {};
@@ -141,7 +149,7 @@ class WorkSheetXform extends BaseXform {
     };
   }
 
-  prepare(model, options) {
+  prepare(model: XformModel, options: XformOptions) {
     options.merges = new Merges();
     model.hyperlinks = options.hyperlinks = [];
     model.comments = options.comments = [];
@@ -290,7 +298,7 @@ class WorkSheetXform extends BaseXform {
     this.map.extLst.prepare(model, options);
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openXml(XmlStream.StdDocAttributes);
     xmlStream.openNode('worksheet', WorkSheetXform.WORKSHEET_ATTRIBUTES);
 
@@ -362,7 +370,7 @@ class WorkSheetXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -382,13 +390,13 @@ class WorkSheetXform extends BaseXform {
     return true;
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.parser = undefined;
@@ -450,7 +458,7 @@ class WorkSheetXform extends BaseXform {
     }
   }
 
-  reconcile(model, options) {
+  reconcile(model: XformModel, options: XformOptions) {
     // options.merges = new Merges();
     // options.merges.reconcile(model.mergeCells, model.rows);
     const rels = (model.relationships || []).reduce((h, rel) => {
@@ -533,13 +541,5 @@ class WorkSheetXform extends BaseXform {
     delete model.comments;
   }
 }
-
-WorkSheetXform.WORKSHEET_ATTRIBUTES = {
-  xmlns: 'http://schemas.openxmlformats.org/spreadsheetml/2006/main',
-  'xmlns:r': 'http://schemas.openxmlformats.org/officeDocument/2006/relationships',
-  'xmlns:mc': 'http://schemas.openxmlformats.org/markup-compatibility/2006',
-  'mc:Ignorable': 'x14ac',
-  'xmlns:x14ac': 'http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac',
-};
 
 export default WorkSheetXform;

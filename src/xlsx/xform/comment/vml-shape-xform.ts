@@ -1,8 +1,19 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 import VmlTextboxXform from "./vml-textbox-xform";
 import VmlClientDataXform from "./vml-client-data-xform";
 
 class VmlShapeXform extends BaseXform {
+  static V_SHAPE_ATTRIBUTES = (model, index) => ({
+    id: `_x0000_s${1025 + index}`,
+    type: '#_x0000_t202',
+    style:
+      'position:absolute; margin-left:105.3pt;margin-top:10.5pt;width:97.8pt;height:59.1pt;z-index:1;visibility:hidden',
+    fillcolor: 'infoBackground [80]',
+    strokecolor: 'none [81]',
+    'o:insetmode': model.note.margins && model.note.margins.insetmode,
+  });
+
   map: any;
   model: any;
   parser: any;
@@ -19,7 +30,7 @@ class VmlShapeXform extends BaseXform {
     return 'v:shape';
   }
 
-  render(xmlStream, model, index) {
+  render(xmlStream: XmlStream, model: XformModel, index) {
     xmlStream.openNode('v:shape', VmlShapeXform.V_SHAPE_ATTRIBUTES(model, index));
 
     xmlStream.leafNode('v:fill', {color2: 'infoBackground [80]'});
@@ -31,7 +42,7 @@ class VmlShapeXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -59,13 +70,13 @@ class VmlShapeXform extends BaseXform {
     return true;
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.parser = undefined;
@@ -85,15 +96,5 @@ class VmlShapeXform extends BaseXform {
     }
   }
 }
-
-VmlShapeXform.V_SHAPE_ATTRIBUTES = (model, index) => ({
-  id: `_x0000_s${1025 + index}`,
-  type: '#_x0000_t202',
-  style:
-    'position:absolute; margin-left:105.3pt;margin-top:10.5pt;width:97.8pt;height:59.1pt;z-index:1;visibility:hidden',
-  fillcolor: 'infoBackground [80]',
-  strokecolor: 'none [81]',
-  'o:insetmode': model.note.margins && model.note.margins.insetmode,
-});
 
 export default VmlShapeXform;

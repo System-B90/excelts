@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class BooleanXform extends BaseXform {
   tag: any;
@@ -12,14 +13,14 @@ class BooleanXform extends BaseXform {
     this.attr = options.attr;
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     if (model) {
       xmlStream.openNode(this.tag);
       xmlStream.closeNode();
     }
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (node.name === this.tag) {
       this.model = true;
     }

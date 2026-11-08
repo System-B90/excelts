@@ -1,10 +1,11 @@
 import _ from "../../../utils/under-dash";
 import utils from "../../../utils/utils";
 import colCache from "../../../utils/col-cache";
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 import Range from "../../../doc/range";
 
-function assign(definedName, attributes, name, defaultValue) {
+function assign(definedName, attributes, name, defaultValue?) {
   const value = attributes[name];
   if (value !== undefined) {
     definedName[name] = value;
@@ -13,7 +14,7 @@ function assign(definedName, attributes, name, defaultValue) {
   }
 }
 
-function assignBool(definedName, attributes, name, defaultValue) {
+function assignBool(definedName, attributes, name, defaultValue?) {
   const value = attributes[name];
   if (value !== undefined) {
     definedName[name] = utils.parseBoolean(value);
@@ -103,7 +104,7 @@ class DataValidationsXform extends BaseXform {
     return 'dataValidations';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     const optimizedModel = optimiseDataValidations(model);
     if (optimizedModel.length) {
       xmlStream.openNode('dataValidations', {count: optimizedModel.length});
@@ -158,7 +159,7 @@ class DataValidationsXform extends BaseXform {
     }
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     switch (node.name) {
       case 'dataValidations':
         this.model = {};
@@ -203,13 +204,13 @@ class DataValidationsXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this._formula) {
       this._formula.push(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     switch (name) {
       case 'dataValidations':
         return false;

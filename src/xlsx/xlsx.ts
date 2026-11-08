@@ -25,7 +25,7 @@ import VmlNotesXform from "./xform/comment/vml-notes-xform";
 
 import theme1Xml from "./xml/theme1";
 
-function fsReadFileAsync(filename, options) {
+function fsReadFileAsync(filename, options?) {
   return new Promise((resolve, reject) => {
     fs.readFile(filename, options, (error, data) => {
       if (error) {

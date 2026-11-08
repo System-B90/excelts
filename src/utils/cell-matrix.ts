@@ -5,7 +5,7 @@ class CellMatrix {
   template: any;
   sheets: any;
 
-  constructor(template) {
+  constructor(template?) {
     this.template = template;
     this.sheets = {};
   }
@@ -105,7 +105,7 @@ class CellMatrix {
     return results;
   }
 
-  findSheet(address, create) {
+  findSheet(address, create?) {
     const name = address.sheetName;
     if (this.sheets[name]) {
       return this.sheets[name];
@@ -116,7 +116,7 @@ class CellMatrix {
     return undefined;
   }
 
-  findSheetRow(sheet, address, create) {
+  findSheetRow(sheet, address, create?) {
     const {row} = address;
     if (sheet && sheet[row]) {
       return sheet[row];

@@ -1,7 +1,7 @@
 import colCache from "../../../utils/col-cache";
 import XmlStream from "../../../utils/xml-stream";
 
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XformOptions, type XmlNode } from "../base-xform";
 import TwoCellAnchorXform from "./two-cell-anchor-xform";
 import OneCellAnchorXform from "./one-cell-anchor-xform";
 
@@ -12,6 +12,11 @@ function getAnchorType(model) {
 }
 
 class DrawingXform extends BaseXform {
+  static DRAWING_ATTRIBUTES = {
+    'xmlns:xdr': 'http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing',
+    'xmlns:a': 'http://schemas.openxmlformats.org/drawingml/2006/main',
+  };
+
   map: any;
   model: any;
   parser: any;
@@ -25,7 +30,7 @@ class DrawingXform extends BaseXform {
     };
   }
 
-  prepare(model) {
+  prepare(model: XformModel) {
     model.anchors.forEach((item, index) => {
       item.anchorType = getAnchorType(item);
       const anchor = this.map[item.anchorType];
@@ -37,7 +42,7 @@ class DrawingXform extends BaseXform {
     return 'xdr:wsDr';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openXml(XmlStream.StdDocAttributes);
     xmlStream.openNode(this.tag, DrawingXform.DRAWING_ATTRIBUTES);
 
@@ -49,7 +54,7 @@ class DrawingXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -71,13 +76,13 @@ class DrawingXform extends BaseXform {
     return true;
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.model.anchors.push(this.parser.model);
@@ -94,7 +99,7 @@ class DrawingXform extends BaseXform {
     }
   }
 
-  reconcile(model, options) {
+  reconcile(model: XformModel, options: XformOptions) {
     model.anchors.forEach(anchor => {
       if (anchor.br) {
         this.map['xdr:twoCellAnchor'].reconcile(anchor, options);
@@ -104,10 +109,5 @@ class DrawingXform extends BaseXform {
     });
   }
 }
-
-DrawingXform.DRAWING_ATTRIBUTES = {
-  'xmlns:xdr': 'http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing',
-  'xmlns:a': 'http://schemas.openxmlformats.org/drawingml/2006/main',
-};
 
 export default DrawingXform;

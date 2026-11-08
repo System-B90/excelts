@@ -1,9 +1,23 @@
 import _ from "../utils/under-dash";
 
 class Note {
+  static DEFAULT_CONFIGS = {
+    note: {
+      margins: {
+        insetmode: 'auto',
+        inset: [0.13, 0.13, 0.25, 0.25],
+      },
+      protection: {
+        locked: 'True',
+        lockText: 'True',
+      },
+      editAs: 'absolute',
+    },
+  };
+
   note: any;
 
-  constructor(note) {
+  constructor(note?) {
     this.note = note;
   }
 
@@ -49,19 +63,5 @@ class Note {
     return note;
   }
 }
-
-Note.DEFAULT_CONFIGS = {
-  note: {
-    margins: {
-      insetmode: 'auto',
-      inset: [0.13, 0.13, 0.25, 0.25],
-    },
-    protection: {
-      locked: 'True',
-      lockText: 'True',
-    },
-    editAs: 'absolute',
-  },
-};
 
 export default Note;

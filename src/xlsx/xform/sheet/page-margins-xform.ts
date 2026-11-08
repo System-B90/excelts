@@ -1,5 +1,6 @@
 import _ from "../../../utils/under-dash";
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class PageMarginsXform extends BaseXform {
   model: any;
@@ -8,7 +9,7 @@ class PageMarginsXform extends BaseXform {
     return 'pageMargins';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     if (model) {
       const attributes = {
         left: model.left,
@@ -24,7 +25,7 @@ class PageMarginsXform extends BaseXform {
     }
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     switch (node.name) {
       case this.tag:
         this.model = {

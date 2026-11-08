@@ -3,7 +3,7 @@ import _ from "../../../utils/under-dash";
 import colCache from "../../../utils/col-cache";
 import XmlStream from "../../../utils/xml-stream";
 
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
 import StaticXform from "../static-xform";
 import ListXform from "../list-xform";
 import DefinedNameXform from "./defined-name-xform";
@@ -13,6 +13,21 @@ import WorkbookPropertiesXform from "./workbook-properties-xform";
 import WorkbookCalcPropertiesXform from "./workbook-calc-properties-xform";
 
 class WorkbookXform extends BaseXform {
+  static STATIC_XFORMS = {
+    fileVersion: new StaticXform({
+      tag: 'fileVersion',
+      $: {appName: 'xl', lastEdited: 5, lowestEdited: 5, rupBuild: 9303},
+    }),
+  };
+
+  static WORKBOOK_ATTRIBUTES = {
+    xmlns: 'http://schemas.openxmlformats.org/spreadsheetml/2006/main',
+    'xmlns:r': 'http://schemas.openxmlformats.org/officeDocument/2006/relationships',
+    'xmlns:mc': 'http://schemas.openxmlformats.org/markup-compatibility/2006',
+    'mc:Ignorable': 'x15',
+    'xmlns:x15': 'http://schemas.microsoft.com/office/spreadsheetml/2010/11/main',
+  };
+
   map: any;
   parser: any;
   model: any;
@@ -38,7 +53,7 @@ class WorkbookXform extends BaseXform {
     };
   }
 
-  prepare(model) {
+  prepare(model: XformModel) {
     model.sheets = model.worksheets;
 
     // collate all the print areas from all of the sheets and add them to the defined names
@@ -93,7 +108,7 @@ class WorkbookXform extends BaseXform {
     });
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openXml(XmlStream.StdDocAttributes);
     xmlStream.openNode('workbook', WorkbookXform.WORKBOOK_ATTRIBUTES);
 
@@ -107,7 +122,7 @@ class WorkbookXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -124,13 +139,13 @@ class WorkbookXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.parser = undefined;
@@ -156,7 +171,7 @@ class WorkbookXform extends BaseXform {
     }
   }
 
-  reconcile(model) {
+  reconcile(model: XformModel) {
     const rels = (model.workbookRels || []).reduce((map, rel) => {
       map[rel.Id] = rel;
       return map;
@@ -241,19 +256,5 @@ class WorkbookXform extends BaseXform {
     });
   }
 }
-
-WorkbookXform.WORKBOOK_ATTRIBUTES = {
-  xmlns: 'http://schemas.openxmlformats.org/spreadsheetml/2006/main',
-  'xmlns:r': 'http://schemas.openxmlformats.org/officeDocument/2006/relationships',
-  'xmlns:mc': 'http://schemas.openxmlformats.org/markup-compatibility/2006',
-  'mc:Ignorable': 'x15',
-  'xmlns:x15': 'http://schemas.microsoft.com/office/spreadsheetml/2010/11/main',
-};
-WorkbookXform.STATIC_XFORMS = {
-  fileVersion: new StaticXform({
-    tag: 'fileVersion',
-    $: {appName: 'xl', lastEdited: 5, lowestEdited: 5, rupBuild: 9303},
-  }),
-};
 
 export default WorkbookXform;

@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 import VmlAnchorXform from "./vml-anchor-xform";
 import VmlProtectionXform from "./style/vml-protection-xform";
@@ -26,7 +27,7 @@ class VmlClientDataXform extends BaseXform {
     return 'x:ClientData';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     const {protection, editAs} = model.note;
     xmlStream.openNode(this.tag, {ObjectType: 'Note'});
     this.map['x:MoveWithCells'].render(xmlStream, editAs, POSITION_TYPE);
@@ -40,7 +41,7 @@ class VmlClientDataXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     switch (node.name) {
       case this.tag:
         this.reset();
@@ -60,13 +61,13 @@ class VmlClientDataXform extends BaseXform {
     return true;
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.parser = undefined;

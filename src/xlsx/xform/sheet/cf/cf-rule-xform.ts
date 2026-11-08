@@ -1,4 +1,5 @@
-import BaseXform from "../../base-xform";
+import BaseXform, { type XformModel } from "../../base-xform";
+import XmlStream from "../../../../utils/xml-stream";
 import CompositeXform from "../../composite-xform";
 
 import Range from "../../../../doc/range";
@@ -123,7 +124,7 @@ class CfRuleXform extends CompositeXform {
     return true;
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     switch (model.type) {
       case 'expression':
         this.renderExpression(xmlStream, model);

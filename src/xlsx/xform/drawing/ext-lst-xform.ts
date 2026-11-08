@@ -1,11 +1,12 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class ExtLstXform extends BaseXform {
   get tag() {
     return 'a:extLst';
   }
 
-  render(xmlStream) {
+  render(xmlStream: XmlStream) {
     xmlStream.openNode(this.tag);
     xmlStream.openNode('a:ext', {
       uri: '{FF2B5EF4-FFF2-40B4-BE49-F238E27FC236}',
@@ -18,7 +19,7 @@ class ExtLstXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     switch (node.name) {
       case this.tag:
         return true;
@@ -29,7 +30,7 @@ class ExtLstXform extends BaseXform {
 
   parseText() {}
 
-  parseClose(name) {
+  parseClose(name: string) {
     switch (name) {
       case this.tag:
         return false;

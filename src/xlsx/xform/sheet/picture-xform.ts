@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class PictureXform extends BaseXform {
   model: any;
@@ -7,13 +8,13 @@ class PictureXform extends BaseXform {
     return 'picture';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     if (model) {
       xmlStream.leafNode(this.tag, {'r:id': model.rId});
     }
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     switch (node.name) {
       case this.tag:
         this.model = {

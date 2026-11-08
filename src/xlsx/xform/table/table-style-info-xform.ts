@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class TableStyleInfoXform extends BaseXform {
   model: any;
@@ -7,7 +8,7 @@ class TableStyleInfoXform extends BaseXform {
     return 'tableStyleInfo';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.leafNode(this.tag, {
       name: model.theme ? model.theme : undefined,
       showFirstColumn: model.showFirstColumn ? '1' : '0',
@@ -18,7 +19,7 @@ class TableStyleInfoXform extends BaseXform {
     return true;
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (node.name === this.tag) {
       const {attributes} = node;
       this.model = {

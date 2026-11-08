@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 /** https://en.wikipedia.org/wiki/Office_Open_XML_file_formats#DrawingML */
 const EMU_PER_PIXEL_AT_96_DPI = 9525;
@@ -15,7 +16,7 @@ class ExtXform extends BaseXform {
     this.map = {};
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openNode(this.tag);
 
     const width = Math.floor(model.width * EMU_PER_PIXEL_AT_96_DPI);
@@ -27,7 +28,7 @@ class ExtXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (node.name === this.tag) {
       this.model = {
         width: parseInt(node.attributes.cx || '0', 10) / EMU_PER_PIXEL_AT_96_DPI,

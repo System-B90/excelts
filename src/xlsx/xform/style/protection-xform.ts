@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 const validation = {
   boolean(value, dflt) {
@@ -17,7 +18,7 @@ class ProtectionXform extends BaseXform {
     return 'protection';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.addRollback();
     xmlStream.openNode('protection');
 
@@ -40,7 +41,7 @@ class ProtectionXform extends BaseXform {
     }
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     const model = {
       locked: !(node.attributes.locked === '0'),
       hidden: node.attributes.hidden === '1',

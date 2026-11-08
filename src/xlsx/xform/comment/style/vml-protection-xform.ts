@@ -1,4 +1,5 @@
-import BaseXform from "../../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../../base-xform";
+import XmlStream from "../../../../utils/xml-stream";
 
 class VmlProtectionXform extends BaseXform {
   _model: any;
@@ -13,11 +14,11 @@ class VmlProtectionXform extends BaseXform {
     return this._model && this._model.tag;
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.leafNode(this.tag, null, model);
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     switch (node.name) {
       case this.tag:
         this.text = '';
@@ -27,7 +28,7 @@ class VmlProtectionXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     this.text = text;
   }
 

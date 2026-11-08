@@ -1,5 +1,6 @@
 import utils from "../../../utils/utils";
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XformOptions, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 import Range from "../../../doc/range";
 import * as Enums from "../../../doc/enums";
 
@@ -59,7 +60,7 @@ class CellXform extends BaseXform {
     return 'c';
   }
 
-  prepare(model, options) {
+  prepare(model: XformModel, options: XformOptions) {
     const styleId = options.styles.addStyleModel(model.style || {}, getEffectiveCellType(model));
     if (styleId) {
       model.styleId = styleId;
@@ -202,7 +203,7 @@ class CellXform extends BaseXform {
     }
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     if (model.type === Enums.ValueType.Null && !model.styleId) {
       // if null and no style, exit
       return;
@@ -280,7 +281,7 @@ class CellXform extends BaseXform {
     xmlStream.closeNode(); // </c>
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -322,7 +323,7 @@ class CellXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
       return;
@@ -346,7 +347,7 @@ class CellXform extends BaseXform {
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     switch (name) {
       case 'c': {
         const {model} = this;
@@ -431,7 +432,7 @@ class CellXform extends BaseXform {
     }
   }
 
-  reconcile(model, options) {
+  reconcile(model: XformModel, options: XformOptions) {
     const style = model.styleId && options.styles && options.styles.getStyleModel(model.styleId);
     if (style) {
       model.style = style;

@@ -1,11 +1,22 @@
 import XmlStream from "../../../utils/xml-stream";
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
 import StringXform from "../simple/string-xform";
 
 import AppHeadingPairsXform from "./app-heading-pairs-xform";
 import AppTitleOfPartsXform from "./app-titles-of-parts-xform";
 
 class AppXform extends BaseXform {
+  static PROPERTY_ATTRIBUTES = {
+    xmlns: 'http://schemas.openxmlformats.org/officeDocument/2006/extended-properties',
+    'xmlns:vt': 'http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes',
+  };
+
+  static DateAttrs = {'xsi:type': 'dcterms:W3CDTF'};
+
+  static DateFormat = function(dt) {
+    return dt.toISOString().replace(/[.]\d{3,6}/, '');
+  };
+
   map: any;
   parser: any;
   model: any;
@@ -21,7 +32,7 @@ class AppXform extends BaseXform {
     };
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openXml(XmlStream.StdDocAttributes);
 
     xmlStream.openNode('Properties', AppXform.PROPERTY_ATTRIBUTES);
@@ -43,7 +54,7 @@ class AppXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -63,13 +74,13 @@ class AppXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     if (this.parser) {
       this.parser.parseText(text);
     }
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.parser = undefined;
@@ -89,16 +100,5 @@ class AppXform extends BaseXform {
     }
   }
 }
-
-AppXform.DateFormat = function(dt) {
-  return dt.toISOString().replace(/[.]\d{3,6}/, '');
-};
-
-AppXform.DateAttrs = {'xsi:type': 'dcterms:W3CDTF'};
-
-AppXform.PROPERTY_ATTRIBUTES = {
-  xmlns: 'http://schemas.openxmlformats.org/officeDocument/2006/extended-properties',
-  'xmlns:vt': 'http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes',
-};
 
 export default AppXform;

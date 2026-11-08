@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 import HlickClickXform from "./hlink-click-xform";
 import ExtLstXform from "./ext-lst-xform";
 
@@ -20,7 +21,7 @@ class CNvPrXform extends BaseXform {
     return 'xdr:cNvPr';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openNode(this.tag, {
       id: model.index,
       name: `Picture ${model.index}`,
@@ -30,7 +31,7 @@ class CNvPrXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -52,7 +53,7 @@ class CNvPrXform extends BaseXform {
 
   parseText() {}
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.parser = undefined;

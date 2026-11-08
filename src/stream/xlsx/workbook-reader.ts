@@ -17,6 +17,14 @@ import HyperlinkReader from "./hyperlink-reader";
 tmp.setGracefulCleanup();
 
 class WorkbookReader extends EventEmitter {
+  static Options = {
+    worksheets: ['emit', 'ignore'],
+    sharedStrings: ['cache', 'emit', 'ignore'],
+    hyperlinks: ['cache', 'emit', 'ignore'],
+    styles: ['cache', 'ignore'],
+    entries: ['emit', 'ignore'],
+  };
+
   input: any;
   options: any;
   styles: any;
@@ -85,7 +93,7 @@ class WorkbookReader extends EventEmitter {
     }
   }
 
-  async *parse(input, options) {
+  async *parse(input?, options?) {
     if (options) this.options = options;
     const stream = (this.stream = this._getStream(input || this.input));
     const zip = unzip.Parse({forceStream: true});
@@ -335,12 +343,5 @@ class WorkbookReader extends EventEmitter {
 }
 
 // for reference - these are the valid values for options
-WorkbookReader.Options = {
-  worksheets: ['emit', 'ignore'],
-  sharedStrings: ['cache', 'emit', 'ignore'],
-  hyperlinks: ['cache', 'emit', 'ignore'],
-  styles: ['cache', 'ignore'],
-  entries: ['emit', 'ignore'],
-};
 
 export default WorkbookReader;

@@ -1,9 +1,10 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class WorksheetPropertiesXform extends BaseXform {
   model: any;
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.leafNode('workbookPr', {
       date1904: model.date1904 ? 1 : undefined,
       defaultThemeVersion: 164011,
@@ -11,7 +12,7 @@ class WorksheetPropertiesXform extends BaseXform {
     });
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (node.name === 'workbookPr') {
       this.model = {
         date1904: node.attributes.date1904 === '1',

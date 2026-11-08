@@ -1,4 +1,5 @@
-import BaseXform from "../../base-xform";
+import BaseXform, { type XformModel } from "../../base-xform";
+import XmlStream from "../../../../utils/xml-stream";
 
 class CfIconExtXform extends BaseXform {
   model: any;
@@ -7,7 +8,7 @@ class CfIconExtXform extends BaseXform {
     return 'x14:cfIcon';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.leafNode(this.tag, {
       iconSet: model.iconSet,
       iconId: model.iconId,
@@ -21,7 +22,7 @@ class CfIconExtXform extends BaseXform {
     };
   }
 
-  parseClose(name) {
+  parseClose(name: string) {
     return name !== this.tag;
   }
 }

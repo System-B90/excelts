@@ -1,11 +1,12 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class CNvPicPrXform extends BaseXform {
   get tag() {
     return 'xdr:cNvPicPr';
   }
 
-  render(xmlStream) {
+  render(xmlStream: XmlStream) {
     xmlStream.openNode(this.tag);
     xmlStream.leafNode('a:picLocks', {
       noChangeAspect: '1',
@@ -13,7 +14,7 @@ class CNvPicPrXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     switch (node.name) {
       case this.tag:
         return true;
@@ -24,7 +25,7 @@ class CNvPicPrXform extends BaseXform {
 
   parseText() {}
 
-  parseClose(name) {
+  parseClose(name: string) {
     switch (name) {
       case this.tag:
         return false;

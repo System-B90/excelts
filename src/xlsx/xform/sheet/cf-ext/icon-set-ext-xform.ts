@@ -1,4 +1,5 @@
-import BaseXform from "../../base-xform";
+import BaseXform, { type XformModel } from "../../base-xform";
+import XmlStream from "../../../../utils/xml-stream";
 import CompositeXform from "../../composite-xform";
 
 import CfvoExtXform from "./cfvo-ext-xform";
@@ -22,7 +23,7 @@ class IconSetExtXform extends CompositeXform {
     return 'x14:iconSet';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openNode(this.tag, {
       iconSet: BaseXform.toStringAttribute(model.iconSet),
       reverse: BaseXform.toBoolAttribute(model.reverse, false),

@@ -1,5 +1,6 @@
 import colCache from "../../../utils/col-cache";
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class AutoFilterXform extends BaseXform {
   model: any;
@@ -8,7 +9,7 @@ class AutoFilterXform extends BaseXform {
     return 'autoFilter';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     if (model) {
       if (typeof model === 'string') {
         // assume range
@@ -30,7 +31,7 @@ class AutoFilterXform extends BaseXform {
     }
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (node.name === 'autoFilter') {
       this.model = node.attributes.ref;
     }

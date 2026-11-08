@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class PageSetupPropertiesXform extends BaseXform {
   model: any;
@@ -7,7 +8,7 @@ class PageSetupPropertiesXform extends BaseXform {
     return 'pageSetUpPr';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     if (model && model.fitToPage) {
       xmlStream.leafNode(this.tag, {
         fitToPage: model.fitToPage ? '1' : undefined,
@@ -17,7 +18,7 @@ class PageSetupPropertiesXform extends BaseXform {
     return false;
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (node.name === this.tag) {
       this.model = {
         fitToPage: node.attributes.fitToPage === '1',

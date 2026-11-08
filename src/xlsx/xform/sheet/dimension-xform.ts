@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class DimensionXform extends BaseXform {
   model: any;
@@ -7,13 +8,13 @@ class DimensionXform extends BaseXform {
     return 'dimension';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     if (model) {
       xmlStream.leafNode('dimension', {ref: model});
     }
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (node.name === 'dimension') {
       this.model = node.attributes.ref;
       return true;

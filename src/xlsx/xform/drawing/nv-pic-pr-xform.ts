@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 import CNvPrXform from "./c-nv-pr-xform";
 import CNvPicPrXform from "./c-nv-pic-pr-xform";
 
@@ -20,14 +21,14 @@ class NvPicPrXform extends BaseXform {
     return 'xdr:nvPicPr';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openNode(this.tag);
     this.map['xdr:cNvPr'].render(xmlStream, model);
     this.map['xdr:cNvPicPr'].render(xmlStream, model);
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
@@ -49,7 +50,7 @@ class NvPicPrXform extends BaseXform {
 
   parseText() {}
 
-  parseClose(name) {
+  parseClose(name: string) {
     if (this.parser) {
       if (!this.parser.parseClose(name)) {
         this.parser = undefined;

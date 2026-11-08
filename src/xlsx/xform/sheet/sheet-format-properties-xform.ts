@@ -1,5 +1,6 @@
 import _ from "../../../utils/under-dash";
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class SheetFormatPropertiesXform extends BaseXform {
   model: any;
@@ -8,7 +9,7 @@ class SheetFormatPropertiesXform extends BaseXform {
     return 'sheetFormatPr';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     if (model) {
       const attributes = {
         defaultRowHeight: model.defaultRowHeight,
@@ -31,7 +32,7 @@ class SheetFormatPropertiesXform extends BaseXform {
     }
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (node.name === 'sheetFormatPr') {
       this.model = {
         defaultRowHeight: parseFloat(node.attributes.defaultRowHeight || '0'),

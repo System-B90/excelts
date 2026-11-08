@@ -24,6 +24,12 @@ function pushAttributes(xml, attributes) {
 }
 
 class XmlStream {
+  static StdDocAttributes = {
+    version: '1.0',
+    encoding: 'UTF-8',
+    standalone: 'yes',
+  };
+
   _xml: any;
   _stack: any;
   _rollbacks: any;
@@ -53,7 +59,7 @@ class XmlStream {
     xml.push('?>\n');
   }
 
-  openNode(name, attributes) {
+  openNode(name, attributes?) {
     const parent = this.tos;
     const xml = this._xml;
     if (parent && this.open) {
@@ -119,7 +125,7 @@ class XmlStream {
     this.leaf = false;
   }
 
-  leafNode(name, attributes, text) {
+  leafNode(name, attributes?, text?) {
     this.openNode(name, attributes);
     if (text !== undefined) {
       // zeros need to be written
@@ -165,11 +171,5 @@ class XmlStream {
     return this._xml.join('');
   }
 }
-
-XmlStream.StdDocAttributes = {
-  version: '1.0',
-  encoding: 'UTF-8',
-  standalone: 'yes',
-};
 
 export default XmlStream;

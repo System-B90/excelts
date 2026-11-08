@@ -1,10 +1,11 @@
 import utils from "../../../utils/utils";
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class WorksheetXform extends BaseXform {
   model: any;
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.leafNode('sheet', {
       sheetId: model.id,
       name: model.name,
@@ -13,7 +14,7 @@ class WorksheetXform extends BaseXform {
     });
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (node.name === 'sheet') {
       this.model = {
         name: utils.xmlDecode(node.attributes.name),

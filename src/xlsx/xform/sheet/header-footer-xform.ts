@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class HeaderFooterXform extends BaseXform {
   model: any;
@@ -8,7 +9,7 @@ class HeaderFooterXform extends BaseXform {
     return 'headerFooter';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     if (model) {
       xmlStream.addRollback();
 
@@ -57,7 +58,7 @@ class HeaderFooterXform extends BaseXform {
     }
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     switch (node.name) {
       case 'headerFooter':
         this.model = {};
@@ -98,7 +99,7 @@ class HeaderFooterXform extends BaseXform {
     }
   }
 
-  parseText(text) {
+  parseText(text: string) {
     switch (this.currentNode) {
       case 'oddHeader':
         this.model.oddHeader = text;

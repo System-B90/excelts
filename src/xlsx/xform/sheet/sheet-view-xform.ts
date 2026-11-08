@@ -1,5 +1,6 @@
 import colCache from "../../../utils/col-cache";
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 const VIEW_STATES = {
   frozen: 'frozen',
@@ -17,7 +18,7 @@ class SheetViewXform extends BaseXform {
     return 'sheetView';
   }
 
-  prepare(model) {
+  prepare(model: XformModel) {
     switch (model.state) {
       case 'frozen':
       case 'split':
@@ -28,7 +29,7 @@ class SheetViewXform extends BaseXform {
     }
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     xmlStream.openNode('sheetView', {
       workbookViewId: model.workbookViewId || 0,
     });
@@ -103,7 +104,7 @@ class SheetViewXform extends BaseXform {
     xmlStream.closeNode();
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     switch (node.name) {
       case 'sheetView':
         this.sheetView = {
@@ -147,7 +148,7 @@ class SheetViewXform extends BaseXform {
 
   parseText() {}
 
-  parseClose(name) {
+  parseClose(name: string) {
     let model;
     let selection;
     switch (name) {

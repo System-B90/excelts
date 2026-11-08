@@ -1,4 +1,5 @@
-import BaseXform from "../base-xform";
+import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
+import XmlStream from "../../../utils/xml-stream";
 
 class HyperlinkXform extends BaseXform {
   model: any;
@@ -7,7 +8,7 @@ class HyperlinkXform extends BaseXform {
     return 'hyperlink';
   }
 
-  render(xmlStream, model) {
+  render(xmlStream: XmlStream, model: XformModel) {
     if (this.isInternalLink(model)) {
       xmlStream.leafNode('hyperlink', {
         ref: model.address,
@@ -24,7 +25,7 @@ class HyperlinkXform extends BaseXform {
     }
   }
 
-  parseOpen(node) {
+  parseOpen(node: XmlNode) {
     if (node.name === 'hyperlink') {
       this.model = {
         address: node.attributes.ref,
