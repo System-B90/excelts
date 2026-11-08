@@ -218,7 +218,7 @@ class Row {
 
   // returns true if the row includes at least one cell with a value
   get hasValues() {
-    return _.some(this._cells, cell => cell && cell.type !== Enums.ValueType.Null);
+    return _.some(this._cells, (cell: any) => cell && cell.type !== Enums.ValueType.Null);
   }
 
   get cellCount() {
@@ -372,7 +372,7 @@ class Row {
       : null;
   }
 
-  set model(value) {
+  set model(value: any) {
     if (value.number !== this._number) {
       throw new Error('Invalid row number in model');
     }

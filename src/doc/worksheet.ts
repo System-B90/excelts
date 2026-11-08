@@ -25,7 +25,7 @@ class Worksheet {
   _rows: any;
   _columns: any;
   _keys: any;
-  _merges: any;
+  _merges: Record<string, Range>;
   rowBreaks: any;
   properties: any;
   pageSetup: any;
@@ -35,7 +35,7 @@ class Worksheet {
   autoFilter: any;
   _media: any;
   sheetProtection: any;
-  tables: any;
+  tables: Record<string, Table>;
   conditionalFormattings: any;
   _name: any;
   _headerRowCount: any;
@@ -237,7 +237,7 @@ class Worksheet {
 
     // construct Column objects
     let count = 1;
-    const columns = (this._columns = []);
+    const columns: Column[] = (this._columns = []);
     value.forEach((defn: any) => {
       const column = new Column(this, count++, false);
       columns.push(column);
@@ -885,7 +885,7 @@ class Worksheet {
 
     // ==========================================================
     // Rows
-    const rows = (model.rows = []);
+    const rows: any[] = (model.rows = []);
     const dimensions = (model.dimensions = new Range());
     this._rows.forEach((row: any) => {
       const rowModel = row && row.model;
@@ -922,7 +922,7 @@ class Worksheet {
     });
   }
 
-  set model(value) {
+  set model(value: any) {
     this.name = value.name;
     this._columns = Column.fromModel(this, value.cols);
     this._parseRows(value);

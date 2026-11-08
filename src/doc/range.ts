@@ -1,11 +1,32 @@
 import colCache from "../utils/col-cache";
 
+/** The plain bounds of a range, 1-based and inclusive. */
+export interface RangeModel {
+  top: number;
+  left: number;
+  bottom: number;
+  right: number;
+  sheetName?: string;
+}
+
 // used by worksheet to calculate sheet dimensions
 class Range {
-  model: any;
+  model!: RangeModel;
 
-  constructor() {
-    this.decode(arguments);
+  /** An empty range. */
+  constructor();
+
+  /** A copy of another range, a model, a `[sheetName!]tl:br` string, or an argument list as an array. */
+  constructor(value: Range | RangeModel | string | any[]);
+
+  /** From two addresses, e.g. `("A1", "B2")` or `("A1", "B2", "Sheet1")`. */
+  constructor(tl: string, br: string, sheetName?: string);
+
+  /** From bounds, with an optional sheet name. */
+  constructor(top: number, left: number, bottom: number, right: number, sheetName?: string);
+
+  constructor(...args: any[]) {
+    this.decode(args);
   }
 
   setTLBR(t: any, l: any, b?: any, r?: any, s?: any) {
@@ -34,7 +55,7 @@ class Range {
     }
   }
 
-  decode(argv: any) {
+  decode(argv: any[]) {
     switch (argv.length) {
       case 5: // [t,l,b,r,s]
         this.setTLBR(argv[0], argv[1], argv[2], argv[3], argv[4]);
@@ -111,43 +132,43 @@ class Range {
     }
   }
 
-  get top() {
+  get top(): number {
     return this.model.top || 1;
   }
 
-  set top(value) {
+  set top(value: number) {
     this.model.top = value;
   }
 
-  get left() {
+  get left(): number {
     return this.model.left || 1;
   }
 
-  set left(value) {
+  set left(value: number) {
     this.model.left = value;
   }
 
-  get bottom() {
+  get bottom(): number {
     return this.model.bottom || 1;
   }
 
-  set bottom(value) {
+  set bottom(value: number) {
     this.model.bottom = value;
   }
 
-  get right() {
+  get right(): number {
     return this.model.right || 1;
   }
 
-  set right(value) {
+  set right(value: number) {
     this.model.right = value;
   }
 
-  get sheetName() {
+  get sheetName(): string | undefined {
     return this.model.sheetName;
   }
 
-  set sheetName(value) {
+  set sheetName(value: string | undefined) {
     this.model.sheetName = value;
   }
 
@@ -162,14 +183,14 @@ class Range {
     return '';
   }
 
-  expand(top: any, left: any, bottom: any, right: any) {
+  expand(top: number, left: number, bottom: number, right: number) {
     if (!this.model.top || top < this.top) this.top = top;
     if (!this.model.left || left < this.left) this.left = left;
     if (!this.model.bottom || bottom > this.bottom) this.bottom = bottom;
     if (!this.model.right || right > this.right) this.right = right;
   }
 
-  expandRow(row: any) {
+  expandRow(row?: { number: number; dimensions?: { min: number; max: number } } | null) {
     if (row) {
       const {dimensions, number} = row;
       if (dimensions) {
@@ -178,7 +199,7 @@ class Range {
     }
   }
 
-  expandToAddress(addressStr: any) {
+  expandToAddress(addressStr: string) {
     const address = colCache.decodeEx(addressStr);
     this.expand(address.row, address.col, address.row, address.col);
   }
@@ -223,7 +244,7 @@ class Range {
     return this.range;
   }
 
-  intersects(other: any) {
+  intersects(other: { sheetName?: string; top: number; left: number; bottom: number; right: number }) {
     if (other.sheetName && this.sheetName && other.sheetName !== this.sheetName) return false;
     if (other.bottom < this.top) return false;
     if (other.top > this.bottom) return false;
@@ -232,12 +253,12 @@ class Range {
     return true;
   }
 
-  contains(addressStr: any) {
+  contains(addressStr: string) {
     const address = colCache.decodeEx(addressStr);
     return this.containsEx(address);
   }
 
-  containsEx(address: any) {
+  containsEx(address: { sheetName?: string; row: number; col: number }) {
     if (address.sheetName && this.sheetName && address.sheetName !== this.sheetName) return false;
     return (
       address.row >= this.top &&
@@ -247,7 +268,7 @@ class Range {
     );
   }
 
-  forEachAddress(cb: any) {
+  forEachAddress(cb: (address: string, row: number, col: number) => void) {
     for (let col = this.left; col <= this.right; col++) {
       for (let row = this.top; row <= this.bottom; row++) {
         cb(colCache.encodeAddress(row, col), row, col);

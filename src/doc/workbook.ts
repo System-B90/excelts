@@ -203,7 +203,7 @@ class Workbook {
     };
   }
 
-  set model(value) {
+  set model(value: any) {
     this.creator = value.creator;
     this.lastModifiedBy = value.lastModifiedBy;
     this.lastPrinted = value.lastPrinted;

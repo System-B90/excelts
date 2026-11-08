@@ -47,7 +47,7 @@ class Note {
     return _.deepMerge({}, Note.DEFAULT_CONFIGS, value);
   }
 
-  set model(value) {
+  set model(value: any) {
     const {note} = value;
     const {texts} = note;
     if (texts.length === 1 && Object.keys(texts[0]).length === 1) {

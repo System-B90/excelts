@@ -345,7 +345,7 @@ class Cell {
     return model;
   }
 
-  set model(value) {
+  set model(value: any) {
     this._value.release();
     this._value = Value.create(value.type, this);
     this._value.model = value;
@@ -546,7 +546,7 @@ class RichTextValue {
   }
 
   toCsvString() {
-    return `"${this.text.replace(/"/g, '""')}"`;
+    return `"${this.toString().replace(/"/g, '""')}"`;
   }
 
   release() {}
@@ -775,8 +775,8 @@ class FormulaValue {
   }
 
   _copyModel(model: any) {
-    const copy = {};
-    const cp = (name: any) => {
+    const copy: Record<string, any> = {};
+    const cp = (name: string) => {
       const value = model[name];
       if (value) {
         copy[name] = value;
@@ -1045,6 +1045,13 @@ class ErrorValue {
   }
 }
 
+/**
+ * Key under which JSONValue is registered. The value types are keyed by the
+ * ValueType enum, which has no JSON member: arbitrary objects are stored as
+ * their JSON text and read back as strings, so this never escapes as a cell's `type`.
+ */
+const JSON_TYPE = "json";
+
 class JSONValue {
   model: any;
 
@@ -1094,6 +1101,8 @@ class JSONValue {
 }
 
 // Value is a place to hold common static Value type functions
+type ValueConstructor = new (cell: any, value?: any) => any;
+
 const Value = {
   getType(value: any) {
     if (value === null || value === undefined) {
@@ -1126,7 +1135,7 @@ const Value = {
     if (value.error) {
       return Cell.Types.Error;
     }
-    return Cell.Types.JSON;
+    return JSON_TYPE;
   },
 
   // map valueType to constructor
@@ -1138,17 +1147,17 @@ const Value = {
     {t: Cell.Types.Hyperlink, f: HyperlinkValue},
     {t: Cell.Types.Formula, f: FormulaValue},
     {t: Cell.Types.Merge, f: MergeValue},
-    {t: Cell.Types.JSON, f: JSONValue},
+    {t: JSON_TYPE, f: JSONValue},
     {t: Cell.Types.SharedString, f: SharedStringValue},
     {t: Cell.Types.RichText, f: RichTextValue},
     {t: Cell.Types.Boolean, f: BooleanValue},
     {t: Cell.Types.Error, f: ErrorValue},
-  ].reduce((p, t) => {
+  ].reduce<Record<string | number, ValueConstructor>>((p, t) => {
     p[t.t] = t.f;
     return p;
-  }, []),
+  }, {}),
 
-  create(type: any, cell: any, value?: any) {
+  create(type: string | number, cell: any, value?: any) {
     const T = this.types[type];
     if (!T) {
       throw new Error(`Could not create Value of type ${type}`);

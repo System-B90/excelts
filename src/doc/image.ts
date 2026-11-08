@@ -36,7 +36,7 @@ class Image {
     }
   }
 
-  set model({type, imageId, range, hyperlinks}) {
+  set model({ type, imageId, range, hyperlinks }: { type: string; imageId: any; range?: any; hyperlinks?: any }) {
     this.type = type;
     this.imageId = imageId;
 

@@ -280,15 +280,12 @@ const colCache = {
   },
 
   // convert row,col into string address or t,l,b,r into range
-  encode() {
-    switch (arguments.length) {
+  encode(...args: [row: number, col: number] | [top: number, left: number, bottom: number, right: number]): string {
+    switch (args.length) {
       case 2:
-        return colCache.encodeAddress(arguments[0], arguments[1]);
+        return colCache.encodeAddress(args[0], args[1]);
       case 4:
-        return `${colCache.encodeAddress(arguments[0], arguments[1])}:${colCache.encodeAddress(
-          arguments[2],
-          arguments[3]
-        )}`;
+        return `${colCache.encodeAddress(args[0], args[1])}:${colCache.encodeAddress(args[2], args[3])}`;
       default:
         throw new Error('Can only encode with 2 or 4 arguments');
     }

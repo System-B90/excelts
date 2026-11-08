@@ -86,7 +86,7 @@ class Anchor {
     };
   }
 
-  set model(value) {
+  set model(value: any) {
     this.nativeCol = value.nativeCol;
     this.nativeColOff = value.nativeColOff;
     this.nativeRow = value.nativeRow;

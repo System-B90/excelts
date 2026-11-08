@@ -8,7 +8,7 @@ import Range from "./range";
 const rangeRegexp = /[$](\w+)[$](\d+)(:[$](\w+)[$](\d+))?/;
 
 class DefinedNames {
-  matrixMap: any;
+  matrixMap: Record<string, CellMatrix>;
 
   constructor() {
     this.matrixMap = {};
@@ -80,7 +80,7 @@ class DefinedNames {
     );
   }
 
-  _explore(matrix: any, cell: any) {
+  _explore(matrix: CellMatrix, cell: any) {
     cell.mark = false;
     const {sheetName} = cell;
 
@@ -89,7 +89,7 @@ class DefinedNames {
     let y;
 
     // grow vertical - only one col to worry about
-    function vGrow(yy: any, edge: any) {
+    function vGrow(yy: number, edge: "top" | "bottom") {
       const c = matrix.findCellAt(sheetName, yy, cell.col);
       if (!c || !c.mark) {
         return false;
@@ -102,7 +102,7 @@ class DefinedNames {
     for (y = cell.row + 1; vGrow(y, 'bottom'); y++);
 
     // grow horizontal - ensure all rows can grow
-    function hGrow(xx: any, edge: any) {
+    function hGrow(xx: number, edge: "left" | "right") {
       const cells = [];
       for (y = range.top; y <= range.bottom; y++) {
         const c = matrix.findCellAt(sheetName, y, xx);
@@ -181,10 +181,10 @@ class DefinedNames {
     );
   }
 
-  set model(value) {
+  set model(value: any) {
     // value is [ { name, ranges }, ... ]
-    const matrixMap = (this.matrixMap = {});
-    value.forEach(definedName => {
+    const matrixMap: Record<string, CellMatrix> = (this.matrixMap = {});
+    value.forEach((definedName: any) => {
       const matrix = (matrixMap[definedName.name] = new CellMatrix());
       definedName.ranges.forEach((rangeStr: any) => {
         if (rangeRegexp.test(rangeStr.split('!').pop() || '')) {

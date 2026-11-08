@@ -284,7 +284,7 @@ class Table {
     return this.table;
   }
 
-  set model(value) {
+  set model(value: any) {
     this.table = value;
   }
 

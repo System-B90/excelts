@@ -44,7 +44,7 @@ class CellMatrix {
     return this.findCellEx(address, true);
   }
 
-  findCellEx(address: any, create: any) {
+  findCellEx(address: any, create?: boolean) {
     const sheet = this.findSheet(address, create);
     const row = this.findSheetRow(sheet, address, create);
     return this.findRowCell(row, address, create);
