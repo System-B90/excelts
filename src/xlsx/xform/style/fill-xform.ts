@@ -222,7 +222,7 @@ class GradientFillXform extends BaseXform {
     }
     switch (node.name) {
       case 'gradientFill': {
-        const model = (this.model = {
+        const model: Record<string, any> = (this.model = {
           stops: [],
         });
         if (node.attributes.degree) {
@@ -305,7 +305,7 @@ class FillXform extends BaseXform {
   ].reduce((p, v) => {
     p[v] = true;
     return p;
-  }, {});
+  }, {} as Record<string, boolean>);
 
   map: any;
   model: any;

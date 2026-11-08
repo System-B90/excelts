@@ -6,7 +6,7 @@ import CompositeXform from "../../composite-xform";
 import DatabarExtXform from "./databar-ext-xform";
 import IconSetExtXform from "./icon-set-ext-xform";
 
-const extIcons = {
+const extIcons: Record<string, any> = {
   '3Triangles': true,
   '3Stars': true,
   '5Boxes': true,

@@ -14,7 +14,7 @@ class ContentTypesXform extends BaseXform {
 
     xmlStream.openNode('Types', ContentTypesXform.PROPERTY_ATTRIBUTES);
 
-    const mediaHash = {};
+    const mediaHash: Record<string, any> = {};
     (model.media || []).forEach((medium: any) => {
       if (medium.type === 'image') {
         const imageType = medium.extension;

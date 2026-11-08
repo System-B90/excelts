@@ -1,4 +1,5 @@
-export default {
+/** Built-in number formats by id: the format code under `f`, and per-language variants. */
+const defaultNumFormats: Record<string, Record<string, string>> = {
   0: {f: 'General'},
   1: {f: '0'},
   2: {f: '0.00'},
@@ -151,3 +152,5 @@ export default {
 
   81: {'th-th': 'd/m/bb'},
 };
+
+export default defaultNumFormats;

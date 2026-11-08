@@ -4,7 +4,23 @@ import XmlStream from "../../../utils/xml-stream";
 //   <t xml:space="preserve"> is </t>
 
 class TextXform extends BaseXform {
-  _text: any;
+  _text: string[] = [];
+
+  constructor() {
+    super();
+    // `model` is the collected text, read on demand: the parent xform reads it when the
+    // closing tag arrives, without calling parseClose first. It is defined on the instance
+    // because BaseXform declares `model` as a plain property; the empty setter lets
+    // BaseXform.reset() assign null without throwing (this module runs in strict mode).
+    Object.defineProperty(this, "model", {
+      get: () =>
+        this._text
+          .join("")
+          .replace(/_x([0-9A-F]{4})_/g, (_match, hex: string) => String.fromCharCode(parseInt(hex, 16))),
+      set: () => {},
+      configurable: true,
+    });
+  }
 
   get tag() {
     return 't';
@@ -17,12 +33,6 @@ class TextXform extends BaseXform {
     }
     xmlStream.writeText(model);
     xmlStream.closeNode();
-  }
-
-  get model() {
-    return this._text
-      .join('')
-      .replace(/_x([0-9A-F]{4})_/g, ($0: any, $1: any) => String.fromCharCode(parseInt($1, 16)));
   }
 
   parseOpen(node: XmlNode) {

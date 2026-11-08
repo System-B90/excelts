@@ -321,7 +321,7 @@ class WorksheetWriter {
 
     // construct Column objects
     let count = 1;
-    const columns = (this._columns = []);
+    const columns: any[] = (this._columns = []);
     value.forEach((defn: any) => {
       const column = new Column(this, count++, false);
       columns.push(column);
@@ -447,10 +447,10 @@ class WorksheetWriter {
   // Cells
 
   // returns the cell at [r,c] or address given by r. If not found, return undefined
-  findCell(r: any, c: any) {
+  findCell(r: any, c?: any) {
     const address = colCache.getAddress(r, c);
     const row = this.findRow(address.row);
-    return row ? row.findCell(address.column) : undefined;
+    return row ? row.findCell(address.col) : undefined;
   }
 
   // return the cell at [r,c] or address given by r. If not found, create a new one.
@@ -575,7 +575,7 @@ class WorksheetWriter {
   }
 
   _writeSheetFormatProperties(xmlBuf: any, properties: any) {
-    const sheetFormatPropertiesModel = properties
+    const sheetFormatPropertiesModel: Record<string, any> | undefined = properties
       ? {
           defaultRowHeight: properties.defaultRowHeight,
           dyDescent: properties.dyDescent,
@@ -584,7 +584,7 @@ class WorksheetWriter {
         }
       : undefined;
     if (properties.defaultColWidth) {
-      sheetFormatPropertiesModel.defaultColWidth = properties.defaultColWidth;
+      sheetFormatPropertiesModel!.defaultColWidth = properties.defaultColWidth;
     }
 
     xmlBuf.addText(xform.sheetFormatProperties.toXml(sheetFormatPropertiesModel));

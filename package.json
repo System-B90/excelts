@@ -51,14 +51,15 @@
     "sideEffects": false,
     "scripts": {
         "build": "node scripts/build.mjs",
-        "pretest": "npm run build",
+        "typecheck": "tsc -p tsconfig.json",
+        "pretest": "npm run typecheck && npm run build",
         "test": "node --test",
         "test:update-snapshots": "npm run build && node scripts/update-snapshots.mjs",
         "test:types": "tsc -p tests/types/tsconfig.json && tsc -p tests/types/tsconfig.bundler.json && tsc -p tests/types/tsconfig.node10.json",
         "test:turbopack": "node scripts/check-turbopack.mjs",
         "audit:bundle": "node scripts/audit-bundle.mjs",
-        "prepublishOnly": "npm test && npm run test:types",
-        "bench": "node bench/bench.mjs"
+        "bench": "node bench/bench.mjs",
+        "prepublishOnly": "npm test && npm run test:types"
     },
     "devDependencies": {
         "@types/archiver": "5.3.4",

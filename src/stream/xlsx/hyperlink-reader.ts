@@ -31,7 +31,7 @@ class HyperlinkReader extends EventEmitter {
   async read() {
     const {iterator, options} = this;
     let emitHyperlinks = false;
-    let hyperlinks = null;
+    let hyperlinks: any = null;
     switch (options.hyperlinks) {
       case 'emit':
         emitHyperlinks = true;

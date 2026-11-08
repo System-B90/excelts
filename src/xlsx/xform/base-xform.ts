@@ -40,7 +40,7 @@ class BaseXform {
   prepare(_model?: XformModel, _options?: XformOptions): void {}
 
   /** Converts the model to XML. */
-  render(_xmlStream: XmlStream, _model?: XformModel): void {}
+  render(_xmlStream: XmlStream, _model?: XformModel, ..._extra: any[]): void {}
 
   /** An XML node opened. Returns whether this xform took it. */
   parseOpen(_node: XmlNode): boolean | void {}

@@ -2,7 +2,7 @@ import colCache from "../../../utils/col-cache";
 import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
 import XmlStream from "../../../utils/xml-stream";
 
-const VIEW_STATES = {
+const VIEW_STATES: Record<string, any> = {
   frozen: 'frozen',
   frozenSplit: 'frozen',
   split: 'split',
@@ -149,7 +149,7 @@ class SheetViewXform extends BaseXform {
   parseText() {}
 
   parseClose(name: string) {
-    let model;
+    let model: Record<string, any> | undefined;
     let selection;
     switch (name) {
       case 'sheetView':

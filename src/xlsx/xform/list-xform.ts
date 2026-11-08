@@ -3,6 +3,10 @@ import XmlStream from "../../utils/xml-stream";
 
 class ListXform extends BaseXform {
   tag: any;
+  /** Attributes for the list's own element. */
+  $: any;
+  /** Name of the attribute that carries the item count. */
+  $count: string;
   always: any;
   count: any;
   empty: any;

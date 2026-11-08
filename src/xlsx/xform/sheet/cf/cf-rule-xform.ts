@@ -10,7 +10,7 @@ import FormulaXform from "./formula-xform";
 import ColorScaleXform from "./color-scale-xform";
 import IconSetXform from "./icon-set-xform";
 
-const extIcons = {
+const extIcons: Record<string, any> = {
   '3Triangles': true,
   '3Stars': true,
   '5Boxes': true,
@@ -190,7 +190,7 @@ class CfRuleXform extends CompositeXform {
       priority: model.priority,
       percent: BaseXform.toBoolAttribute(model.percent, false),
       bottom: BaseXform.toBoolAttribute(model.bottom, false),
-      rank: BaseXform.toIntValue(model.rank, 10, true),
+      rank: BaseXform.toIntValue(model.rank, 10),
     });
   }
 

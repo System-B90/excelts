@@ -52,7 +52,7 @@ class WorkbookReader extends EventEmitter {
     this.styles.init();
   }
 
-  _getStream(input: any) {
+  _getStream(input: any): any {
     if (input instanceof nodeStream.Readable || input instanceof Readable) {
       return input;
     }
@@ -93,7 +93,7 @@ class WorkbookReader extends EventEmitter {
     }
   }
 
-  async *parse(input?: any, options?: any) {
+  async *parse(input?: any, options?: any): AsyncGenerator<any, void, undefined> {
     if (options) this.options = options;
     const stream = (this.stream = this._getStream(input || this.input));
     const zip = unzip.Parse({forceStream: true});
@@ -135,7 +135,7 @@ class WorkbookReader extends EventEmitter {
                   }
                   waitingWorkSheets.push({sheetNo, path, tempFileCleanupCallback});
 
-                  const tempStream = fs.createWriteStream(path);
+                  const tempStream = fs.createWriteStream(path as string);
                   tempStream.on('error', reject);
                   entry.pipe(tempStream);
                   return tempStream.on('finish', () => {
@@ -155,7 +155,7 @@ class WorkbookReader extends EventEmitter {
     }
 
     for (const {sheetNo, path, tempFileCleanupCallback} of waitingWorkSheets) {
-      let fileStream = fs.createReadStream(path);
+      let fileStream: any = fs.createReadStream(path);
       // TODO: Remove once node v8 is deprecated
       // Detect and upgrade old fileStreams
       if (!fileStream[Symbol.asyncIterator]) {
@@ -202,7 +202,7 @@ class WorkbookReader extends EventEmitter {
     let text = null;
     let richText = [];
     let index = 0;
-    let font = null;
+    let font: Record<string, any> | null = null;
     for await (const events of parseSax(iterateStream(entry))) {
       for (const {eventType, value} of events) {
         if (eventType === 'opentag') {

@@ -245,7 +245,7 @@ class CellXform extends BaseXform {
           model.value.richText.forEach((text: any) => {
             this.richTextXForm.render(xmlStream, text);
           });
-          xmlStream.closeNode('is');
+          xmlStream.closeNode();
         } else {
           xmlStream.addAttribute('t', 'str');
           xmlStream.leafNode('v', null, model.value);

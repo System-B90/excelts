@@ -88,7 +88,8 @@ class XLSX {
     workbookXform.reconcile(model);
 
     // reconcile drawings with their rels
-    const drawingOptions: { media: any; mediaIndex: any; rels?: Record<string, any> } = {
+    const drawingOptions: { media: any; mediaIndex: any; rels: Record<string, any> } = {
+      rels: {},
       media: model.media,
       mediaIndex: model.mediaIndex,
     };
@@ -443,7 +444,7 @@ class XLSX {
     model.worksheets.forEach((worksheet: any) => {
       const {drawing} = worksheet;
       if (drawing) {
-        drawingXform.prepare(drawing, {});
+        drawingXform.prepare(drawing);
         let xml = drawingXform.toXml(drawing);
         zip.append(xml, {name: `xl/drawings/${drawing.name}.xml`});
 
@@ -645,7 +646,7 @@ class XLSX {
 
     // render
     await this.addContentTypes(zip, model);
-    await this.addOfficeRels(zip, model);
+    await this.addOfficeRels(zip);
     await this.addWorkbookRels(zip, model);
     await this.addWorksheets(zip, model);
     await this.addSharedStrings(zip, model); // always after worksheets

@@ -21,7 +21,6 @@ class RelationshipsXform extends BaseXform {
   }
 
   render(xmlStream: XmlStream, model: XformModel) {
-    model = model || this._values;
     xmlStream.openXml(XmlStream.StdDocAttributes);
     xmlStream.openNode('Relationships', RelationshipsXform.RELATIONSHIPS_ATTRIBUTES);
 

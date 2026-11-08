@@ -16,7 +16,7 @@ const validation = {
   ].reduce((p, v) => {
     p[v] = true;
     return p;
-  }, {}),
+  }, {} as Record<string, boolean>),
   horizontal(value: any) {
     return this.horizontalValues[value] ? value : undefined;
   },
@@ -24,7 +24,7 @@ const validation = {
   verticalValues: ['top', 'middle', 'bottom', 'distributed', 'justify'].reduce((p, v) => {
     p[v] = true;
     return p;
-  }, {}),
+  }, {} as Record<string, boolean>),
   vertical(value: any) {
     if (value === 'middle') return 'center';
     return this.verticalValues[value] ? value : undefined;
@@ -133,7 +133,7 @@ class AlignmentXform extends BaseXform {
   }
 
   parseOpen(node: XmlNode) {
-    const model = {};
+    const model: Record<string, any> = {};
 
     let valid = false;
     function add(truthy: any, name: any, value: any) {

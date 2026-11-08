@@ -73,7 +73,6 @@ class SharedStringsXform extends BaseXform {
   // </sst>
 
   render(xmlStream: XmlStream, model: XformModel) {
-    model = model || this._values;
     xmlStream.openXml(XmlStream.StdDocAttributes);
 
     xmlStream.openNode('sst', {

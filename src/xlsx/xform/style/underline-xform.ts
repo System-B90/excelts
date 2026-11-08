@@ -2,7 +2,7 @@ import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
 import XmlStream from "../../../utils/xml-stream";
 
 class UnderlineXform extends BaseXform {
-  static Attributes = {
+  static Attributes: Record<string, Record<string, string>> = {
     single: {},
     double: {val: 'double'},
     singleAccounting: {val: 'singleAccounting'},

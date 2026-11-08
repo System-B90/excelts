@@ -5,7 +5,7 @@ import colCache from "../../../utils/col-cache";
 import * as Enums from "../../../doc/enums";
 
 class Merges {
-  merges: any;
+  merges: Record<string, Range>;
 
   constructor() {
     // optional mergeCells is array of ranges (like the xml)
@@ -28,7 +28,7 @@ class Merges {
 
   reconcile(mergeCells: any, rows: any) {
     // reconcile merge list with merge cells
-    _.each(mergeCells, merge => {
+    _.each(mergeCells, (merge: string) => {
       const dimensions = colCache.decode(merge);
       for (let i = dimensions.top; i <= dimensions.bottom; i++) {
         const row = rows[i - 1];
@@ -46,12 +46,6 @@ class Merges {
         }
       }
     });
-  }
-
-  getMasterAddress(address: any) {
-    // if address has been merged, return its master's address. Assumes reconcile has been called
-    const range = this.hash[address];
-    return range && range.tl;
   }
 }
 

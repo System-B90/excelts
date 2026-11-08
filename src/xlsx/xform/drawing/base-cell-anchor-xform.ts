@@ -1,6 +1,9 @@
 import BaseXform, { type XmlNode } from "../base-xform";
 
-class BaseCellAnchorXform extends BaseXform {
+/** Base for the anchor kinds; each concrete anchor supplies its own `tag`. */
+abstract class BaseCellAnchorXform extends BaseXform {
+  abstract get tag(): string;
+
   model: any;
   parser: any;
 
@@ -19,7 +22,7 @@ class BaseCellAnchorXform extends BaseXform {
         };
         break;
       default:
-        this.parser = this.map[node.name];
+        this.parser = this.map?.[node.name];
         if (this.parser) {
           this.parser.parseOpen(node);
         }

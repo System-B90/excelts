@@ -23,9 +23,10 @@ class EdgeXform extends BaseXform {
   ].reduce((p, v) => {
     p[v] = true;
     return p;
-  }, {});
+  }, {} as Record<string, boolean>);
 
   name: any;
+  defaultColor: any;
   map: any;
   model: any;
   parser: any;
@@ -197,7 +198,7 @@ class BorderXform extends BaseXform {
       return true;
     }
     if (name === 'border') {
-      const model = (this.model = {});
+      const model: Record<string, any> = (this.model = {});
       const add = function(key: any, edgeModel: any, extensions?: any) {
         if (edgeModel) {
           if (extensions) {

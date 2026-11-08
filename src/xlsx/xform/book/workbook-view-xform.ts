@@ -21,7 +21,7 @@ class WorkbookViewXform extends BaseXform {
 
   parseOpen(node: XmlNode) {
     if (node.name === 'workbookView') {
-      const model = (this.model = {});
+      const model: Record<string, any> = (this.model = {});
       const addS = function(name: any, value: any, dflt: any) {
         const s = value !== undefined ? (model[name] = value) : dflt;
         if (s !== undefined) {

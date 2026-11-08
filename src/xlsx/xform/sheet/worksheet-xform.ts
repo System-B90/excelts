@@ -53,8 +53,8 @@ const mergeConditionalFormattings = (model: any, extModel: any) => {
   }
 
   // index model rules by x14Id
-  const cfMap = {};
-  const ruleMap = {};
+  const cfMap: Record<string, any> = {};
+  const ruleMap: Record<string, any> = {};
   model.forEach((cf: any) => {
     cfMap[cf.ref] = cf;
     cf.rules.forEach((rule: any) => {
@@ -163,7 +163,7 @@ class WorkSheetXform extends BaseXform {
     model.mergeCells = options.merges.mergeCells;
 
     // prepare relationships
-    const rels = (model.rels = []);
+    const rels: any[] = (model.rels = []);
 
     function nextRid(r: any) {
       return `rId${r.length + 1}`;
@@ -258,7 +258,7 @@ class WorkSheetXform extends BaseXform {
         if (medium.hyperlinks && medium.hyperlinks.hyperlink) {
           const rIdHyperLink = nextRid(drawing.rels);
           drawingRelsHash[drawing.rels.length] = rIdHyperLink;
-          anchor.picture.hyperlinks = {
+          (anchor.picture as Record<string, any>).hyperlinks = {
             tooltip: medium.hyperlinks.tooltip,
             rId: rIdHyperLink,
           };
@@ -302,7 +302,7 @@ class WorkSheetXform extends BaseXform {
     xmlStream.openXml(XmlStream.StdDocAttributes);
     xmlStream.openNode('worksheet', WorkSheetXform.WORKSHEET_ATTRIBUTES);
 
-    const sheetFormatPropertiesModel = model.properties
+    const sheetFormatPropertiesModel: Record<string, any> | undefined = model.properties
       ? {
           defaultRowHeight: model.properties.defaultRowHeight,
           dyDescent: model.properties.dyDescent,
@@ -311,7 +311,7 @@ class WorkSheetXform extends BaseXform {
         }
       : undefined;
     if (model.properties && model.properties.defaultColWidth) {
-      sheetFormatPropertiesModel.defaultColWidth = model.properties.defaultColWidth;
+      sheetFormatPropertiesModel!.defaultColWidth = model.properties.defaultColWidth;
     }
     const sheetPropertiesModel = {
       outlineProperties: model.properties && model.properties.outlineProperties,
@@ -377,7 +377,7 @@ class WorkSheetXform extends BaseXform {
     }
 
     if (node.name === 'worksheet') {
-      _.each(this.map, xform => {
+      _.each(this.map, (xform: BaseXform) => {
         xform.reset();
       });
       return true;

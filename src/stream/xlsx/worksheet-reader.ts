@@ -15,6 +15,7 @@ class WorksheetReader extends EventEmitter {
   iterator: any;
   options: any;
   name: any;
+  state: any;
   _columns: any;
   _keys: any;
   _dimensions: any;
@@ -126,7 +127,7 @@ class WorksheetReader extends EventEmitter {
     const {iterator, options} = this;
     let emitSheet = false;
     let emitHyperlinks = false;
-    let hyperlinks = null;
+    let hyperlinks: any = null;
     switch (options.worksheets) {
       case 'emit':
         emitSheet = true;
@@ -159,9 +160,9 @@ class WorksheetReader extends EventEmitter {
     let inHyperlinks = false;
 
     // parse state
-    let cols = null;
+    let cols: any = null;
     let row = null;
-    let c = null;
+    let c: any = null;
     let current = null;
     for await (const events of parseSax(iterator)) {
       const worksheetEvents = [];

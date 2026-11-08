@@ -78,7 +78,7 @@ class RowXform extends BaseXform {
       const spans = node.attributes.spans
         ? node.attributes.spans.split(':').map(span => parseInt(span, 10))
         : [undefined, undefined];
-      const model = (this.model = {
+      const model: Record<string, any> = (this.model = {
         number: parseInt(node.attributes.r, 10),
         min: spans[0],
         max: spans[1],

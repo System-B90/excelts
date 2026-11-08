@@ -57,7 +57,7 @@ class FontXform extends BaseXform {
     const {map} = this;
 
     xmlStream.openNode(this.options.tagName);
-    _.each(this.map, (defn, tag) => {
+    _.each(this.map, (defn: any, tag: string) => {
       map[tag].xform.render(xmlStream, model[defn.prop]);
     });
     xmlStream.closeNode();

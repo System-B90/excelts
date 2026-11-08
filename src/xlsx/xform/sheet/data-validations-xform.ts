@@ -26,7 +26,7 @@ function assignBool(definedName: any, attributes: any, name: any, defaultValue?:
 function optimiseDataValidations(model: any) {
   // Squeeze alike data validations together into rectangular ranges
   // to reduce file size and speed up Excel load time
-  const dvList = _.map(model, (dataValidation, address) => ({
+  const dvList = _.map(model, (dataValidation: Record<string, any>, address: string) => ({
     address,
     dataValidation,
     marked: false,
@@ -109,7 +109,7 @@ class DataValidationsXform extends BaseXform {
     if (optimizedModel.length) {
       xmlStream.openNode('dataValidations', {count: optimizedModel.length});
 
-      optimizedModel.forEach(value => {
+      optimizedModel.forEach((value: any) => {
         xmlStream.openNode('dataValidation');
 
         if (value.type !== 'any') {

@@ -5,7 +5,7 @@ import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
 import XmlStream from "../../../utils/xml-stream";
 
 function hashDefaultFormats() {
-  const hash = {};
+  const hash: Record<string, any> = {};
   _.each(defaultNumFormats, (dnf, id) => {
     if (dnf.f) {
       hash[dnf.f] = parseInt(id, 10);

@@ -5,7 +5,10 @@ import BaseXform, { type XmlNode } from "./base-xform";
 
 // base class for xforms that are composed of other xforms
 // offers some default implementations
-class CompositeXform extends BaseXform {
+abstract class CompositeXform extends BaseXform {
+  /** The element this xform handles; each subclass supplies its own. */
+  abstract get tag(): string;
+
   parser: any;
   model: any;
 
@@ -15,7 +18,7 @@ class CompositeXform extends BaseXform {
 
   parseOpen(node: XmlNode) {
     // Typical pattern for composite xform
-    this.parser = this.parser || this.map[node.name];
+    this.parser = this.parser || this.map?.[node.name];
     if (this.parser) {
       this.parser.parseOpen(node);
       return true;
