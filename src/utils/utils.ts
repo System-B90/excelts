@@ -1,172 +1,116 @@
 import fs from "node:fs";
 
-// useful stuff
-const inherits = function(cls: any, superCtor: any, statics: any, prototype: any) {
-  // eslint-disable-next-line no-underscore-dangle
-  cls.super_ = superCtor;
+/** Does nothing. */
+export function nop(): void {}
 
-  if (!prototype) {
-    prototype = statics;
-    statics = null;
-  }
+/** Converts a Date to Excel's serial-number date. */
+export function dateToExcel(d: Date, date1904?: boolean): number {
+  return 25569 + d.getTime() / (24 * 3600 * 1000) - (date1904 ? 1462 : 0);
+}
 
-  if (statics) {
-    Object.keys(statics).forEach(i => {
-      Object.defineProperty(cls, i, Object.getOwnPropertyDescriptor(statics, i));
-    });
-  }
-
-  const properties = {
-    constructor: {
-      value: cls,
-      enumerable: false,
-      writable: false,
-      configurable: true,
-    },
-  };
-  if (prototype) {
-    Object.keys(prototype).forEach(i => {
-      properties[i] = Object.getOwnPropertyDescriptor(prototype, i);
-    });
-  }
-
-  cls.prototype = Object.create(superCtor.prototype, properties);
-};
+/** Converts Excel's serial-number date to a Date. */
+export function excelToDate(v: number, date1904?: boolean): Date {
+  const millisecondSinceEpoch = Math.round((v - 25569 + (date1904 ? 1462 : 0)) * 24 * 3600 * 1000);
+  return new Date(millisecondSinceEpoch);
+}
 
 // eslint-disable-next-line no-control-regex
 const xmlDecodeRegex = /[<>&'"\x7F\x00-\x08\x0B-\x0C\x0E-\x1F]/;
-const utils = {
-  nop() {},
-  promiseImmediate(value: any) {
-    return new Promise(resolve => {
-      if (global.setImmediate) {
-        setImmediate(() => {
-          resolve(value);
-        });
-      } else {
-        // poorman's setImmediate - must wait at least 1ms
-        setTimeout(() => {
-          resolve(value);
-        }, 1);
-      }
-    });
-  },
-  inherits,
-  dateToExcel(d: any, date1904?: any) {
-    return 25569 + ( d.getTime() / (24 * 3600 * 1000) ) - (date1904 ? 1462 : 0);
-  },
-  excelToDate(v: any, date1904?: any) {
-    const millisecondSinceEpoch = Math.round((v - 25569 + (date1904 ? 1462 : 0)) * 24 * 3600 * 1000);
-    return new Date(millisecondSinceEpoch);
-  },
-  parsePath(filepath: any) {
-    const last = filepath.lastIndexOf('/');
-    return {
-      path: filepath.substring(0, last),
-      name: filepath.substring(last + 1),
-    };
-  },
-  getRelsPath(filepath: any) {
-    const path = utils.parsePath(filepath);
-    return `${path.path}/_rels/${path.name}.rels`;
-  },
-  xmlEncode(text: any) {
-    const regexResult = xmlDecodeRegex.exec(text);
-    if (!regexResult) return text;
 
-    let result = '';
-    let escape = '';
-    let lastIndex = 0;
-    let i = regexResult.index;
-    for (; i < text.length; i++) {
-      const charCode = text.charCodeAt(i);
-      switch (charCode) {
-        case 34: // "
-          escape = '&quot;';
-          break;
-        case 38: // &
-          escape = '&amp;';
-          break;
-        case 39: // '
-          escape = '&apos;';
-          break;
-        case 60: // <
-          escape = '&lt;';
-          break;
-        case 62: // >
-          escape = '&gt;';
-          break;
-        case 127:
+/** Escapes text for XML, dropping the control characters XML cannot carry. */
+export function xmlEncode(text: string): string {
+  const regexResult = xmlDecodeRegex.exec(text);
+  if (!regexResult) return text;
+
+  let result = '';
+  let escape = '';
+  let lastIndex = 0;
+  let i = regexResult.index;
+  for (; i < text.length; i++) {
+    const charCode = text.charCodeAt(i);
+    switch (charCode) {
+      case 34: // "
+        escape = '&quot;';
+        break;
+      case 38: // &
+        escape = '&amp;';
+        break;
+      case 39: // '
+        escape = '&apos;';
+        break;
+      case 60: // <
+        escape = '&lt;';
+        break;
+      case 62: // >
+        escape = '&gt;';
+        break;
+      case 127:
+        escape = '';
+        break;
+      default: {
+        if (charCode <= 31 && (charCode <= 8 || (charCode >= 11 && charCode !== 13))) {
           escape = '';
           break;
-        default: {
-          if (charCode <= 31 && (charCode <= 8 || (charCode >= 11 && charCode !== 13))) {
-            escape = '';
-            break;
-          }
-          continue;
         }
+        continue;
       }
-      if (lastIndex !== i) result += text.substring(lastIndex, i);
-      lastIndex = i + 1;
-      if (escape) result += escape;
     }
-    if (lastIndex !== i) return result + text.substring(lastIndex, i);
-    return result;
-  },
-  xmlDecode(text: any) {
-    return text.replace(/&([a-z]*);/g, (c: any) => {
-      switch (c) {
-        case '&lt;':
-          return '<';
-        case '&gt;':
-          return '>';
-        case '&amp;':
-          return '&';
-        case '&apos;':
-          return '\'';
-        case '&quot;':
-          return '"';
-        default:
-          return c;
-      }
+    if (lastIndex !== i) result += text.substring(lastIndex, i);
+    lastIndex = i + 1;
+    if (escape) result += escape;
+  }
+  if (lastIndex !== i) return result + text.substring(lastIndex, i);
+  return result;
+}
+
+/** Reverses the five predefined XML entities. */
+export function xmlDecode(text: string): string {
+  return text.replace(/&([a-z]*);/g, c => {
+    switch (c) {
+      case "&lt;":
+        return "<";
+      case "&gt;":
+        return ">";
+      case "&amp;":
+        return "&";
+      case "&apos;":
+        return "'";
+      case "&quot;":
+        return '"';
+      default:
+        return c;
+    }
+  });
+}
+
+/** Parses an integer, giving 0 for anything that is not one. */
+export function validInt(value: unknown): number {
+  const i = parseInt(value as string, 10);
+  return !Number.isNaN(i) ? i : 0;
+}
+
+/** Does a number-format code contain date or time characters? */
+export function isDateFmt(fmt?: string | null): boolean {
+  if (!fmt) {
+    return false;
+  }
+
+  // must remove all chars inside quotes and []
+  const stripped = fmt.replace(/\[[^\]]*]/g, "").replace(/"[^"]*"/g, "");
+  // then check for date formatting chars
+  return stripped.match(/[ymdhMsb]+/) !== null;
+}
+
+/** Does the file or directory exist? */
+export function exists(path: string): Promise<boolean> {
+  return new Promise(resolve => {
+    fs.access(path, fs.constants.F_OK, err => {
+      resolve(!err);
     });
-  },
-  validInt(value: any) {
-    const i = parseInt(value, 10);
-    return !Number.isNaN(i) ? i : 0;
-  },
+  });
+}
 
-  isDateFmt(fmt: any) {
-    if (!fmt) {
-      return false;
-    }
-
-    // must remove all chars inside quotes and []
-    fmt = fmt.replace(/\[[^\]]*]/g, '');
-    fmt = fmt.replace(/"[^"]*"/g, '');
-    // then check for date formatting chars
-    const result = fmt.match(/[ymdhMsb]+/) !== null;
-    return result;
-  },
-
-  fs: {
-    exists(path: any) {
-      return new Promise(resolve => {
-        fs.access(path, fs.constants.F_OK, err => {
-          resolve(!err);
-        });
-      });
-    },
-  },
-
-  toIsoDateString(dt: any) {
-    return dt.toIsoString().subsstr(0, 10);
-  },
-
-  parseBoolean(value: any) {
-    return value === true || value === 'true' || value === 1 || value === '1';
-  },
-};
-
-export default utils;
+/** Reads the XML-style boolean spellings of true. */
+export function parseBoolean(value: unknown): boolean {
+  return value === true || value === "true" || value === 1 || value === "1";
+}

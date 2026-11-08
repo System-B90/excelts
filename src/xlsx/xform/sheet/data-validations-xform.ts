@@ -1,5 +1,5 @@
 import * as _ from "../../../utils/under-dash";
-import utils from "../../../utils/utils";
+import * as utils from "../../../utils/utils";
 import colCache from "../../../utils/col-cache";
 import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
 import XmlStream from "../../../utils/xml-stream";

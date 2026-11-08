@@ -4,14 +4,13 @@ import * as fastCsv from "fast-csv";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc";
 import StreamBuf from "../utils/stream-buf";
-import utils from "../utils/utils";
+import { exists } from "../utils/utils";
 
-dayjs.extend(customParseFormat).extend(utc);
-
-const { exists } = utils.fs;
+dayjs.extend(customParseFormat);
+dayjs.extend(utc);
 
 /* eslint-disable quote-props */
-const SpecialValues = {
+const SpecialValues: Record<string, any> = {
   true: true,
   false: false,
   '#N/A': {error: '#N/A'},

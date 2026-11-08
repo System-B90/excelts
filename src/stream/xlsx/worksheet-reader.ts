@@ -2,7 +2,7 @@ import { EventEmitter } from "node:events";
 import parseSax from "../../utils/parse-sax";
 
 import * as _ from "../../utils/under-dash";
-import utils from "../../utils/utils";
+import * as utils from "../../utils/utils";
 import colCache from "../../utils/col-cache";
 import Dimensions from "../../doc/range";
 

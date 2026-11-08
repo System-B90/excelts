@@ -1,18 +1,22 @@
-const oneDepthCopy = (obj: any, nestKeys: any) => ({
+/** A style or part of one: nested plain objects, copied one level at a time. */
+type Style = any;
+
+const oneDepthCopy = (obj: Style, nestKeys: readonly string[]) => ({
   ...obj,
-  ...nestKeys.reduce((memo: any, key: any) => {
+  ...nestKeys.reduce((memo: Style, key) => {
     if (obj[key]) memo[key] = {...obj[key]};
     return memo;
   }, {}),
 });
 
-const setIfExists = (src: any, dst: any, key: any, nestKeys = []) => {
+const setIfExists = (src: Style, dst: Style, key: string, nestKeys: readonly string[] = []) => {
   if (src[key]) dst[key] = oneDepthCopy(src[key], nestKeys);
 };
 
-const isEmptyObj = (obj: any) => Object.keys(obj).length === 0;
+const isEmptyObj = (obj: object) => Object.keys(obj).length === 0;
 
-const copyStyle = (style: any) => {
+/** Copies a cell style so that edits to the copy never reach the original. */
+const copyStyle = (style: Style) => {
   if (!style) return style;
   if (isEmptyObj(style)) return {};
 

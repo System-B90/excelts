@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import Stream from "readable-stream";
 
-import utils from "./utils";
+import * as utils from "./utils";
 import StringBuf from "./string-buf";
 
 // =============================================================================
@@ -332,13 +332,14 @@ class StreamBuf {
   // event close - optional, indicates upstream close
   // event error - duh
   read(size?: any) {
-    let buffers;
+    let buffers: Buffer[];
     // read min(buffer, size || infinity)
     if (size) {
       buffers = [];
       while (size && this.buffers.length && !this.buffers[0].eod) {
         const first = this.buffers[0];
-        const buffer = first.read(size);
+        // size is truthy here, so this is never the null of "no data requested"
+        const buffer = first.read(size) as Buffer;
         size -= buffer.length;
         buffers.push(buffer);
         if (first.eod && first.full) {
@@ -390,6 +391,10 @@ class StreamBuf {
 Object.setPrototypeOf(StreamBuf.prototype, Stream.Duplex.prototype);
 
 // The inherited half of the interface: everything Duplex offers that StreamBuf does not itself replace.
-interface StreamBuf extends Omit<Stream.Duplex, keyof StreamBuf> {}
+interface StreamBuf
+  extends Omit<
+    Stream.Duplex,
+    "write" | "end" | "cork" | "uncork" | "read" | "setEncoding" | "pause" | "resume" | "isPaused" | "pipe" | "unpipe" | "unshift" | "wrap"
+  > {}
 
 export default StreamBuf;

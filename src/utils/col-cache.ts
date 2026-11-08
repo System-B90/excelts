@@ -1,4 +1,18 @@
 const addressRegex = /^[A-Z]+\d+$/;
+
+/**
+ * A decoded cell address. `col` and `row` are 1-based. A column-only ("A") or
+ * row-only ("5") reference decodes with the missing part `undefined`; the type
+ * describes the usual, complete address.
+ */
+export interface Address {
+  address: string;
+  col: number;
+  row: number;
+  /** The same address with absolute markers, e.g. `$A$1`. */
+  $col$row: string;
+  sheetName?: string;
+}
 // =========================================================================
 // Column Letter to Number conversion
 const colCache = {
@@ -31,8 +45,8 @@ const colCache = {
     'Z',
   ],
   _l2nFill: 0,
-  _l2n: {},
-  _n2l: [],
+  _l2n: {} as Record<string, number>,
+  _n2l: [] as string[],
   _level(n: any) {
     if (n <= 26) {
       return 1;
@@ -110,10 +124,10 @@ const colCache = {
 
   // =========================================================================
   // Address processing
-  _hash: {},
+  _hash: {} as Record<string, Address>,
 
   // check if value looks like an address
-  validateAddress(value: any) {
+  validateAddress(value: string) {
     if (!addressRegex.test(value)) {
       throw new Error(`Invalid Address: ${value}`);
     }
@@ -121,7 +135,7 @@ const colCache = {
   },
 
   // convert address string into structure
-  decodeAddress(value: any) {
+  decodeAddress(value: string): Address {
     const addr = value.length < 5 && this._hash[value];
     if (addr) {
       return addr;
@@ -155,18 +169,18 @@ const colCache = {
       }
     }
     if (!hasCol) {
-      colNumber = undefined;
+      colNumber = undefined as unknown as number;
     } else if (colNumber > 16384) {
       throw new Error(`Out of bounds. Invalid column letter: ${col}`);
     }
     if (!hasRow) {
-      rowNumber = undefined;
+      rowNumber = undefined as unknown as number;
     }
 
     // in case $row$col
     value = col + row;
 
-    const address = {
+    const address: Address = {
       address: value,
       col: colNumber,
       row: rowNumber,
@@ -183,7 +197,7 @@ const colCache = {
   },
 
   // convert r,c into structure (if only 1 arg, assume r is address string)
-  getAddress(r: any, c: any) {
+  getAddress(r: any, c?: any): Address {
     if (c) {
       const address = this.n2l(c) + r;
       return this.decodeAddress(address);
@@ -191,8 +205,9 @@ const colCache = {
     return this.decodeAddress(r);
   },
 
-  // convert [address], [tl:br] into address structures
-  decode(value: any) {
+  // convert [address], [tl:br] into address structures:
+  // an Address, or for `tl:br` a range { top, left, bottom, right, tl, br, dimensions }
+  decode(value: string): any {
     const parts = value.split(':');
     if (parts.length === 2) {
       const tl = this.decodeAddress(parts[0]);
@@ -213,23 +228,26 @@ const colCache = {
   },
 
   // convert [sheetName!][$]col[$]row[[$]col[$]row] into address or range structures
-  decodeEx(value: any) {
-    const groups = value.match(/(?:(?:(?:'((?:[^']|'')*)')|([^'^ !]*))!)?(.*)/);
+  // The result is an Address, a range { top, left, bottom, right, sheetName, tl, br, dimensions },
+  // or { sheetName?, error } for a `#REF!`-style reference.
+  decodeEx(value: string): any {
+    // Always matches: every part of the pattern may be empty.
+    const groups = value.match(/(?:(?:(?:'((?:[^']|'')*)')|([^'^ !]*))!)?(.*)/) as RegExpMatchArray;
 
     const sheetName = groups[1] || groups[2]; // Qouted and unqouted groups
     const reference = groups[3]; // Remaining address
 
     const parts = reference.split(':');
     if (parts.length > 1) {
-      let tl = this.decodeAddress(parts[0]);
-      let br = this.decodeAddress(parts[1]);
-      const top = Math.min(tl.row, br.row);
-      const left = Math.min(tl.col, br.col);
-      const bottom = Math.max(tl.row, br.row);
-      const right = Math.max(tl.col, br.col);
+      const first = this.decodeAddress(parts[0]);
+      const second = this.decodeAddress(parts[1]);
+      const top = Math.min(first.row, second.row);
+      const left = Math.min(first.col, second.col);
+      const bottom = Math.max(first.row, second.row);
+      const right = Math.max(first.col, second.col);
 
-      tl = this.n2l(left) + top;
-      br = this.n2l(right) + bottom;
+      const tl = this.n2l(left) + top;
+      const br = this.n2l(right) + bottom;
 
       return {
         top,

@@ -6,7 +6,7 @@ import type { XformOptions } from "./xform/base-xform";
 import { ZipWriter } from "../utils/zip-stream";
 import StreamBuf from "../utils/stream-buf";
 
-import utils from "../utils/utils";
+import * as utils from "../utils/utils";
 import XmlStream from "../utils/xml-stream";
 
 import StylesXform from "./xform/style/styles-xform";
@@ -50,7 +50,7 @@ class XLSX {
   // Read
 
   async readFile(filename: any, options: any) {
-    if (!(await utils.fs.exists(filename))) {
+    if (!(await utils.exists(filename))) {
       throw new Error(`File not found: ${filename}`);
     }
     const stream = fs.createReadStream(filename);

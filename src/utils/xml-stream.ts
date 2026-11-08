@@ -1,6 +1,6 @@
 import * as _ from "./under-dash";
 
-import utils from "./utils";
+import * as utils from "./utils";
 
 // constants
 const OPEN_ANGLE = '<';

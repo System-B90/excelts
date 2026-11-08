@@ -158,7 +158,7 @@ class CellMatrix {
       for (let i = 0; i < numInsert; i++) {
         inserts.push(null);
       }
-      _.each(sheet, row => {
+      _.each(sheet, (row: any[]) => {
         row.splice(start, numDelete, ...inserts);
       });
     }

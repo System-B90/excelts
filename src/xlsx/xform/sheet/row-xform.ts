@@ -1,6 +1,6 @@
 import BaseXform, { type XformModel, type XformOptions, type XmlNode } from "../base-xform";
 import XmlStream from "../../../utils/xml-stream";
-import utils from "../../../utils/utils";
+import * as utils from "../../../utils/utils";
 
 import CellXform from "./cell-xform";
 
