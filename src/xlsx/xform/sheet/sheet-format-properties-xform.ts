@@ -1,4 +1,4 @@
-import _ from "../../../utils/under-dash";
+import * as _ from "../../../utils/under-dash";
 import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
 import XmlStream from "../../../utils/xml-stream";
 
@@ -11,7 +11,7 @@ class SheetFormatPropertiesXform extends BaseXform {
 
   render(xmlStream: XmlStream, model: XformModel) {
     if (model) {
-      const attributes = {
+      const attributes: Record<string, any> = {
         defaultRowHeight: model.defaultRowHeight,
         outlineLevelRow: model.outlineLevelRow,
         outlineLevelCol: model.outlineLevelCol,

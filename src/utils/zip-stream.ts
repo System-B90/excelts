@@ -1,87 +1,44 @@
-import events from "node:events";
+import { EventEmitter } from "node:events";
 import JSZip from "jszip";
 
 import StreamBuf from "./stream-buf";
-import { stringToBuffer } from "./browser-buffer-encode";
 
-// =============================================================================
-// The ZipWriter class
-// Packs streamed data into an output zip stream
-class ZipWriter extends events.EventEmitter {
-  constructor(options) {
+/** JSZip's generation options, plus the entry point for `compressionOptions` and friends. */
+export type ZipOptions = Omit<JSZip.JSZipGeneratorOptions, "type">;
+
+/**
+ * Collects entries in memory, then packs them into one zip and writes it to the
+ * stream it was piped to. Emits `finish` once the zip has been written.
+ */
+class ZipWriter extends EventEmitter {
+  private readonly options: JSZip.JSZipGeneratorOptions<"nodebuffer">;
+
+  private readonly zip = new JSZip();
+
+  private readonly stream = new StreamBuf();
+
+  constructor(options?: ZipOptions) {
     super();
-    this.options = Object.assign(
-      {
-        type: 'nodebuffer',
-        compression: 'DEFLATE',
-      },
-      options
-    );
-
-    this.zip = new JSZip();
-    this.stream = new StreamBuf();
+    this.options = { compression: "DEFLATE", ...options, type: "nodebuffer" };
   }
 
-  append(data, options) {
-    if (options.hasOwnProperty('base64') && options.base64) {
-      this.zip.file(options.name, data, {base64: true});
+  append(data: string | Buffer, options: { name: string; base64?: boolean }): void {
+    if (options.base64) {
+      this.zip.file(options.name, data, { base64: true });
     } else {
-      // https://www.npmjs.com/package/process
-      if (process.browser && typeof data === 'string') {
-        // use TextEncoder in browser
-        data = stringToBuffer(data);
-      }
       this.zip.file(options.name, data);
     }
   }
 
-  async finalize() {
+  async finalize(): Promise<void> {
     const content = await this.zip.generateAsync(this.options);
     this.stream.end(content);
-    this.emit('finish');
+    this.emit("finish");
   }
 
-  // ==========================================================================
-  // Stream.Readable interface
-  read(size) {
-    return this.stream.read(size);
-  }
-
-  setEncoding(encoding) {
-    return this.stream.setEncoding(encoding);
-  }
-
-  pause() {
-    return this.stream.pause();
-  }
-
-  resume() {
-    return this.stream.resume();
-  }
-
-  isPaused() {
-    return this.stream.isPaused();
-  }
-
-  pipe(destination, options?) {
-    return this.stream.pipe(destination, options);
-  }
-
-  unpipe(destination) {
-    return this.stream.unpipe(destination);
-  }
-
-  unshift(chunk) {
-    return this.stream.unshift(chunk);
-  }
-
-  wrap(stream) {
-    return this.stream.wrap(stream);
+  pipe(destination: NodeJS.WritableStream): void {
+    this.stream.pipe(destination);
   }
 }
 
-// =============================================================================
-
-export {
-  ZipWriter,
-};
+export { ZipWriter };

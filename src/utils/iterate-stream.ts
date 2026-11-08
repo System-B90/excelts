@@ -34,7 +34,7 @@ export default async function* iterateStream(stream) {
 
 function once(eventEmitter, type) {
   // TODO: Use require('events').once when node v10 is dropped
-  return new Promise(resolve => {
+  return new Promise<void>(resolve => {
     let fired = false;
     const handler = () => {
       if (!fired) {

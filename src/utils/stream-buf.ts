@@ -227,7 +227,7 @@ class StreamBuf {
 
   async _pipe(chunk) {
     const write = function(pipe) {
-      return new Promise(resolve => {
+      return new Promise<void>(resolve => {
         pipe.write(chunk.toBuffer(), () => {
           resolve();
         });

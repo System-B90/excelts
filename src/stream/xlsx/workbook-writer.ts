@@ -95,7 +95,7 @@ class WorkbookWriter {
   _commitWorksheets() {
     const commitWorksheet = function(worksheet) {
       if (!worksheet.committed) {
-        return new Promise(resolve => {
+        return new Promise<void>(resolve => {
           worksheet.stream.on('zipped', () => {
             resolve();
           });
@@ -204,21 +204,21 @@ class WorkbookWriter {
   }
 
   addStyles() {
-    return new Promise(resolve => {
+    return new Promise<void>(resolve => {
       this.zip.append(this.styles.xml, {name: 'xl/styles.xml'});
       resolve();
     });
   }
 
   addThemes() {
-    return new Promise(resolve => {
+    return new Promise<void>(resolve => {
       this.zip.append(theme1Xml, {name: 'xl/theme/theme1.xml'});
       resolve();
     });
   }
 
   addOfficeRels() {
-    return new Promise(resolve => {
+    return new Promise<void>(resolve => {
       const xform = new RelationshipsXform();
       const xml = xform.toXml([
         {Id: 'rId1', Type: RelType.OfficeDocument, Target: 'xl/workbook.xml'},
@@ -231,7 +231,7 @@ class WorkbookWriter {
   }
 
   addContentTypes() {
-    return new Promise(resolve => {
+    return new Promise<void>(resolve => {
       const model = {
         worksheets: this._worksheets.filter(Boolean),
         sharedStrings: this.sharedStrings,
@@ -268,7 +268,7 @@ class WorkbookWriter {
   }
 
   addApp() {
-    return new Promise(resolve => {
+    return new Promise<void>(resolve => {
       const model = {
         worksheets: this._worksheets.filter(Boolean),
       };
@@ -280,7 +280,7 @@ class WorkbookWriter {
   }
 
   addCore() {
-    return new Promise(resolve => {
+    return new Promise<void>(resolve => {
       const coreXform = new CoreXform();
       const xml = coreXform.toXml(this);
       this.zip.append(xml, {name: 'docProps/core.xml'});
@@ -290,7 +290,7 @@ class WorkbookWriter {
 
   addSharedStrings() {
     if (this.sharedStrings.count) {
-      return new Promise(resolve => {
+      return new Promise<void>(resolve => {
         const sharedStringsXform = new SharedStringsXform();
         const xml = sharedStringsXform.toXml(this.sharedStrings);
         this.zip.append(xml, {name: '/xl/sharedStrings.xml'});
@@ -323,7 +323,7 @@ class WorkbookWriter {
         });
       }
     });
-    return new Promise(resolve => {
+    return new Promise<void>(resolve => {
       const xform = new RelationshipsXform();
       const xml = xform.toXml(relationships);
       this.zip.append(xml, {name: '/xl/_rels/workbook.xml.rels'});
@@ -341,7 +341,7 @@ class WorkbookWriter {
       calcProperties: {},
     };
 
-    return new Promise(resolve => {
+    return new Promise<void>(resolve => {
       const xform = new WorkbookXform();
       xform.prepare(model);
       zip.append(xform.toXml(model), {name: '/xl/workbook.xml'});

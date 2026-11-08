@@ -1,7 +1,7 @@
 import { EventEmitter } from "node:events";
 import parseSax from "../../utils/parse-sax";
 
-import _ from "../../utils/under-dash";
+import * as _ from "../../utils/under-dash";
 import utils from "../../utils/utils";
 import colCache from "../../utils/col-cache";
 import Dimensions from "../../doc/range";
@@ -298,7 +298,7 @@ class WorksheetReader extends EventEmitter {
                   }
 
                   if (c.f) {
-                    const cellValue = {
+                    const cellValue: Record<string, any> = {
                       formula: c.f.text,
                     };
                     if (c.v) {

@@ -1,4 +1,4 @@
-import _ from "../../../utils/under-dash";
+import * as _ from "../../../utils/under-dash";
 import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
 import XmlStream from "../../../utils/xml-stream";
 

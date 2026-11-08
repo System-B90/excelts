@@ -1,6 +1,6 @@
 'use strict';
 
-import _ from "../utils/under-dash";
+import * as _ from "../utils/under-dash";
 
 import * as Enums from "./enums";
 import colCache from "../utils/col-cache";

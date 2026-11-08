@@ -1,4 +1,4 @@
-import _ from "../utils/under-dash";
+import * as _ from "../utils/under-dash";
 
 class Note {
   static DEFAULT_CONFIGS = {

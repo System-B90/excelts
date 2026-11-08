@@ -1,4 +1,4 @@
-import _ from "../../utils/under-dash";
+import * as _ from "../../utils/under-dash";
 
 import RelType from "../../xlsx/rel-type";
 
@@ -518,7 +518,7 @@ class WorksheetWriter {
   protect(password, options) {
     // TODO: make this function truly async
     // perhaps marshal to worker thread or something
-    return new Promise(resolve => {
+    return new Promise<void>(resolve => {
       this.sheetProtection = {
         sheet: true,
       };

@@ -1,6 +1,6 @@
 'use strict';
 
-import _ from "../utils/under-dash";
+import * as _ from "../utils/under-dash";
 import colCache from "../utils/col-cache";
 import CellMatrix from "../utils/cell-matrix";
 import Range from "./range";

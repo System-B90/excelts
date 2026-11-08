@@ -1,6 +1,6 @@
 'use strict';
 
-import _ from "../utils/under-dash";
+import * as _ from "../utils/under-dash";
 
 import * as Enums from "./enums";
 import colCache from "../utils/col-cache";
@@ -160,7 +160,7 @@ class Row {
     const ws = this._worksheet;
     const left = Math.max(0, lft - 1) || 0;
     const right = Math.max(0, rght - 1) || 16838;
-    const pb = {
+    const pb: Record<string, any> = {
       id: this._number,
       max: right,
       man: 1,

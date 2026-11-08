@@ -19,7 +19,7 @@ class VmlTextboxXform extends BaseXform {
   }
 
   render(xmlStream: XmlStream, model: XformModel) {
-    const attributes = {
+    const attributes: Record<string, any> = {
       style: 'mso-direction-alt:auto',
     };
     if (model && model.note) {

@@ -1,6 +1,11 @@
 import { SaxesParser } from "saxes";
 import { PassThrough } from "readable-stream";
-import { bufferToString } from "./browser-buffer-decode";
+
+// Decoded as UTF-8, dropping a leading byte-order mark, as TextDecoder does.
+const textDecoder = new TextDecoder("utf-8");
+
+const bufferToString = (chunk: string | Uint8Array): string =>
+  typeof chunk === "string" ? chunk : textDecoder.decode(chunk);
 
 export default async function* parseSax(iterable) {
   // TODO: Remove once node v8 is deprecated

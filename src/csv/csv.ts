@@ -111,7 +111,7 @@ class CSV {
   }
 
   write(stream, options) {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       options = options || {};
       // const encoding = options.encoding || 'utf8';
       // const separator = options.separator || ',';

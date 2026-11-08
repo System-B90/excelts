@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import colCache from "../utils/col-cache";
-import _ from "../utils/under-dash";
+import * as _ from "../utils/under-dash";
 import * as Enums from "./enums";
 import { slideFormula } from "../utils/shared-formula";
 import Note from "./note";
@@ -614,7 +614,7 @@ class HyperlinkValue {
   }
 
   get value() {
-    const v = {
+    const v: Record<string, any> = {
       text: this.model.text,
       hyperlink: this.model.hyperlink,
     };

@@ -128,7 +128,7 @@ class WorkbookReader extends EventEmitter {
               yield* this._parseWorksheet(iterateStream(entry), sheetNo);
             } else {
               // create temp file for each worksheet
-              await new Promise((resolve, reject) => {
+              await new Promise<void>((resolve, reject) => {
                 tmp.file((err, path, fd, tempFileCleanupCallback) => {
                   if (err) {
                     return reject(err);

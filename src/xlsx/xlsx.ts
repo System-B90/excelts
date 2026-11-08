@@ -2,12 +2,12 @@ import fs from "node:fs";
 import JSZip from "jszip";
 import { PassThrough } from "readable-stream";
 import RelType from "./rel-type";
+import type { XformOptions } from "./xform/base-xform";
 import { ZipWriter } from "../utils/zip-stream";
 import StreamBuf from "../utils/stream-buf";
 
 import utils from "../utils/utils";
 import XmlStream from "../utils/xml-stream";
-import { bufferToString } from "../utils/browser-buffer-decode";
 
 import StylesXform from "./xform/style/styles-xform";
 
@@ -88,7 +88,7 @@ class XLSX {
     workbookXform.reconcile(model);
 
     // reconcile drawings with their rels
-    const drawingOptions = {
+    const drawingOptions: { media: any; mediaIndex: any; rels?: Record<string, any> } = {
       media: model.media,
       mediaIndex: model.mediaIndex,
     };
@@ -181,7 +181,7 @@ class XLSX {
     if (lastDot >= 1) {
       const extension = filename.substr(lastDot + 1);
       const name = filename.substr(0, lastDot);
-      await new Promise((resolve, reject) => {
+      await new Promise<void>((resolve, reject) => {
         const streamBuf = new StreamBuf();
         streamBuf.on('finish', () => {
           model.mediaIndex[filename] = model.media.length;
@@ -222,7 +222,7 @@ class XLSX {
   }
 
   async _processThemeEntry(entry, model, name) {
-    await new Promise((resolve, reject) => {
+    await new Promise<void>((resolve, reject) => {
       // TODO: stream entry into buffer and store the xml in the model.themes[]
       const stream = new StreamBuf();
       entry.on('error', reject);
@@ -265,7 +265,7 @@ class XLSX {
       buffer = data;
     }
 
-    const model = {
+    const model: Record<string, any> = {
       worksheets: [],
       worksheetHash: {},
       worksheetRels: [],
@@ -301,15 +301,7 @@ class XLSX {
             writableObjectMode: true,
             readableObjectMode: true,
           });
-          let content;
-          // https://www.npmjs.com/package/process
-          if (process.browser) {
-            // running in browser, use TextDecoder if possible
-            content = bufferToString(await entry.async('nodebuffer'));
-          } else {
-            // running in node.js
-            content = await entry.async('string');
-          }
+          const content = await entry.async('string');
           const chunkSize = 16 * 1024;
           for (let i = 0; i < content.length; i += chunkSize) {
             stream.write(content.substring(i, i + chunkSize));
@@ -617,7 +609,7 @@ class XLSX {
 
     workbookXform.prepare(model);
 
-    const worksheetOptions = {
+    const worksheetOptions: XformOptions = {
       sharedStrings: model.sharedStrings,
       styles: model.styles,
       date1904: model.properties.date1904,
@@ -669,7 +661,7 @@ class XLSX {
   writeFile(filename, options) {
     const stream = fs.createWriteStream(filename);
 
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       stream.on('finish', () => {
         resolve();
       });

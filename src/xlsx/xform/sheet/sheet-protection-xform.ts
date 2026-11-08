@@ -1,4 +1,4 @@
-import _ from "../../../utils/under-dash";
+import * as _ from "../../../utils/under-dash";
 import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
 import XmlStream from "../../../utils/xml-stream";
 
@@ -19,7 +19,7 @@ class SheetProtectionXform extends BaseXform {
 
   render(xmlStream: XmlStream, model: XformModel) {
     if (model) {
-      const attributes = {
+      const attributes: Record<string, any> = {
         sheet: booleanToXml(model.sheet, '1'),
         selectLockedCells: model.selectLockedCells === false ? '1' : undefined,
         selectUnlockedCells: model.selectUnlockedCells === false ? '1' : undefined,

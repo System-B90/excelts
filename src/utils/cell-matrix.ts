@@ -1,4 +1,4 @@
-import _ from "./under-dash";
+import * as _ from "./under-dash";
 import colCache from "./col-cache";
 
 class CellMatrix {

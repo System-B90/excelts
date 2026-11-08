@@ -5,7 +5,7 @@ class WorkbookViewXform extends BaseXform {
   model: any;
 
   render(xmlStream: XmlStream, model: XformModel) {
-    const attributes = {
+    const attributes: Record<string, any> = {
       xWindow: model.x || 0,
       yWindow: model.y || 0,
       windowWidth: model.width || 12000,

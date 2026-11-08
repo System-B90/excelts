@@ -1,4 +1,4 @@
-import _ from "../../../utils/under-dash";
+import * as _ from "../../../utils/under-dash";
 import utils from "../../../utils/utils";
 import colCache from "../../../utils/col-cache";
 import BaseXform, { type XformModel, type XmlNode } from "../base-xform";

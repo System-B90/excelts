@@ -197,7 +197,7 @@ const colCache = {
     if (parts.length === 2) {
       const tl = this.decodeAddress(parts[0]);
       const br = this.decodeAddress(parts[1]);
-      const result = {
+      const result: Record<string, any> = {
         top: Math.min(tl.row, br.row),
         left: Math.min(tl.col, br.col),
         bottom: Math.max(tl.row, br.row),

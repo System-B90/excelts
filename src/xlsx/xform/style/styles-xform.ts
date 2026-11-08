@@ -297,7 +297,7 @@ class StylesXform extends BaseXform {
       return this.weakMap.get(model);
     }
 
-    const style = {};
+    const style: Record<string, any> = {};
     cellType = cellType || Enums.ValueType.Number;
 
     if (model.numFmt) {

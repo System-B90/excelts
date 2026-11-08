@@ -1,4 +1,4 @@
-import _ from "../../../utils/under-dash";
+import * as _ from "../../../utils/under-dash";
 
 import Range from "../../../doc/range";
 import colCache from "../../../utils/col-cache";

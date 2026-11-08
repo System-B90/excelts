@@ -1,4 +1,4 @@
-import _ from "../../../utils/under-dash";
+import * as _ from "../../../utils/under-dash";
 import defaultNumFormats from "../../defaultnumformats";
 
 import BaseXform, { type XformModel, type XmlNode } from "../base-xform";
